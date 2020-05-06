@@ -25,4 +25,6 @@ public:
 	};
 	int dx = 0;
 	bool rot = 0;
+	Clock clock;
+	float time = 0, timer = 0, delay = 0.3;
 };

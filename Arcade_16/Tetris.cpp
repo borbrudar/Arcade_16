@@ -27,6 +27,10 @@ void Tetris::draw(RenderWindow& window)
 
 void Tetris::update(Mouse& mouse, RenderWindow& window, state& gameState, Event &e)
 {
+	time = clock.getElapsedTime().asSeconds();
+	timer += time;
+	clock.restart();
+
 	while (window.pollEvent(e)) {
 		if (e.type == Event::Closed) window.close();
 		if (e.type == Event::KeyPressed) {
@@ -57,6 +61,12 @@ void Tetris::update(Mouse& mouse, RenderWindow& window, state& gameState, Event 
 
 	//move
 	for (int i = 0; i < 4; i++) a[i].x += dx;
+
+	//fall
+	if (timer > delay) {
+		timer = 0;
+		for (int i = 0; i < 4; i++) a[i].y++;
+	}
 
 	//set figures
 	int n = 3;
