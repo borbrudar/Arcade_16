@@ -12,7 +12,7 @@ public:
 	Texture til;
 	Sprite tiles;
 
-	struct point { int x, y; } a[4], b[4];
+	struct point { int x = 0, y = 0; } a[4], b[4];
 
 	int shapes[7][4]{
 		1,3,5,7, //I
@@ -23,5 +23,6 @@ public:
 		3,5,6,7, //J
 		2,4,6,7  //L
 	};
-
+	int dx = 0;
+	bool rot = 0;
 };
