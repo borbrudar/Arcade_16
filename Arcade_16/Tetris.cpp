@@ -19,7 +19,10 @@ void Tetris::draw(RenderWindow& window)
 	back.draw(window);
 
 	//draw tiles
-	window.draw(tiles);
+	for (int i = 0; i < 4; i++) {
+		tiles.setPosition(a[i].x * 18, a[i].y * 18);
+		window.draw(tiles);
+	}
 }
 
 void Tetris::update(Mouse& mouse, RenderWindow& window, state& gameState, Event &e)
@@ -30,4 +33,10 @@ void Tetris::update(Mouse& mouse, RenderWindow& window, state& gameState, Event 
 
 	if (back.isClicked(mouse,window)) gameState = state::menu;
 	
+	//set figures
+	int n = 5;
+	for (int i = 0; i < 4; i++) {
+		a[i].x = shapes[n][i] % 2;
+		a[i].y = shapes[n][i] / 2;
+	}
 }

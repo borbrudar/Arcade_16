@@ -16,9 +16,9 @@ int main() {
 	Font arial;
 	arial.loadFromFile("res/font/arial.ttf");
 
-	state gameState = state::menu;
-	state prevState = state::menu;
-	std::unique_ptr<State> state = std::make_unique<Tetris>(arial);
+	state gameState = state::tetris;
+	state prevState = state::tetris;
+	std::unique_ptr<State> state = std::make_unique<Tetris>(arial); //FOR TEST YOU HAVE TO SWITCH THE TOP ONES TOO!!!
 
 	//game loop
 	while (window.isOpen()) {
@@ -38,7 +38,7 @@ int main() {
 		//update (event check etc)
 		state->update(mouse, window, gameState, e);
 		////////////////////////////////////////
-		window.clear(Color(126,126,126));
+		window.clear(Color(50,50,50));
 
 		state->draw(window);
 
