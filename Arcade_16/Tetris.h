@@ -1,5 +1,6 @@
 #pragma once
 #include "State.h"
+#include <iostream>
 #include <time.h>
 
 constexpr int M = 20, N = 10;
@@ -31,6 +32,6 @@ public:
 	int dx = 0;
 	bool rot = 0, fall = 1;
 	Clock clock;
-	float time = 0.f, timer = 0.f, delay = 0.2f, groundDelay = 0.4f;
+	float time = 0.f, timer = 0.f, delay = 0.2f, groundDelay = 0.7f;
 	int type = 0;
 };

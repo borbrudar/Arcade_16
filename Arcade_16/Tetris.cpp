@@ -101,14 +101,16 @@ void Tetris::checkBorder()
 		//left/right
 		if (a[i].x == N - 1) for (int i = 0; i < 4; i++) a[i].x--;
 		if (a[i].x < 0) for (int i = 0; i < 4; i++) a[i].x++;
-		//ground
-		if (a[i].y == (M - 1)) fall = 0;
+		//fall something
+		if (field[a[i].y + 1][a[i].x] == 0) fall = 1;
 		//other pieces
-		for (int i = 0; i < 4; i++) {
-			if (field[a[i].y][a[i].x] != 0) for (int k = 0; k < 4; k++) a[k] = b[k];
-			if (field[a[i].y + 1][a[i].x] != 0) fall = 0;
+		if (field[a[i].y][a[i].x] != 0) fall = 0; 
+		if (field[a[i].y][a[i].x] != 0) {
+			for (int k = 0; k < 4; k++) a[k] = b[k];
+			break;
 		}
-
+		//ground
+		if (a[i].y == (M - 1)) fall = 0; 
 	}
 }
 
