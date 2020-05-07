@@ -1,12 +1,16 @@
 #pragma once
 #include "State.h"
+#include <time.h>
 
+constexpr int M = 20, N = 10;
 
 class Tetris : public State{
 public:
 	Tetris(Font& f);
 	void draw(RenderWindow& window);
 	void update(Mouse& mouse, RenderWindow& window, state& gameState, Event &e);
+	void checkBorder();
+	void newPiece();
 
 	Button back;
 	Texture til;
@@ -14,6 +18,7 @@ public:
 
 	struct point { int x = 0, y = 0; } a[4], b[4];
 
+	int field[M][N] = { 0 };
 	int shapes[7][4]{
 		1,3,5,7, //I
 		3,5,7,4, //T
@@ -24,7 +29,7 @@ public:
 		2,4,6,7  //L
 	};
 	int dx = 0;
-	bool rot = 0;
+	bool rot = 0, fall = 1;
 	Clock clock;
-	float time = 0, timer = 0, delay = 0.3;
+	float time = 0, timer = 0, delay = 0.3, groundDelay = 0.5;
 };
