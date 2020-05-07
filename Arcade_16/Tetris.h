@@ -31,5 +31,6 @@ public:
 	int dx = 0;
 	bool rot = 0, fall = 1;
 	Clock clock;
-	float time = 0, timer = 0, delay = 0.3, groundDelay = 0.5;
+	float time = 0.f, timer = 0.f, delay = 0.2f, groundDelay = 0.4f;
+	int type = 0;
 };

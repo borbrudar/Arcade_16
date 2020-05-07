@@ -11,7 +11,6 @@ Tetris::Tetris(Font& f)
 	//setup tiles
 	til.loadFromFile("res/tetris/tiles.png");
 	tiles.setTexture(til);
-	tiles.setTextureRect(IntRect(0, 0, 18, 18));
 
 	newPiece();
 }
@@ -25,12 +24,14 @@ void Tetris::draw(RenderWindow& window)
 	for (int y = 0; y < M; y++) {
 		for (int x = 0; x < N; x++) {
 			if (field[y][x] != 0){
+				tiles.setTextureRect(IntRect((field[y][x] - 1) * 18, 0, 18, 18));
 				tiles.setPosition(x * 18, y * 18);
 				window.draw(tiles);
 			}
 		}
 	}
 
+	tiles.setTextureRect(IntRect(type * 18, 0, 18, 18));
 	//draw tiles
 	for (int i = 0; i < 4; i++) {
 		tiles.setPosition(a[i].x * 18, a[i].y * 18);
@@ -43,7 +44,7 @@ void Tetris::update(Mouse& mouse, RenderWindow& window, state& gameState, Event 
 	time = clock.getElapsedTime().asSeconds();
 	timer += time;
 	clock.restart();
-	delay = 0.3;
+	delay = 0.2f;
 
 	//clicky boi
 	while (window.pollEvent(e)) {
@@ -52,7 +53,7 @@ void Tetris::update(Mouse& mouse, RenderWindow& window, state& gameState, Event 
 			if (e.key.code == Keyboard::Up) rot = 1;
 			else if (e.key.code == Keyboard::Left) dx = -1;
 			else if (e.key.code == Keyboard::Right) dx = 1;
-			else if (e.key.code == Keyboard::Down) delay = 0.05; 
+			else if (e.key.code == Keyboard::Down) delay = 0.03f; 
 		}
 	}
 	if (back.isClicked(mouse,window)) gameState = state::menu;
@@ -82,8 +83,7 @@ void Tetris::update(Mouse& mouse, RenderWindow& window, state& gameState, Event 
 		else if (timer > groundDelay) {
 			timer = 0; fall = 1;
 			for (int i = 0; i < 4; i++) {
-				field[a[i].y][a[i].x] = 1;
-				//b[i] = a[i];
+				field[a[i].y][a[i].x] = type + 1;//cannot initalize an array to -1
 			}
 			newPiece();
 		}
@@ -105,13 +105,8 @@ void Tetris::checkBorder()
 		if (a[i].y == (M - 1)) fall = 0;
 		//other pieces
 		for (int i = 0; i < 4; i++) {
-			if (field[a[i].y][a[i].x] != 0) {
-				if(b[0].x < a[0].x)	for (int k = 0; k < 4; k++) a[k].x--; 
-				else for (int k = 0; k < 4; k++) a[k].x++;
-			}
-			else if (field[a[i].y + 1][a[i].x] != 0) {
-				fall = 0; 
-			}
+			if (field[a[i].y][a[i].x] != 0) for (int k = 0; k < 4; k++) a[k] = b[k];
+			if (field[a[i].y + 1][a[i].x] != 0) fall = 0;
 		}
 
 	}
@@ -121,7 +116,9 @@ void Tetris::newPiece()
 {
 	srand(std::time(NULL));
 	int n = rand() % 7;
-
+	type = n;
+	tiles.setTextureRect(IntRect(n * 18, 0, 18, 18));
+	
 	for (int i = 0; i < 4; i++) {
 		a[i].x = shapes[n][i] % 2;
 		a[i].y = shapes[n][i] / 2;
