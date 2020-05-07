@@ -18,7 +18,7 @@ public:
 
 	struct point { int x = 0, y = 0; } a[4], b[4];
 
-	int field[M][N] = { 0 };
+	int field[M][N] = {};
 	int shapes[7][4]{
 		1,3,5,7, //I
 		3,5,7,4, //T

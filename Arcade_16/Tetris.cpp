@@ -57,6 +57,9 @@ void Tetris::update(Mouse& mouse, RenderWindow& window, state& gameState, Event 
 	}
 	if (back.isClicked(mouse,window)) gameState = state::menu;
 	
+	//before move/rotation so we can adjust
+	for (int i = 0; i < 4; i++) b[i] = a[i];
+
 	//rotation
 	if(rot){
 		point p = a[1]; //center of rotation
@@ -93,13 +96,24 @@ void Tetris::update(Mouse& mouse, RenderWindow& window, state& gameState, Event 
 }
 
 void Tetris::checkBorder()
-{
+{ 
 	for (int i = 0; i < 4; i++) {
 		//left/right
 		if (a[i].x == N - 1) for (int i = 0; i < 4; i++) a[i].x--;
 		if (a[i].x < 0) for (int i = 0; i < 4; i++) a[i].x++;
 		//ground
-		if (a[i].y == M - 1) fall = 0;
+		if (a[i].y == (M - 1)) fall = 0;
+		//other pieces
+		for (int i = 0; i < 4; i++) {
+			if (field[a[i].y][a[i].x] != 0) {
+				if(b[0].x < a[0].x)	for (int k = 0; k < 4; k++) a[k].x--; 
+				else for (int k = 0; k < 4; k++) a[k].x++;
+			}
+			else if (field[a[i].y + 1][a[i].x] != 0) {
+				fall = 0; 
+			}
+		}
+
 	}
 }
 
