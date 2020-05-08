@@ -12,6 +12,7 @@ public:
 	void update(Mouse& mouse, RenderWindow& window, state& gameState, Event &e);
 	void checkBorder();
 	void newPiece();
+	void updateField();
 
 	Button back;
 	Texture til;

@@ -86,6 +86,8 @@ void Tetris::update(Mouse& mouse, RenderWindow& window, state& gameState, Event 
 		for (int i = 0; i < 4; i++) {
 			field[a[i].y][a[i].x] = type + 1; //cannot initalize an array to -1
 		}
+		//update board
+		updateField();
 		//create new piece
 		newPiece();
 	}
@@ -135,5 +137,29 @@ void Tetris::newPiece()
 	for (int i = 0; i < 4; i++) {
 		a[i].x = shapes[n][i] % 2;
 		a[i].y = shapes[n][i] / 2;
+	}
+}
+
+void Tetris::updateField()
+{
+	//setup something somethin
+	int row = 0;
+	int k;
+
+	//basically check from bottom to top, and if true, replace every line with the one above it
+	for (int y = M - 1; y > 0; y--) {
+		k = y - 1;
+		row = 0;
+		//check one row
+		for (int x = 0; x < N; x++) {
+			if (field[y][x] != 0) row++;
+		}
+		//delete row
+		if (row == (N - 1)) {
+			for (int f = y; f > 0; f--) {
+				for (int x = 0; x < N; x++) field[f][x] = field[k][x];				
+				k--;
+			}
+		}
 	}
 }
