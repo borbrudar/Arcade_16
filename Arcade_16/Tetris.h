@@ -32,6 +32,6 @@ public:
 	int dx = 0;
 	bool rot = 0, fall = 1;
 	Clock clock;
-	float time = 0.f, timer = 0.f, delay = 0.2f, groundDelay = 0.7f;
+	float time = 0.f, timer = 0.f, delay = 0.2f, groundDelay = 0.7f; //adjust delay in update()
 	int type = 0;
 };

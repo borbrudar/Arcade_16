@@ -41,6 +41,7 @@ void Tetris::draw(RenderWindow& window)
 
 void Tetris::update(Mouse& mouse, RenderWindow& window, state& gameState, Event &e)
 {
+	//clock setup
 	time = clock.getElapsedTime().asSeconds();
 	timer += time;
 	clock.restart();
@@ -76,41 +77,51 @@ void Tetris::update(Mouse& mouse, RenderWindow& window, state& gameState, Event 
 	for (int i = 0; i < 4; i++) a[i].x += dx;
 
 	//fall
-	if (timer > delay) {
-		if (fall) { 
-			for (int i = 0; i < 4; i++) a[i].y++; timer = 0;
+	if (timer > delay && fall) {
+		for (int i = 0; i < 4; i++) a[i].y++; timer = 0;
+	}
+	//hitting ground
+	else if (timer > groundDelay) {
+		timer = 0; fall = 1;
+		for (int i = 0; i < 4; i++) {
+			field[a[i].y][a[i].x] = type + 1; //cannot initalize an array to -1
 		}
-		else if (timer > groundDelay) {
-			timer = 0; fall = 1;
-			for (int i = 0; i < 4; i++) {
-				field[a[i].y][a[i].x] = type + 1;//cannot initalize an array to -1
-			}
-			newPiece();
-		}
+		//create new piece
+		newPiece();
 	}
 
-	//check border
+	//check border + piece collision
 	checkBorder();
 
+	//reset movement and rotation
 	dx = 0; rot = 0;
 }
 
 void Tetris::checkBorder()
 { 
+	//border
 	for (int i = 0; i < 4; i++) {
-		//left/right
 		if (a[i].x == N - 1) for (int i = 0; i < 4; i++) a[i].x--;
 		if (a[i].x < 0) for (int i = 0; i < 4; i++) a[i].x++;
-		//fall something
-		if (field[a[i].y + 1][a[i].x] == 0) fall = 1;
-		//other pieces
-		if (field[a[i].y][a[i].x] != 0) fall = 0; 
+
+		if (a[i].y == (M - 1)) fall = 0;
+	}
+
+	//fall 
+	for (int i = 0; i < 4; i++) {
+		if (field[a[i].y + 1][a[i].x] == 0) fall = 1; 
+		else {
+			fall = 0;
+			break;
+		}
+	}
+	
+	//other pieces 
+	for (int i = 0; i < 4; i++) {
 		if (field[a[i].y][a[i].x] != 0) {
 			for (int k = 0; k < 4; k++) a[k] = b[k];
 			break;
 		}
-		//ground
-		if (a[i].y == (M - 1)) fall = 0; 
 	}
 }
 
