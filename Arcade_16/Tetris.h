@@ -15,8 +15,8 @@ public:
 	void updateField();
 
 	Button back;
-	Texture til;
-	Sprite tiles;
+	Texture til, playfield;
+	Sprite tiles, fieldy;
 
 	struct point { int x = 0, y = 0; } a[4], b[4];
 
@@ -33,6 +33,6 @@ public:
 	int dx = 0;
 	bool rot = 0, fall = 1;
 	Clock clock;
-	float time = 0.f, timer = 0.f, delay = 0.2f, groundDelay = 0.7f; //adjust delay in update()
-	int type = 0;
+	float time = 0.f, timer = 0.f, delay = 0.3f, groundDelay = 0.7f; //adjust delay in update()
+	int type = 0, startX = 5, startY = 3;
 };
