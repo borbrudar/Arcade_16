@@ -8,6 +8,12 @@ Tetris::Tetris(Font& f)
 	text1.assign("Back");
 	back.setup(f, text1, Color::Blue, Vector2f(50, 30), Vector2f(580, 20)); 
 
+	//setup score
+	points.setFillColor(Color::White);
+	points.setCharacterSize(28);
+	points.setFont(f);
+	points.setPosition(340, 150);
+
 	//setup background
 	playfield.loadFromFile("res/tetris/playfield.png");
 	fieldy.setTexture(playfield);
@@ -23,6 +29,13 @@ void Tetris::draw(RenderWindow& window)
 {
 	//draw button
 	back.draw(window);
+
+	//draw score
+	std::string text2;
+	text2.assign("SCORE: ");
+	text2 = text2 + std::to_string(score);
+	points.setString(text2);
+	window.draw(points);
 
 	//draw field
 	window.draw(fieldy);
@@ -140,31 +153,45 @@ void Tetris::newPiece()
 	tiles.setTextureRect(IntRect(n * 18, 0, 18, 18));
 	
 	for (int i = 0; i < 4; i++) {
-		a[i].x = shapes[n][i] % 2 + startX;
-		a[i].y = shapes[n][i] / 2 + startY;
+		a[i].x = shapes[n][i] % 2 + startX + (N / 2 - 1);
+		a[i].y = shapes[n][i] / 2 + startY - 1;
 	}
 }
 
 void Tetris::updateField()
 {
 	//setup something somethin
-	int row = 0;
-	int k;
-
-	//basically check from bottom to top, and if true, replace every line with the one above it
-	for (int y = (M - 1); y > 0; y--) {
-		k = y - 1;
-		row = 0;
-		//check one row
-		for (int x = 0; x < N; x++) {
-			if (field[y][x] != 0) row++;
-		}
-		//delete row
-		if (row == N) {
-			for (int f = y; f > 0; f--) {
-				for (int x = 0; x < N; x++) field[f][x] = field[k][x];				
-				k--;
+	int count = 0, row = 0, k;
+	bool temp = 1;
+	//check 4 times (max lines you can delete at once)
+	for (int i = 0; i < 4; i++) {
+		if (temp == 0) break;
+		//basically check from bottom to top, and if true, replace every line with the one above it
+		for (int y = (M - 1); y > 0; y--) {
+			k = y - 1;
+			row = 0;
+			//check one row
+			for (int x = 0; x < N; x++) {
+				if (field[y][x] != 0) row++;
 			}
+			//delete row
+			if (row == N) {
+				count++;
+				temp = 1;
+				for (int f = y; f > 0; f--) {
+					for (int x = 0; x < N; x++) field[f][x] = field[k][x];
+					k--;
+				}
+			}
+			else temp = 0;
 		}
 	}
+
+	//add to the score
+	std::random_device rd;
+	std::default_random_engine engine(rd());
+	std::uniform_int_distribution<int> dist(90, 150);
+
+	score += dist(engine) * count;
+	if (count == 4) score += dist(engine) * count;
 }
