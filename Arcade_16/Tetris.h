@@ -16,8 +16,8 @@ public:
 	void updateField();
 
 	Button back;
-	Texture til, playfield;
-	Sprite tiles, fieldy;
+	Texture til, playfield, gamey;
+	Sprite tiles, fieldy, game;
 	Text points;
 
 	struct point { int x = 0, y = 0; } a[4], b[4];
@@ -38,4 +38,5 @@ public:
 	float time = 0.f, timer = 0.f, delay = 0.3f, groundDelay = 0.7f; //adjust delay in update()
 	int type = 0, startX = 5, startY = 3;
 	long score = 0;
+	bool gameOver = 0;
 };

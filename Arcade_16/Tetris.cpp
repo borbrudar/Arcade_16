@@ -22,6 +22,10 @@ Tetris::Tetris(Font& f)
 	til.loadFromFile("res/tetris/tiles.png");
 	tiles.setTexture(til);
 
+	gamey.loadFromFile("res/tetris/gameOver.png");
+	game.setTexture(gamey);
+	game.setPosition(100, 180);
+
 	newPiece();
 }
 
@@ -55,66 +59,97 @@ void Tetris::draw(RenderWindow& window)
 		tiles.setPosition(a[i].x * 18, a[i].y * 18);
 		window.draw(tiles);
 	}
+
+	if (gameOver) window.draw(game);
 }
 
 void Tetris::update(Mouse& mouse, RenderWindow& window, state& gameState, Event &e)
 {
-	//clock setup
-	time = clock.getElapsedTime().asSeconds();
-	timer += time;
-	clock.restart();
-	delay = 0.2f;
+	if (!gameOver) {
+		//clock setup
+		time = clock.getElapsedTime().asSeconds();
+		timer += time;
+		clock.restart();
+		delay = 0.2f;
 
-	//clicky boi
-	while (window.pollEvent(e)) {
-		if (e.type == Event::Closed) window.close();
-		if (e.type == Event::KeyPressed) {
-			if (e.key.code == Keyboard::Up) rot = 1;
-			else if (e.key.code == Keyboard::Left) dx = -1;
-			else if (e.key.code == Keyboard::Right) dx = 1;
-			else if (e.key.code == Keyboard::Down) delay = 0.03f; 
+		//clicky boi
+		while (window.pollEvent(e)) {
+			if (e.type == Event::Closed) window.close();
+			if (e.type == Event::KeyPressed) {
+				if (e.key.code == Keyboard::Up) rot = 1;
+				else if (e.key.code == Keyboard::Left) dx = -1;
+				else if (e.key.code == Keyboard::Right) dx = 1;
+				else if (e.key.code == Keyboard::Down) delay = 0.03f;
+			}
+		}
+		if (back.isClicked(mouse, window)) gameState = state::menu;
+
+		//before move/rotation so we can adjust
+		for (int i = 0; i < 4; i++) b[i] = a[i];
+
+		//rotation
+		if (rot) {
+			point p = a[1]; //center of rotation
+			for (int i = 0; i < 4; i++) {
+				int x = a[i].y - p.y;
+				int y = a[i].x - p.x;
+				a[i].x = p.x - x;
+				a[i].y = p.y + y;
+			}
+		}
+
+		//move
+		for (int i = 0; i < 4; i++) a[i].x += dx;
+
+		//fall
+		if (timer > delay && fall) {
+			for (int i = 0; i < 4; i++) a[i].y++; timer = 0;
+		}
+		//hitting ground
+		else if (timer > groundDelay) {
+			timer = 0; fall = 1;
+			for (int i = 0; i < 4; i++) {
+				field[a[i].y - startY][a[i].x - startX] = type + 1; //cannot initalize an array to -1
+			}
+			//update board
+			updateField();
+			//create new piece
+			newPiece();
+		}
+
+		//check border + piece collision
+		checkBorder();
+
+		//reset movement and rotation
+		dx = 0; rot = 0;
+
+		//check if game over
+		for (int i = 0; i < N; i++) {
+			if (field[0][i] != 0) {
+				gameOver = 1;
+				break;
+			}
 		}
 	}
-	if (back.isClicked(mouse,window)) gameState = state::menu;
-	
-	//before move/rotation so we can adjust
-	for (int i = 0; i < 4; i++) b[i] = a[i];
-
-	//rotation
-	if(rot){
-		point p = a[1]; //center of rotation
-		for (int i = 0; i < 4; i++) {
-			int x = a[i].y - p.y;
-			int y = a[i].x - p.x;
-			a[i].x = p.x - x;
-			a[i].y = p.y + y;
+	else {
+		//clicky boi
+		while (window.pollEvent(e)) {
+			if (e.type == Event::Closed) window.close();
+			if (e.type == Event::KeyPressed) {
+				if (e.key.code == Keyboard::R) { 
+					gameOver = 0; 
+					score = 0;
+					for (int x = 0; x < M; x++) {
+						for (int y = 0; y < N; y++) {
+							field[x][y] = 0;
+						}
+					}
+					clock.restart();
+				}
+			}
 		}
+		if (back.isClicked(mouse, window)) gameState = state::menu;
 	}
-
-	//move
-	for (int i = 0; i < 4; i++) a[i].x += dx;
-
-	//fall
-	if (timer > delay && fall) {
-		for (int i = 0; i < 4; i++) a[i].y++; timer = 0;
-	}
-	//hitting ground
-	else if (timer > groundDelay) {
-		timer = 0; fall = 1;
-		for (int i = 0; i < 4; i++) {
-			field[a[i].y - startY][a[i].x - startX] = type + 1; //cannot initalize an array to -1
-		}
-		//update board
-		updateField();
-		//create new piece
-		newPiece();
-	}
-
-	//check border + piece collision
-	checkBorder();
-
-	//reset movement and rotation
-	dx = 0; rot = 0;
 }
 
 void Tetris::checkBorder()
