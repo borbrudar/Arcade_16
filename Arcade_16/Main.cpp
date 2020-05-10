@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "Menu.h"
 #include "Tetris.h"
+#include "Arkanoid.h"
 #include "stateEnum.h"
 
 const int scrWidth = 640, scrHeight = scrWidth / 4 * 3;
@@ -16,9 +17,10 @@ int main() {
 	Font arial;
 	arial.loadFromFile("res/font/arial.ttf");
 
-	state gameState = state::tetris;
-	state prevState = state::tetris;
-	std::unique_ptr<State> state = std::make_unique<Tetris>(arial); //FOR TEST YOU HAVE TO SWITCH THE TOP ONES TOO!!!
+	state gameState = state::menu;
+	state prevState = state::menu;
+	std::unique_ptr<State> state = std::make_unique<Menu>(arial); //FOR TEST YOU HAVE TO SWITCH THE TOP ONES TOO!!!
+
 
 	//game loop
 	while (window.isOpen()) {
@@ -32,6 +34,9 @@ int main() {
 				break;
 			case state::tetris:
 				state = std::make_unique<Tetris>(arial);
+				break;
+			case state::arkanoid:
+				state = std::make_unique<Arkanoid>(arial);
 				break;
 			}
 		}

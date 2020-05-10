@@ -19,7 +19,7 @@ Tetris::Tetris(Font& f)
 	//setup back button
 	std::string text1;
 	text1.assign("Back");
-	back.setup(f, text1, Color::Blue, Vector2f(50, 30), Vector2f(580, 20)); 
+	back.setup(f, text1, Color::Blue, Vector2f(50, 30), Vector2f(580, 20), 14); 
 
 	//setup score
 	points.setFillColor(Color::White);

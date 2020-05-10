@@ -1,6 +1,6 @@
 #include "Button.h"
 
-void Button::setup(Font& f, std::string string, Color c, Vector2f size, Vector2f pos)
+void Button::setup(Font& f, std::string string, Color c, Vector2f size, Vector2f pos, int sizey)
 {
 	button.setFillColor(c);
 	button.setSize(size);
@@ -8,10 +8,10 @@ void Button::setup(Font& f, std::string string, Color c, Vector2f size, Vector2f
 
 	text.setFillColor(Color::Black);
 	text.setFont(f);
-	text.setCharacterSize(14);
+	text.setCharacterSize(sizey);
 	text.setString(string);
 
-	text.setPosition(Vector2f(pos.x + size.x/8, pos.y + size.y/4));
+	text.setPosition(Vector2f(pos.x + size.x/32, pos.y + size.y/4));
 }
 
 void Button::draw(RenderWindow &window)

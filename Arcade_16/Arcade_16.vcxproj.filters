@@ -33,6 +33,9 @@
     <ClCompile Include="Tetris.cpp">
       <Filter>Games</Filter>
     </ClCompile>
+    <ClCompile Include="Arkanoid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stateEnum.h">
@@ -48,6 +51,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Tetris.h">
+      <Filter>Games</Filter>
+    </ClInclude>
+    <ClInclude Include="Arkanoid.h">
       <Filter>Games</Filter>
     </ClInclude>
   </ItemGroup>
