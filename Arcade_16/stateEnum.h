@@ -2,5 +2,6 @@
 
 enum class state {
 	menu,
-	tetris
+	tetris,
+	arkanoid
 };

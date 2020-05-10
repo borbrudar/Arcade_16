@@ -1,5 +1,6 @@
 #pragma once
 #include "State.h"
+#include <SFML/Audio.hpp>
 #include <iostream>
 #include <time.h>
 #include <random>
@@ -21,6 +22,8 @@ public:
 	Texture til, playfield, gamey;
 	Sprite tiles, fieldy, game;
 	Text points;
+	SoundBuffer buffer;
+	Sound theme;
 	std::fstream highscore;
 
 	struct point { int x = 0, y = 0; } a[4], b[4];

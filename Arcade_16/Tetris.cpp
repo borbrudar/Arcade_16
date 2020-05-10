@@ -10,6 +10,12 @@ Tetris::Tetris(Font& f)
 	highScore = std::stoi(hsc); 
 	highscore.close();
 
+	//setup theme song
+	buffer.loadFromFile("res/tetris/theme.wav");
+	theme.setBuffer(buffer);
+	theme.play();
+	theme.setLoop(true);
+	
 	//setup back button
 	std::string text1;
 	text1.assign("Back");
@@ -39,9 +45,11 @@ Tetris::~Tetris()
 {
 	//write to file and close it
 	highscore.open("res/tetris/highscore.txt", std::ios::out | std::ios::trunc);
+	if (score > highScore) highScore = score;
 	highscore << highScore;
 	highscore.close();
 
+	theme.stop();
 }
 
 void Tetris::draw(RenderWindow& window)
@@ -56,10 +64,11 @@ void Tetris::draw(RenderWindow& window)
 	points.setString(text2);
 	points.setPosition(340, 150);
 	window.draw(points);
+
 	text2.assign("HIGHSCORE: ");
 	text2 = text2 + std::to_string(highScore);
 	points.setString(text2);
-	points.setPosition(340, 170);
+	points.setPosition(340, 185);
 	window.draw(points);
 
 	//draw field
@@ -103,7 +112,10 @@ void Tetris::update(Mouse& mouse, RenderWindow& window, state& gameState, Event 
 				else if (e.key.code == Keyboard::Down) delay = 0.03f;
 			}
 		}
-		if (back.isClicked(mouse, window)) gameState = state::menu;
+		if (back.isClicked(mouse, window)) { 
+			theme.stop();
+			gameState = state::menu; 
+		}
 
 		//before move/rotation so we can adjust
 		for (int i = 0; i < 4; i++) b[i] = a[i];
