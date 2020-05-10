@@ -17,9 +17,9 @@ int main() {
 	Font arial;
 	arial.loadFromFile("res/font/arial.ttf");
 
-	state gameState = state::menu;
-	state prevState = state::menu;
-	std::unique_ptr<State> state = std::make_unique<Menu>(arial); //FOR TEST YOU HAVE TO SWITCH THE TOP ONES TOO!!!
+	state gameState = state::arkanoid;
+	state prevState = gameState;
+	std::unique_ptr<State> state = std::make_unique<Arkanoid>(arial); //FOR TEST YOU HAVE TO SWITCH THE TOP ONES TOO!!!
 
 
 	//game loop
