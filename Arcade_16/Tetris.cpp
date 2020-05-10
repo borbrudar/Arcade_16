@@ -3,6 +3,13 @@
 
 Tetris::Tetris(Font& f)
 {
+	//read highscore from file
+	std::string hsc;
+	highscore.open("res/tetris/highscore.txt");
+	std::getline(highscore, hsc);
+	highScore = std::stoi(hsc); 
+	highscore.close();
+
 	//setup back button
 	std::string text1;
 	text1.assign("Back");
@@ -12,7 +19,6 @@ Tetris::Tetris(Font& f)
 	points.setFillColor(Color::White);
 	points.setCharacterSize(28);
 	points.setFont(f);
-	points.setPosition(340, 150);
 
 	//setup background
 	playfield.loadFromFile("res/tetris/playfield.png");
@@ -29,16 +35,31 @@ Tetris::Tetris(Font& f)
 	newPiece();
 }
 
+Tetris::~Tetris()
+{
+	//write to file and close it
+	highscore.open("res/tetris/highscore.txt", std::ios::out | std::ios::trunc);
+	highscore << highScore;
+	highscore.close();
+
+}
+
 void Tetris::draw(RenderWindow& window)
 {
 	//draw button
 	back.draw(window);
 
-	//draw score
+	//draw score and highscore
 	std::string text2;
 	text2.assign("SCORE: ");
 	text2 = text2 + std::to_string(score);
 	points.setString(text2);
+	points.setPosition(340, 150);
+	window.draw(points);
+	text2.assign("HIGHSCORE: ");
+	text2 = text2 + std::to_string(highScore);
+	points.setString(text2);
+	points.setPosition(340, 170);
 	window.draw(points);
 
 	//draw field
@@ -127,6 +148,7 @@ void Tetris::update(Mouse& mouse, RenderWindow& window, state& gameState, Event 
 		for (int i = 0; i < N; i++) {
 			if (field[0][i] != 0) {
 				gameOver = 1;
+				if (score > highScore) highScore = score;
 				break;
 			}
 		}

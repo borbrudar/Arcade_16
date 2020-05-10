@@ -46,5 +46,7 @@ int main() {
 		////////////////////////////////////////
 	}
 	
+	//deletes the pointer and calls appropriate destructor
+	state.reset();
 	return 0;
 }

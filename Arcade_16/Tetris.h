@@ -3,12 +3,14 @@
 #include <iostream>
 #include <time.h>
 #include <random>
+#include <fstream>
 
 constexpr int M = 20, N = 10;
 
 class Tetris : public State{
 public:
 	Tetris(Font& f);
+	~Tetris();
 	void draw(RenderWindow& window);
 	void update(Mouse& mouse, RenderWindow& window, state& gameState, Event &e);
 	void checkBorder();
@@ -19,6 +21,7 @@ public:
 	Texture til, playfield, gamey;
 	Sprite tiles, fieldy, game;
 	Text points;
+	std::fstream highscore;
 
 	struct point { int x = 0, y = 0; } a[4], b[4];
 
@@ -39,4 +42,5 @@ public:
 	int type = 0, startX = 5, startY = 3;
 	long score = 0;
 	bool gameOver = 0;
+	int highScore;
 };
