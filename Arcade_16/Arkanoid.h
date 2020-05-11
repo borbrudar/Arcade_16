@@ -9,14 +9,18 @@ public:
 	Arkanoid(Font &f);
 	void draw(RenderWindow& window);
 	void update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e);
+	bool collision(Vector2f pos, Vector2f size);
 
 	Texture b;
 	Sprite ball;
 	Button back;
 	RectangleShape blocks[sizeM][sizeN];
 	
+	//magic size for the ball (in collision())
+	RectangleShape left, right, top, bottom;
+	int ballH = 30 * 0.7, ballW = ballH;
 	int sizeX = 40, sizeY = 20;
 	int offsetX = 30, offsetY = 40, spacing = 2;
-	float speedx = 0.5, speedy = 0.5;
+	float speedx = 0.6, speedy = 0.5;
 	Vector2f pos;
 };

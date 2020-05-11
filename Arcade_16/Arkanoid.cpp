@@ -13,6 +13,13 @@ Arkanoid::Arkanoid(Font& f)
 	pos.x = 200; pos.y = 400;
 	ball.setPosition(pos);
 	ball.setScale(0.7, 0.7);
+
+	//ball collision setup
+	top.setSize(Vector2f(ballW, 2));
+	bottom.setSize(Vector2f(ballW, 2));
+	left.setSize(Vector2f(2, ballH - 2));
+	right.setSize(Vector2f(2, ballH - 2));
+
 	//setup block
 	for (int x = 0; x < sizeM; x++) {
 		for (int y = 0; y < sizeN; y++) {
@@ -56,5 +63,47 @@ void Arkanoid::update(Mouse& mouse, RenderWindow& window, state& gameState, Even
 	if (pos.x <= 0) { pos.x = 0; speedx = -speedx; }
 	if (pos.x >= 480) { pos.x = 480; speedx = -speedx; }
 
+	//update collision boxes position
+	top.setPosition(pos);
+	bottom.setPosition(Vector2f(pos.x, pos.y + ballH));
+	left.setPosition(pos.x, pos.y + 1);
+	right.setPosition(Vector2f(pos.x + ballW, pos.y + 1));
+	//check for intersection
+	for (int x = 0; x < sizeM; x++) {
+		for (int y = 0; y < sizeN; y++) {
+			if (collision(blocks[x][y].getPosition(), blocks[x][y].getSize())) break;
+		}
+	}
 	ball.setPosition(pos);
+}
+
+bool Arkanoid::collision(Vector2f pos, Vector2f size)
+{
+	int x1 = top.getPosition().x, y1 = top.getPosition().y;
+
+	bool spedx = 0, spedy = 0, ret = 0;
+
+	//top
+	if (x1 < pos.x + size.y && x1 + ballW > size.x &&
+		y1 < pos.y + size.y && y1 + ballH > pos.y) spedy = 1;
+
+	//bottom
+	x1 = bottom.getPosition().x, y1 = bottom.getPosition().y;
+	if (x1 < pos.x + size.y && x1 + ballW > size.x &&
+		y1 < pos.y + size.y && y1 + ballH > pos.y) spedy = 1;
+
+	//left
+	x1 = left.getPosition().x, y1 = left.getPosition().y;
+	if (x1 < pos.x + size.y && x1 + ballW > size.x &&
+		y1 < pos.y + size.y && y1 + ballH > pos.y) spedx = 1;
+
+	//right
+	x1 = right.getPosition().x, y1 = right.getPosition().y;
+	if (x1 < pos.x + size.y && x1 + ballW > size.x &&
+		y1 < pos.y + size.y && y1 + ballH > pos.y) spedx = 1;
+
+	if (spedx) { speedx = -speedx; ret = 1;}
+	if (spedy) { speedy = -speedy; ret = 1;}
+
+	return ret;
 }
