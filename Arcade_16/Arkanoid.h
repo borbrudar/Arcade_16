@@ -18,9 +18,10 @@ public:
 	
 	//magic size for the ball (in collision())
 	RectangleShape left, right, top, bottom;
+	bool xturn = 0, yturn = 0;
 	int ballH = 30 * 0.7, ballW = ballH;
 	int sizeX = 40, sizeY = 20;
 	int offsetX = 30, offsetY = 40, spacing = 2;
 	float speedx = 0.6, speedy = 0.5;
-	Vector2f pos;
+	Vector2f pos, prevPos;
 };
