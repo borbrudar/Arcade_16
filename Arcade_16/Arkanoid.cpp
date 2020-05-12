@@ -20,12 +20,17 @@ Arkanoid::Arkanoid(Font& f)
 	left.setSize(Vector2f(2, ballH - 2));
 	right.setSize(Vector2f(2, ballH - 2));
 
+	top.setFillColor(Color::Red);
+	bottom.setFillColor(Color::Red);
+	left.setFillColor(Color::Red);
+	right.setFillColor(Color::Red);
+
 	//setup block
 	for (int x = 0; x < sizeM; x++) {
 		for (int y = 0; y < sizeN; y++) {
 			blocks[x][y].setFillColor(Color::Green);
 			blocks[x][y].setSize(Vector2f(sizeX, sizeY));
-			blocks[x][y].setPosition(x * sizeX + offsetX + x * spacing, y * sizeY + offsetY + y * spacing);
+			blocks[x][y].setPosition(x * (sizeX + spacing) + offsetX, y * (sizeY + spacing) + offsetY);
 		}
 	}
 }
@@ -42,6 +47,10 @@ void Arkanoid::draw(RenderWindow& window)
 		}
 	}
 
+	window.draw(top);
+	window.draw(bottom);
+	window.draw(left);
+	window.draw(right);
 	//back button
 	back.draw(window);
 }
@@ -57,7 +66,7 @@ void Arkanoid::update(Mouse& mouse, RenderWindow& window, state& gameState, Even
 	if (back.isClicked(mouse, window)) gameState = state::menu;
 
 	//check for borders
-	if (pos.y >= 480) { pos.y = 480; speedy = -speedy; }
+	if (pos.y + ballH >= 480) { pos.y = 480 - ballH; speedy = -speedy; }
 	if (pos.y <= 0) { pos.y = 0; speedy = -speedy; }
 	if (pos.x <= 0) { pos.x = 0; speedx = -speedx; }
 	if (pos.x >= 480) { pos.x = 480; speedx = -speedx; }
@@ -98,25 +107,25 @@ bool Arkanoid::collision(Vector2f pos, Vector2f size)
 	bool spedx = 0, spedy = 0, ret = 0;
 
 	//top
-	if (x1 < pos.x + size.y && x1 + temps.x > size.x &&
+	if (x1 < pos.x + size.x && x1 + temps.x > size.x &&
 		y1 < pos.y + size.y && y1 + temps.y > pos.y) spedy = 1;
 
 	//bottom
 	x1 = bottom.getPosition().x, y1 = bottom.getPosition().y;
 	temps = bottom.getSize();
-	if (x1 < pos.x + size.y && x1 + temps.x > size.x &&
+	if (x1 < pos.x + size.x && x1 + temps.x > size.x &&
 		y1 < pos.y + size.y && y1 + temps.y > pos.y) spedy = 1;
 
 	//left
 	x1 = left.getPosition().x, y1 = left.getPosition().y;
 	temps = left.getSize();
-	if (x1 < pos.x + size.y && x1 + temps.x > size.x &&
+	if (x1 < pos.x + size.x && x1 + temps.x > size.x &&
 		y1 < pos.y + size.y && y1 + temps.y > pos.y) spedx = 1;
 
 	//right
 	x1 = right.getPosition().x, y1 = right.getPosition().y;
 	temps = right.getSize();
-	if (x1 < pos.x + size.y && x1 + temps.x > size.x &&
+	if (x1 < pos.x + size.x && x1 + temps.x > size.x &&
 		y1 < pos.y + size.y && y1 + temps.y > pos.y) spedx = 1;
 
 	if (spedy && !yturn) {speedy = -speedy; yturn = 1;}

@@ -22,6 +22,6 @@ public:
 	int ballH = 30 * 0.7, ballW = ballH;
 	int sizeX = 40, sizeY = 20;
 	int offsetX = 30, offsetY = 40, spacing = 2;
-	float speedx = 0.6, speedy = 0.5;
+	float speedx = 0.6 / 5, speedy = 0.5 / 5;
 	Vector2f pos, prevPos;
 };
