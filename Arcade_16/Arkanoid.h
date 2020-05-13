@@ -16,12 +16,19 @@ public:
 	Button back;
 	RectangleShape blocks[sizeM][sizeN];
 	
-	//magic size for the ball (in collision())
+	//ball
 	RectangleShape left, right, top, bottom;
 	bool xturn = 0, yturn = 0;
 	int ballH = 30 * 0.7, ballW = ballH;
 	int sizeX = 40, sizeY = 20;
 	int offsetX = 30, offsetY = 40, spacing = 2;
-	float speedx = 0.6 / 5, speedy = 0.5 / 5;
+	float speedx = 0.6, speedy = 0.5;
 	Vector2f pos, prevPos;
+
+	//the thing
+	RectangleShape paddle;
+	Vector2f pPos{ 130,420 };
+	float pspeed = 0;
 };
+
+

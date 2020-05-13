@@ -10,7 +10,7 @@ Arkanoid::Arkanoid(Font& f)
 	//setup ball
 	b.loadFromFile("res/arkanoid/ball.png");
 	ball.setTexture(b);
-	pos.x = 200; pos.y = 400;
+	pos.x = 200; pos.y = 350;
 	ball.setPosition(pos);
 	ball.setScale(0.7, 0.7);
 
@@ -20,11 +20,6 @@ Arkanoid::Arkanoid(Font& f)
 	left.setSize(Vector2f(2, ballH - 2));
 	right.setSize(Vector2f(2, ballH - 2));
 
-	top.setFillColor(Color::Red);
-	bottom.setFillColor(Color::Red);
-	left.setFillColor(Color::Red);
-	right.setFillColor(Color::Red);
-
 	//setup block
 	for (int x = 0; x < sizeM; x++) {
 		for (int y = 0; y < sizeN; y++) {
@@ -33,6 +28,11 @@ Arkanoid::Arkanoid(Font& f)
 			blocks[x][y].setPosition(x * (sizeX + spacing) + offsetX, y * (sizeY + spacing) + offsetY);
 		}
 	}
+
+	//setup paddle
+	paddle.setPosition(pPos);
+	paddle.setFillColor(Color::Red);
+	paddle.setSize(Vector2f(80, 15));
 }
 
 void Arkanoid::draw(RenderWindow& window)
@@ -47,21 +47,29 @@ void Arkanoid::draw(RenderWindow& window)
 		}
 	}
 
-	window.draw(top);
-	window.draw(bottom);
-	window.draw(left);
-	window.draw(right);
 	//back button
 	back.draw(window);
+
+	window.draw(paddle);
 }
 
 void Arkanoid::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
 {
+	if (pspeed > -1 && pspeed < 1) pspeed = 0;
+	if (pspeed > 0) pspeed -= 0.1;
+	if (pspeed < 0) pspeed += 0.1;
+	if (pPos.x < 0) pPos.x = 0;
+	if (pPos.x > 480 - paddle.getSize().x) pPos.x = 480 - paddle.getSize().x;
+
 	prevPos = pos;
 	xturn = 0; yturn = 0;
 	//clicky boi
 	while (window.pollEvent(e)) {
 		if (e.type == Event::Closed) window.close();
+		if (e.type == Event::KeyPressed) {
+			if (e.key.code == Keyboard::Left && pspeed > -5) pspeed += -1.5;
+			if (e.key.code == Keyboard::Right && pspeed < 5) pspeed += 1.5;
+		}
 	}
 	if (back.isClicked(mouse, window)) gameState = state::menu;
 
@@ -76,7 +84,7 @@ void Arkanoid::update(Mouse& mouse, RenderWindow& window, state& gameState, Even
 	pos.y += speedy;
 
 	//update collision boxes position
-	top.setPosition(pos);
+	top.setPosition(pos.x + 1, pos.y);
 	bottom.setPosition(Vector2f(pos.x, pos.y + ballH));
 	left.setPosition(pos.x, pos.y + 1);
 	right.setPosition(Vector2f(pos.x + ballW, pos.y + 1));
@@ -97,6 +105,11 @@ void Arkanoid::update(Mouse& mouse, RenderWindow& window, state& gameState, Even
 	}
 
 	ball.setPosition(pos);
+
+	//check for paddle
+	pPos.x += pspeed;
+	paddle.setPosition(pPos);
+	collision(paddle.getPosition(), paddle.getSize());
 }
 
 bool Arkanoid::collision(Vector2f pos, Vector2f size)
@@ -107,25 +120,25 @@ bool Arkanoid::collision(Vector2f pos, Vector2f size)
 	bool spedx = 0, spedy = 0, ret = 0;
 
 	//top
-	if (x1 < pos.x + size.x && x1 + temps.x > size.x &&
+	if (x1 < pos.x + size.x && x1 + temps.x > pos.x &&
 		y1 < pos.y + size.y && y1 + temps.y > pos.y) spedy = 1;
 
 	//bottom
 	x1 = bottom.getPosition().x, y1 = bottom.getPosition().y;
 	temps = bottom.getSize();
-	if (x1 < pos.x + size.x && x1 + temps.x > size.x &&
+	if (x1 < pos.x + size.x && x1 + temps.x > pos.x &&
 		y1 < pos.y + size.y && y1 + temps.y > pos.y) spedy = 1;
 
 	//left
 	x1 = left.getPosition().x, y1 = left.getPosition().y;
 	temps = left.getSize();
-	if (x1 < pos.x + size.x && x1 + temps.x > size.x &&
+	if (x1 < pos.x + size.x && x1 + temps.x > pos.x &&
 		y1 < pos.y + size.y && y1 + temps.y > pos.y) spedx = 1;
 
 	//right
 	x1 = right.getPosition().x, y1 = right.getPosition().y;
 	temps = right.getSize();
-	if (x1 < pos.x + size.x && x1 + temps.x > size.x &&
+	if (x1 < pos.x + size.x && x1 + temps.x > pos.x &&
 		y1 < pos.y + size.y && y1 + temps.y > pos.y) spedx = 1;
 
 	if (spedy && !yturn) {speedy = -speedy; yturn = 1;}

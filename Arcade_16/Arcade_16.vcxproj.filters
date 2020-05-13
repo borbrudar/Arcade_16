@@ -34,7 +34,7 @@
       <Filter>Games</Filter>
     </ClCompile>
     <ClCompile Include="Arkanoid.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Games</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
