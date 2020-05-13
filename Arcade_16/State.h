@@ -3,6 +3,7 @@
 #include "stateEnum.h"
 #include "Button.h"
 
+const int scrWidth = 640, scrHeight = scrWidth / 4 * 3;
 using namespace sf;
 
 class State {

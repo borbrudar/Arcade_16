@@ -4,7 +4,6 @@
 #include "Arkanoid.h"
 #include "stateEnum.h"
 
-const int scrWidth = 640, scrHeight = scrWidth / 4 * 3;
 using namespace sf;
 
 int main() {
@@ -13,7 +12,7 @@ int main() {
 	window.create(VideoMode(scrWidth, scrHeight), "Arcade 16");
 	Event e;
 	Mouse mouse;
-	
+
 	Font arial;
 	arial.loadFromFile("res/font/arial.ttf");
 

@@ -2,7 +2,7 @@
 #include "State.h"
 #include <iostream>
 
-constexpr int sizeM = 10, sizeN = 4;
+constexpr int sizeM = 14, sizeN = 4;
 
 class Arkanoid : public State {
 public:
@@ -19,16 +19,19 @@ public:
 	//ball
 	RectangleShape left, right, top, bottom;
 	bool xturn = 0, yturn = 0;
-	int ballH = 30 * 0.7, ballW = ballH;
-	int sizeX = 40, sizeY = 20;
+	float ballH = 30 * 0.7f, ballW = ballH;
+	float sizeX = 40, sizeY = 20;
 	int offsetX = 30, offsetY = 40, spacing = 2;
-	float speedx = 0.6, speedy = 0.5;
+	float speedx = 0.6f, speedy = 0.5f;
 	Vector2f pos, prevPos;
 
 	//the thing
 	RectangleShape paddle;
 	Vector2f pPos{ 130,420 };
 	float pspeed = 0;
+
+	//game
+	bool gameOver = 0;
 };
 
 
