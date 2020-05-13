@@ -10,7 +10,7 @@ Arkanoid::Arkanoid(Font& f)
 	//setup ball
 	b.loadFromFile("res/arkanoid/ball.png");
 	ball.setTexture(b);
-	pos.x = scrWidth / 3; pos.y = scrHeight/2;
+	pos.x = 230; pos.y = 380;
 	ball.setPosition(pos);
 	ball.setScale(0.7f, 0.7f);
 
@@ -32,7 +32,7 @@ Arkanoid::Arkanoid(Font& f)
 	//setup paddle
 	paddle.setPosition(pPos);
 	paddle.setFillColor(Color::Red);
-	paddle.setSize(Vector2f(80, 15));
+	paddle.setSize(Vector2f(90, 20));
 }
 
 void Arkanoid::draw(RenderWindow& window)
@@ -76,7 +76,7 @@ void Arkanoid::update(Mouse& mouse, RenderWindow& window, state& gameState, Even
 		if (back.isClicked(mouse, window)) gameState = state::menu;
 
 		//check for borders
-		if (pos.y + ballH >= scrHeight) { pos.y = scrHeight - ballH; speedy = -speedy; }
+		if (pos.y + ballH >= scrHeight) { gameOver = 1; }
 		if (pos.y <= 0) { pos.y = 0; speedy = -speedy; }
 		if (pos.x <= 0) { pos.x = 0; speedx = -speedx; }
 		if (pos.x >= scrWidth - ballW) { pos.x = scrWidth - ballW; speedx = -speedx; }
@@ -118,10 +118,24 @@ void Arkanoid::update(Mouse& mouse, RenderWindow& window, state& gameState, Even
 			if (e.type == Event::Closed) window.close();
 			if (e.type == Event::KeyPressed) {
 				if (e.key.code == Keyboard::R) {
+					//reset
+					for (int x = 0; x < sizeM; x++) {
+						for (int y = 0; y < sizeN; y++) {
+							blocks[x][y].setFillColor(Color::Green);
+							blocks[x][y].setSize(Vector2f(sizeX, sizeY));
+							blocks[x][y].setPosition(x * (sizeX + spacing) + offsetX, y * (sizeY + spacing) + offsetY);
+						}
+					}
+					speedx = 0.6f; speedy = 0.5f;
+					pos.x = 250; pos.y = 380;
+					ball.setPosition(pos);
+					pPos = Vector2f(250, 420);
+					paddle.setPosition(pPos);
 					gameOver = 0;
 				}
 			}
 		}
+		if (back.isClicked(mouse, window)) gameState = state::menu;
 	}
 }
 

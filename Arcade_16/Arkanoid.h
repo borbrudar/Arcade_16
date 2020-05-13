@@ -27,7 +27,7 @@ public:
 
 	//the thing
 	RectangleShape paddle;
-	Vector2f pPos{ 130,420 };
+	Vector2f pPos{ 250,420 };
 	float pspeed = 0;
 
 	//game
