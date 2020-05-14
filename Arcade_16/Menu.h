@@ -9,5 +9,5 @@ public:
 	void draw(RenderWindow &window);
 	void update(Mouse &mouse, RenderWindow& window, state &gameState, Event &e);
 
-	Button tetris, arkanoid;
+	Button tetris, arkanoid, spaceinvaders;
 };

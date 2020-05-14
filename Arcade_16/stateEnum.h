@@ -3,5 +3,6 @@
 enum class state {
 	menu,
 	tetris,
-	arkanoid
+	arkanoid,
+	space_invaders
 };

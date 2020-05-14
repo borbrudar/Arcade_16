@@ -36,6 +36,9 @@
     <ClCompile Include="Arkanoid.cpp">
       <Filter>Games</Filter>
     </ClCompile>
+    <ClCompile Include="Space_Invaders.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stateEnum.h">
@@ -54,6 +57,9 @@
       <Filter>Games</Filter>
     </ClInclude>
     <ClInclude Include="Arkanoid.h">
+      <Filter>Games</Filter>
+    </ClInclude>
+    <ClInclude Include="Space_Invaders.h">
       <Filter>Games</Filter>
     </ClInclude>
   </ItemGroup>

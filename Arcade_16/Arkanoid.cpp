@@ -69,8 +69,8 @@ void Arkanoid::update(Mouse& mouse, RenderWindow& window, state& gameState, Even
 		while (window.pollEvent(e)) {
 			if (e.type == Event::Closed) window.close();
 			if (e.type == Event::KeyPressed) {
-				if (e.key.code == Keyboard::Left && pspeed > -5) pspeed += -1.5;
-				if (e.key.code == Keyboard::Right && pspeed < 5) pspeed += 1.5;
+				if (e.key.code == Keyboard::Left && pspeed > -7) pspeed += -1.7;
+				if (e.key.code == Keyboard::Right && pspeed < 7) pspeed += 1.7;
 			}
 		}
 		if (back.isClicked(mouse, window)) gameState = state::menu;
