@@ -134,6 +134,9 @@ void Tetris::update(Mouse& mouse, RenderWindow& window, state& gameState, Event 
 		//move
 		for (int i = 0; i < 4; i++) a[i].x += dx;
 
+		//check border + piece collision
+		checkBorder();
+
 		//fall
 		if (timer > delay && fall) {
 			for (int i = 0; i < 4; i++) a[i].y++; timer = 0;
@@ -150,12 +153,10 @@ void Tetris::update(Mouse& mouse, RenderWindow& window, state& gameState, Event 
 			newPiece();
 		}
 
-		//check border + piece collision
-		checkBorder();
-
 		//reset movement and rotation
 		dx = 0; rot = 0;
 
+		if (score > highScore) highScore = score;
 		//check if game over
 		for (int i = 0; i < N; i++) {
 			if (field[0][i] != 0) {
@@ -216,14 +217,19 @@ void Tetris::checkBorder()
 
 void Tetris::newPiece()
 {
-	srand(std::time(NULL));
-	int n = rand() % 7;
-	type = n;
-	tiles.setTextureRect(IntRect(n * 18, 0, 18, 18));
+	std::random_device rd;
+	std::default_random_engine engine(rd());
+	std::uniform_int_distribution<int> dist(0, 6);
+	type = dist(engine);
+	std::cout << type << std::endl;
+	tiles.setTextureRect(IntRect(type * 18, 0, 18, 18));
 	
+	if (type == 0) {
+		int c = 0;
+	}
 	for (int i = 0; i < 4; i++) {
-		a[i].x = shapes[n][i] % 2 + startX + (N / 2 - 1);
-		a[i].y = shapes[n][i] / 2 + startY - 1;
+		a[i].x = shapes[type][i] % 2 + startX + (N / 2 - 1);
+		a[i].y = shapes[type][i] / 2 + startY - 1;
 	}
 }
 

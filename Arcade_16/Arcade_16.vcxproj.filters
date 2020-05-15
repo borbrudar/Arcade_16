@@ -37,7 +37,7 @@
       <Filter>Games</Filter>
     </ClCompile>
     <ClCompile Include="Space_Invaders.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Games</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -45,9 +45,6 @@
       <Filter>State</Filter>
     </ClInclude>
     <ClInclude Include="Menu.h">
-      <Filter>State</Filter>
-    </ClInclude>
-    <ClInclude Include="State.h">
       <Filter>State</Filter>
     </ClInclude>
     <ClInclude Include="Button.h">
@@ -61,6 +58,9 @@
     </ClInclude>
     <ClInclude Include="Space_Invaders.h">
       <Filter>Games</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>State</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
