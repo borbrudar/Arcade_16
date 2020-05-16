@@ -221,12 +221,8 @@ void Tetris::newPiece()
 	std::default_random_engine engine(rd());
 	std::uniform_int_distribution<int> dist(0, 6);
 	type = dist(engine);
-	std::cout << type << std::endl;
 	tiles.setTextureRect(IntRect(type * 18, 0, 18, 18));
-	
-	if (type == 0) {
-		int c = 0;
-	}
+
 	for (int i = 0; i < 4; i++) {
 		a[i].x = shapes[type][i] % 2 + startX + (N / 2 - 1);
 		a[i].y = shapes[type][i] / 2 + startY - 1;

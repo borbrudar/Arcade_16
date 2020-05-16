@@ -34,4 +34,21 @@ void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState
 		if (e.type == Event::Closed) window.close();
 	}
 	if (back.isClicked(mouse, window)) gameState = state::menu;
+
+	bool temp = 0;
+	for (int x = 0; x < invdM; x++) {
+		for (int y = 0; y < invdN; y++) {
+			if (invaders[x][y].getPosition().x < 0 ||
+				invaders[x][y].getPosition().x + sizeX > scrWidth) {
+				speedx = -speedx;
+				temp = 1;
+				break;
+			}
+		}
+		if (temp) break;
+	}
+	//update positions
+	for (int x = 0; x < invdM; x++) {
+		for (int y = 0; y < invdN; y++) invaders[x][y].move(speedx, 0);
+	}
 }
