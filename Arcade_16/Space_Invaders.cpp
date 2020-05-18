@@ -35,6 +35,9 @@ void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState
 	}
 	if (back.isClicked(mouse, window)) gameState = state::menu;
 
+	
+	//int c = 0; -c * (sizeX + spacing)
+	//border detecion
 	bool temp = 0;
 	for (int x = 0; x < invdM; x++) {
 		for (int y = 0; y < invdN; y++) {
@@ -47,6 +50,8 @@ void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState
 		}
 		if (temp) break;
 	}
+
+
 	//update positions
 	for (int x = 0; x < invdM; x++) {
 		for (int y = 0; y < invdN; y++) invaders[x][y].move(speedx, 0);

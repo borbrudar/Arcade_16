@@ -39,6 +39,9 @@
     <ClCompile Include="Space_Invaders.cpp">
       <Filter>Games</Filter>
     </ClCompile>
+    <ClCompile Include="Animation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stateEnum.h">
@@ -61,6 +64,9 @@
     </ClInclude>
     <ClInclude Include="State.h">
       <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
