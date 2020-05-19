@@ -1,10 +1,16 @@
 #include "Animation.h"
 
-Animation::Animation(std::string res1, std::string res2)
+Animation::Animation(std::string res1,Vector2f size)
 {
+	setup(res1, size);
+}
+
+void Animation::setup(std::string res1, Vector2f size)
+{
+	this->size = size;
 	t1.loadFromFile(res1);
-	t2.loadFromFile(res2);
 	animation.setTexture(t1);
+	animation.setTextureRect(IntRect(0, 0, size.x, size.y));
 	swap = 0;
 }
 
@@ -17,10 +23,10 @@ void Animation::draw(RenderWindow& window)
 
 	if (timer > delay) {
 		if (swap == 1) {
-			animation.setTexture(t1); swap = 0;
+			animation.setTextureRect(IntRect(swap * size.x, 0, size.x, size.y)); swap = 0;
 		}
 		else if (swap == 0) {
-			animation.setTexture(t2); swap = 1;
+			animation.setTextureRect(IntRect(swap * size.x, 0, size.x, size.y)); swap = 1;
 		}
 		timer = 0;
 	}
