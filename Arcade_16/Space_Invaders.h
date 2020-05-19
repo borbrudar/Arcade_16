@@ -15,7 +15,8 @@ public:
 	std::vector < std::vector<Animation> > invaders;
 	Button back;
 
-	int offsetX = 30, offsetY = 50, spacing = 5;
-	int sizeX = 11 , sizeY = 8;
+	int offsetX = 30, offsetY = 50;
+	Vector2f size1{ 11,8 }, size2{ 8, 8 };
+	Vector2f spacing1{ 5,5 }, spacing2{ 14,5 };
 	float speedx = 0.2f;
 };

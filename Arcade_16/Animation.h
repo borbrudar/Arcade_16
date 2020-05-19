@@ -10,11 +10,11 @@ public:
 	void draw(RenderWindow& window);
 
 	Sprite animation;
+	Vector2f size;
 
 private:
 	Clock clock;
 	float time = 0, timer = 0, delay = 0.2f;
 	Texture t1, t2;
 	int swap = 0;
-	Vector2f size;
 };
