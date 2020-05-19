@@ -3,7 +3,7 @@
 #include "Animation.h"
 #include <vector>
 
-constexpr int invdM = 10, invdN = 4;
+constexpr int invdM = 10, invdN = 6;
 const float space_scale = 3.f;
 
 class Space_Invaders : public State {
@@ -16,7 +16,7 @@ public:
 	Button back;
 
 	int offsetX = 30, offsetY = 50;
-	Vector2f size1{ 11,8 }, size2{ 8, 8 };
-	Vector2f spacing1{ 5,5 }, spacing2{ 14,5 };
+	Vector2f size1{ 11,8 }, size2{ 8, 8 }, size3{ 12,8 };
+	Vector2f spacing1{ 8,5 }, spacing2{ 17,5 }, spacing3{ 5,5 };
 	float speedx = 0.2f;
 };

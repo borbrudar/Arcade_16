@@ -15,12 +15,15 @@ Space_Invaders::Space_Invaders(Font& f)
 			//dirty solutions
 			if(y == 0 || y == 1) invaders[x][y].setup("res/space/alien2.png", size2);
 			if(y == 2 || y == 3) invaders[x][y].setup("res/space/alien1.png", size1);
+			if(y == 4 || y == 5) invaders[x][y].setup("res/space/alien3.png", size3);
 
 			invaders[x][y].animation.setScale(Vector2f(space_scale, space_scale));
 			if(y == 0 || y == 1) invaders[x][y].animation.setPosition(x * (size2.x * space_scale + spacing2.x) + offsetX, 
 				y * (size2.y * space_scale + spacing2.y) + offsetY);
 			if (y == 2 || y == 3) invaders[x][y].animation.setPosition(x * (size1.x * space_scale + spacing1.x) + offsetX,
 				y * (size1.y * space_scale + spacing1.y) + offsetY);
+			if(y == 4 || y == 5) invaders[x][y].animation.setPosition(x * (size3.x * space_scale + spacing3.x) + offsetX,
+				y * (size3.y * space_scale + spacing3.y) + offsetY);
 		}
 	}
 }
@@ -48,7 +51,7 @@ void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState
 	for (int x = 0; x < invdM; x++) {
 		for (int y = 0; y < invdN; y++) {
 			if (invaders[x][y].animation.getPosition().x < 0 ||
-				invaders[x][y].animation.getPosition().x + invaders[x][y].size.x > scrWidth) {
+				invaders[x][y].animation.getPosition().x + invaders[x][y].size.x * space_scale > scrWidth) {
 				speedx = -speedx;
 				temp = 1;
 				break;
