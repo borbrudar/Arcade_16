@@ -64,19 +64,29 @@ void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState
 	while (window.pollEvent(e)) {
 		if (e.type == Event::Closed) window.close();
 		if (e.type == Event::KeyPressed) {
-			if (e.key.code == Keyboard::Left) cannonx = -4;
-			if (e.key.code == Keyboard::Right) cannonx = 4;
-			if (e.key.code == Keyboard::Space && timer > delay) {
-			//bullet position
-				bullets.push_back(Projectile(proj,
-					Vector2f(cannon.getPosition().x + (cSize.x / 2 - 0.5) * space_scale,
-						cannon.getPosition().y - bSize.y * space_scale)));
-			//clock reset
-				timer = 0.f;
-			}
+			if (e.key.code == Keyboard::Left) left = 1; 
+			if (e.key.code == Keyboard::Right) right = 1;
+			if (e.key.code == Keyboard::Space) shoot = 1; 
+		}
+		if (e.type == Event::KeyReleased) {
+			if (e.key.code == Keyboard::Left) left = 0;
+			if (e.key.code == Keyboard::Right) right = 0;
+			if (e.key.code == Keyboard::Space) shoot = 0;
 		}
 	}
 	if (back.isClicked(mouse, window)) gameState = state::menu;
+
+	//cannon
+	if(left) cannonx = speedL;
+	if (right) cannonx = speedR;
+	if(shoot & timer > delay) {
+		//bullet position
+		bullets.push_back(Projectile(proj,
+			Vector2f(cannon.getPosition().x + (cSize.x / 2 - 0.5) * space_scale,
+				cannon.getPosition().y - bSize.y * space_scale)));
+		//clock reset
+		timer = 0.f;
+	}
 
 	//bullet
 	for (int i = 0; i < bullets.size(); i++) {

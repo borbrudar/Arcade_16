@@ -21,7 +21,7 @@ public:
 	Sprite projectile;
 	Vector2f pos;
 private:
-	float speedy = -0.5f;
+	float speedy = -1.f;
 };
 
 class Space_Invaders : public State {
@@ -43,9 +43,11 @@ private:
 	Vector2f size1{ 11,8 }, size2{ 8, 8 }, size3{ 12,8 }, cSize{ 13,8 }, bSize{ 1,5 };
 	Vector2f spacing1{ 8,5 }, spacing2{ 17,5 }, spacing3{ 5,5 };
 	float speedx = 0.2f, cannonx = 0.f;
+	bool left = 0, right = 0, shoot = 0;
+	float speedL = -0.4, speedR = 0.4;
 	//tic toc
 	Clock bClock;
-	float timer = 0, time = 0, delay = 0.35f;
+	float timer = 0, time = 0, delay = 0.2f;
 
 	//projectile
 	std::vector<Projectile> bullets;
