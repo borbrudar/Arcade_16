@@ -20,7 +20,6 @@ public:
 	}
 	Sprite projectile;
 	Vector2f pos;
-private:
 	float speedy = -1.f;
 };
 
@@ -44,7 +43,7 @@ private:
 	Vector2f spacing1{ 8,5 }, spacing2{ 17,5 }, spacing3{ 5,5 };
 	float speedx = 0.2f, cannonx = 0.f;
 	bool left = 0, right = 0, shoot = 0;
-	float speedL = -0.4, speedR = 0.4;
+	float speedL = -0.4f, speedR = 0.4f;
 	//tic toc
 	Clock bClock;
 	float timer = 0, time = 0, delay = 0.2f;

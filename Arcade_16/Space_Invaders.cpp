@@ -79,16 +79,31 @@ void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState
 	//cannon
 	if(left) cannonx = speedL;
 	if (right) cannonx = speedR;
-	if(shoot & timer > delay) {
+	if(shoot && (timer > delay)) {
 		//bullet position
 		bullets.push_back(Projectile(proj,
-			Vector2f(cannon.getPosition().x + (cSize.x / 2 - 0.5) * space_scale,
+			Vector2f((float)cannon.getPosition().x + (float) (cSize.x / 2.f - 0.5f) * space_scale,
 				cannon.getPosition().y - bSize.y * space_scale)));
 		//clock reset
 		timer = 0.f;
 	}
 
+	
 	//bullet
+	for (int i = 0; i < bullets.size(); i++) {
+		bool temp = 0;
+		for (int x = 0; x < invdM; x++) {
+			for (int y = 0; y < invdN; y++) {
+				if (bullets[i].projectile.getGlobalBounds().intersects(invaders[x][y].animation.getGlobalBounds())) {
+					bullets.erase(bullets.begin() + i);
+					temp = 1;
+					break;
+				}
+			}
+			if (temp) break;
+		}
+	}
+	
 	for (int i = 0; i < bullets.size(); i++) {
 		if (bullets[i].pos.y < -30) {
 			bullets.erase(bullets.begin() + i);
