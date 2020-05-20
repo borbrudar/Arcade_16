@@ -21,18 +21,9 @@ Space_Invaders::Space_Invaders(Font& f)
 	for (int x = 0; x < invdM; x++) {
 		invaders[x].resize(invdN);
 		for (int y = 0; y < invdN; y++) {
-			//dirty solution
-			if(y == 0 || y == 1) invaders[x][y].setup("res/space/alien2.png", size2);
-			if(y == 2 || y == 3) invaders[x][y].setup("res/space/alien1.png", size1);
-			if(y == 4 || y == 5) invaders[x][y].setup("res/space/alien3.png", size3);
-
-			invaders[x][y].animation.setScale(Vector2f(space_scale, space_scale));
-			if(y == 0 || y == 1) invaders[x][y].animation.setPosition(x * (size2.x * space_scale + spacing2.x) + offsetX, 
-				y * (size2.y * space_scale + spacing2.y) + offsetY);
-			if (y == 2 || y == 3) invaders[x][y].animation.setPosition(x * (size1.x * space_scale + spacing1.x) + offsetX,
-				y * (size1.y * space_scale + spacing1.y) + offsetY);
-			if(y == 4 || y == 5) invaders[x][y].animation.setPosition(x * (size3.x * space_scale + spacing3.x) + offsetX,
-				y * (size3.y * space_scale + spacing3.y) + offsetY);
+			if(y == 0 || y == 1) invaders[x][y].setup("res/space/alien2.png", size2, Vector2f(x,y), spacing2, off);
+			if(y == 2 || y == 3) invaders[x][y].setup("res/space/alien1.png", size1, Vector2f(x, y), spacing1, off);
+			if(y == 4 || y == 5) invaders[x][y].setup("res/space/alien3.png", size3, Vector2f(x, y), spacing3, off);
 		}
 	}
 }
@@ -40,7 +31,6 @@ Space_Invaders::Space_Invaders(Font& f)
 void Space_Invaders::draw(RenderWindow& window)
 {
 	back.draw(window);
-
 	window.draw(cannon);
 
 	for (int x = 0; x < invdM; x++) {
@@ -48,7 +38,6 @@ void Space_Invaders::draw(RenderWindow& window)
 	}
 
 	for (int i = 0; i < bullets.size(); i++) bullets[i].draw(window);
-
 }
 
 void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
@@ -88,14 +77,20 @@ void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState
 		timer = 0.f;
 	}
 
+	cannon.move(cannonx, 0);
+	if (cannon.getPosition().x < 0) cannon.setPosition(0, cannon.getPosition().y);
+	if (cannon.getPosition().x + cSize.x * space_scale > scrWidth) cannon.setPosition(scrWidth - cSize.x * space_scale, cannon.getPosition().y);
 	
 	//bullet
 	for (int i = 0; i < bullets.size(); i++) {
 		bool temp = 0;
 		for (int x = 0; x < invdM; x++) {
 			for (int y = 0; y < invdN; y++) {
-				if (bullets[i].projectile.getGlobalBounds().intersects(invaders[x][y].animation.getGlobalBounds())) {
+				if (bullets[i].projectile.getGlobalBounds().intersects(invaders[x][y].animation.animation.getGlobalBounds())) {
 					bullets.erase(bullets.begin() + i);
+					invaders[x][y].speedx = 0;
+					invaders[x][y].animation.animation.setPosition(50, -50);
+					invaders[x][y].alive = 0;
 					temp = 1;
 					break;
 				}
@@ -109,14 +104,16 @@ void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState
 			bullets.erase(bullets.begin() + i);
 		}
 	}
+
 	//int c = 0; -c * (sizeX + spacing)
 	//border detecion
+	float sped;
 	bool temp = 0;
 	for (int x = 0; x < invdM; x++) {
 		for (int y = 0; y < invdN; y++) {
-			if (invaders[x][y].animation.getPosition().x < 0 ||
-				invaders[x][y].animation.getPosition().x + invaders[x][y].size.x * space_scale > scrWidth) {
-				speedx = -speedx;
+			if (invaders[x][y].animation.animation.getPosition().x < 0 ||
+				invaders[x][y].animation.animation.getPosition().x + invaders[x][y].animation.size.x * space_scale > scrWidth) {
+				sped = -invaders[x][y].speedx;
 				temp = 1;
 				break;
 			}
@@ -124,14 +121,15 @@ void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState
 		if (temp) break;
 	}
 
+	//deletion
+	if (temp) {
+		for (int x = 0; x < invdM; x++) {
+			for (int y = 0; y < invdN; y++) if(invaders[x][y].alive) invaders[x][y].speedx = sped;
+		}
+	}
 
 	//update positions
 	for (int x = 0; x < invdM; x++) {
-		for (int y = 0; y < invdN; y++) invaders[x][y].animation.move(speedx, 0);
+		for (int y = 0; y < invdN; y++) invaders[x][y].animation.animation.move(invaders[x][y].speedx, 0);
 	}
-
-	//cannon movement
-	cannon.move(cannonx,0);
-	if (cannon.getPosition().x < 0) cannon.setPosition(0, cannon.getPosition().y);
-	if(cannon.getPosition().x + cSize.x * space_scale > scrWidth) cannon.setPosition(scrWidth - cSize.x * space_scale, cannon.getPosition().y);
 }
