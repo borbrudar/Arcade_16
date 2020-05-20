@@ -7,12 +7,18 @@ Space_Invaders::Space_Invaders(Font& f)
 	text1.assign("Back");
 	back.setup(f, text1, Color::Blue, Vector2f(40, 25), Vector2f(580, 2), 12);
 
+	//canon 
+	c.loadFromFile("res/space/cannon.png");
+	cannon.setTexture(c);
+	cannon.setPosition(scrWidth / 2, scrHeight / 12 * 11);
+	cannon.setScale(space_scale, space_scale);
+
 	//invaders
 	invaders.resize(invdM);
 	for (int x = 0; x < invdM; x++) {
 		invaders[x].resize(invdN);
 		for (int y = 0; y < invdN; y++) {
-			//dirty solutions
+			//dirty solution
 			if(y == 0 || y == 1) invaders[x][y].setup("res/space/alien2.png", size2);
 			if(y == 2 || y == 3) invaders[x][y].setup("res/space/alien1.png", size1);
 			if(y == 4 || y == 5) invaders[x][y].setup("res/space/alien3.png", size3);
@@ -32,6 +38,8 @@ void Space_Invaders::draw(RenderWindow& window)
 {
 	back.draw(window);
 
+	window.draw(cannon);
+
 	for (int x = 0; x < invdM; x++) {
 		for (int y = 0; y < invdN; y++) invaders[x][y].draw(window);
 	}
@@ -40,8 +48,13 @@ void Space_Invaders::draw(RenderWindow& window)
 
 void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
 {
+	cannonx = 0;
 	while (window.pollEvent(e)) {
 		if (e.type == Event::Closed) window.close();
+		if (e.type == Event::KeyPressed) {
+			if (e.key.code == Keyboard::Left) cannonx = -4;
+			if (e.key.code == Keyboard::Right) cannonx = 4;
+		}
 	}
 	if (back.isClicked(mouse, window)) gameState = state::menu;
 
@@ -65,4 +78,9 @@ void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState
 	for (int x = 0; x < invdM; x++) {
 		for (int y = 0; y < invdN; y++) invaders[x][y].animation.move(speedx, 0);
 	}
+
+	//cannon movement
+	cannon.move(cannonx,0);
+	if (cannon.getPosition().x < 0) cannon.setPosition(0, cannon.getPosition().y);
+	if(cannon.getPosition().x + cSize.x * space_scale > scrWidth) cannon.setPosition(scrWidth - cSize.x * space_scale, cannon.getPosition().y);
 }

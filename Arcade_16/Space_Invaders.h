@@ -14,9 +14,11 @@ public:
 
 	std::vector < std::vector<Animation> > invaders;
 	Button back;
+	Sprite cannon;
+	Texture c;
 
 	int offsetX = 30, offsetY = 50;
-	Vector2f size1{ 11,8 }, size2{ 8, 8 }, size3{ 12,8 };
+	Vector2f size1{ 11,8 }, size2{ 8, 8 }, size3{ 12,8 }, cSize{ 13,8 };
 	Vector2f spacing1{ 8,5 }, spacing2{ 17,5 }, spacing3{ 5,5 };
-	float speedx = 0.2f;
+	float speedx = 0.2f, cannonx = 0.f;
 };
