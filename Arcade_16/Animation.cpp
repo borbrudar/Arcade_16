@@ -19,7 +19,6 @@ void Animation::draw(RenderWindow& window)
 	time = clock.getElapsedTime().asSeconds();
 	timer += time;
 	clock.restart();
-	delay = 0.2f;
 
 	if (timer > delay) {
 		if (swap == 1) {

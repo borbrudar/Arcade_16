@@ -13,6 +13,9 @@ Space_Invaders::Space_Invaders(Font& f)
 	cannon.setPosition(scrWidth / 2, scrHeight / 12 * 11);
 	cannon.setScale(space_scale, space_scale);
 
+	//projectile
+	proj.loadFromFile("res/space/projectile.png");
+
 	//invaders
 	invaders.resize(invdM);
 	for (int x = 0; x < invdM; x++) {
@@ -44,20 +47,43 @@ void Space_Invaders::draw(RenderWindow& window)
 		for (int y = 0; y < invdN; y++) invaders[x][y].draw(window);
 	}
 
+	for (int i = 0; i < bullets.size(); i++) bullets[i].draw(window);
+
 }
 
 void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
 {
+	//clock
+	time = bClock.getElapsedTime().asSeconds();
+	timer += time;
+	bClock.restart();
+
 	cannonx = 0;
+
+	//click clock
 	while (window.pollEvent(e)) {
 		if (e.type == Event::Closed) window.close();
 		if (e.type == Event::KeyPressed) {
 			if (e.key.code == Keyboard::Left) cannonx = -4;
 			if (e.key.code == Keyboard::Right) cannonx = 4;
+			if (e.key.code == Keyboard::Space && timer > delay) {
+			//bullet position
+				bullets.push_back(Projectile(proj,
+					Vector2f(cannon.getPosition().x + (cSize.x / 2 - 0.5) * space_scale,
+						cannon.getPosition().y - bSize.y * space_scale)));
+			//clock reset
+				timer = 0.f;
+			}
 		}
 	}
 	if (back.isClicked(mouse, window)) gameState = state::menu;
 
+	//bullet
+	for (int i = 0; i < bullets.size(); i++) {
+		if (bullets[i].pos.y < -30) {
+			bullets.erase(bullets.begin() + i);
+		}
+	}
 	//int c = 0; -c * (sizeX + spacing)
 	//border detecion
 	bool temp = 0;
