@@ -55,18 +55,24 @@ private:
 	Button back;
 	Sprite cannon;
 	Texture c, proj, proj2, xp, xp2;
+	bool gameOver = 0, transition = 0;
 
 	//invader varbs
 	Vector2f off{ 30,50 }; 
-	Vector2f size1{ 11,8 }, size2{ 8, 8 }, size3{ 12,8 }, cSize{ 13,8 }, bSize{ 1,4 };
+	Vector2f size1{ 11,8 }, size2{ 8, 8 }, size3{ 12,8 }, cSize{ 13,8 }, bSize{ 1,4 }, dSize{ 15,10 };
 	Vector2f spacing1{ 8,5 }, spacing2{ 17,5 }, spacing3{ 5,5 };
 	//cannon varbs
 	float cannonx = 0.f;
 	bool left = 0, right = 0, shoot = 0;
 	float speedL = -0.4f, speedR = 0.4f;
+	int lives = 3;
+
+	Animation death;
+	Clock deathC;
+	float dtimer = 0.f, dtime = 0.f, ddelay = 1.f;
 	//tic toc
 	Clock bClock;
-	float timer = 0, time = 0, delay = 0.25f;
+	float timer = 0, time = 0, delay = 0.3f;
 	//explosion
 	std::vector<Sprite> explosions;
 	std::vector<float> xptimer;
@@ -78,5 +84,5 @@ private:
 	std::vector<int> alienI;
 	std::vector<Projectile> alienBullets;
 	Clock aClock;
-	float atime = 0.f, atimer = 0.f, adelay = 0.7f;
+	float atime = 0.f, atimer = 0.f, adelay = 0.6f;
 };
