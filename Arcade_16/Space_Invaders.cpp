@@ -13,8 +13,11 @@ Space_Invaders::Space_Invaders(Font& f)
 	cannon.setPosition(scrWidth / 2, scrHeight / 12 * 11);
 	cannon.setScale(space_scale, space_scale);
 
-	//projectile
+	//projectiles
 	proj.loadFromFile("res/space/projectile.png");
+
+	alienI.resize(invdM);
+	for (int i = 0; i < alienI.size(); i++) alienI[i] = invdN - 1;
 
 	//explosion
 	xp.loadFromFile("res/space/explosion.png");
@@ -40,7 +43,9 @@ void Space_Invaders::draw(RenderWindow& window)
 		for (int y = 0; y < invdN; y++) invaders[x][y].draw(window);
 	}
 
+	//all bullets
 	for (int i = 0; i < bullets.size(); i++) bullets[i].draw(window);
+	for (int i = 0; i < alienBullets.size(); i++) alienBullets[i].draw(window);
 
 	//xp
 	for (int i = 0; i < explosions.size(); i++) window.draw(explosions[i]);
@@ -99,7 +104,36 @@ void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState
 		}
 	}
 
-	//bullet
+	//alien bullets
+	std::random_device rd;
+	std::default_random_engine engine(rd());
+	std::uniform_int_distribution<int> dist(0, invdM - 1);
+	
+
+	atime = aClock.getElapsedTime().asSeconds();
+	atimer += atime;
+	aClock.restart();
+	if (atimer > adelay) {
+		atimer = 0;
+		int rand = 0;
+		bool bul = 0, chosen = 0;
+		for (int i = 0; i < alienI.size(); i++) if (alienI[i] >= 0) { bul = 1; break; }
+		while (bul) {
+			rand = dist(engine);
+			if (alienI[rand] >= 0) {bul = 0; chosen = 1;
+			}
+		}
+		
+		if (chosen) {
+			int x = invaders[rand][alienI[rand]].animation.animation.getPosition().x;
+			int y = invaders[rand][alienI[rand]].animation.animation.getPosition().y;
+			Vector2f size = invaders[rand][alienI[rand]].animation.size;
+			alienBullets.push_back(Projectile(proj, Vector2f(x + size.x / 2, y + size.y + 1)));
+			alienBullets.back().speedy = -alienBullets.back().speedy;
+		}
+	}
+
+	//bullets
 	for (int i = 0; i < bullets.size(); i++) {
 		bool temp = 0;
 		for (int x = 0; x < invdM; x++) {
@@ -116,6 +150,8 @@ void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState
 					invaders[x][y].speedx = 0;
 					invaders[x][y].animation.animation.setPosition(50, -50);
 					invaders[x][y].alive = 0;
+					
+					alienI[x]--;
 					temp = 1;
 					break;
 				}
@@ -130,7 +166,7 @@ void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState
 		}
 	}
 
-	//int c = 0; -c * (sizeX + spacing)
+
 	//border detecion
 	float sped;
 	bool temp = 0;

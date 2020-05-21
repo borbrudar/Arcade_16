@@ -2,6 +2,7 @@
 #include "State.h"
 #include "Animation.h"
 #include <vector>
+#include <random>
 
 constexpr int invdM = 10, invdN = 6;
 const float space_scale = 3.f;
@@ -70,7 +71,12 @@ private:
 	std::vector<Sprite> explosions;
 	std::vector<float> xptimer;
 	Clock xpClock;
-	float xptime = 0, xpdelay = 0.2;
+	float xptime = 0.f, xpdelay = 0.2f;
 	//projectile
 	std::vector<Projectile> bullets;
+	//counterprojectile
+	std::vector<int> alienI;
+	std::vector<Projectile> alienBullets;
+	Clock aClock;
+	float atime = 0.f, atimer = 0.f, adelay = 0.7f;
 };
