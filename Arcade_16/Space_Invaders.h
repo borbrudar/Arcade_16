@@ -53,19 +53,24 @@ private:
 	std::vector < std::vector<Invader> > invaders;
 	Button back;
 	Sprite cannon;
-	Texture c, proj;
+	Texture c, proj, xp;
 
-	//inside variables (should abstract into an invader class but who gives a fuck)
+	//invader varbs
 	Vector2f off{ 30,50 }; 
 	Vector2f size1{ 11,8 }, size2{ 8, 8 }, size3{ 12,8 }, cSize{ 13,8 }, bSize{ 1,5 };
 	Vector2f spacing1{ 8,5 }, spacing2{ 17,5 }, spacing3{ 5,5 };
+	//cannon varbs
 	float cannonx = 0.f;
 	bool left = 0, right = 0, shoot = 0;
 	float speedL = -0.4f, speedR = 0.4f;
 	//tic toc
 	Clock bClock;
-	float timer = 0, time = 0, delay = 0.2f;
-
+	float timer = 0, time = 0, delay = 0.25f;
+	//explosion
+	std::vector<Sprite> explosions;
+	std::vector<float> xptimer;
+	Clock xpClock;
+	float xptime = 0, xpdelay = 0.2;
 	//projectile
 	std::vector<Projectile> bullets;
 };

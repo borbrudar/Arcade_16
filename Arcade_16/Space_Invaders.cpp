@@ -16,11 +16,14 @@ Space_Invaders::Space_Invaders(Font& f)
 	//projectile
 	proj.loadFromFile("res/space/projectile.png");
 
+	//explosion
+	xp.loadFromFile("res/space/explosion.png");
+
 	//invaders
 	invaders.resize(invdM);
-	for (int x = 0; x < invdM; x++) {
+	for (float x = 0; x < invdM; x++) {
 		invaders[x].resize(invdN);
-		for (int y = 0; y < invdN; y++) {
+		for (float y = 0; y < invdN; y++) {
 			if(y == 0 || y == 1) invaders[x][y].setup("res/space/alien2.png", size2, Vector2f(x,y), spacing2, off);
 			if(y == 2 || y == 3) invaders[x][y].setup("res/space/alien1.png", size1, Vector2f(x, y), spacing1, off);
 			if(y == 4 || y == 5) invaders[x][y].setup("res/space/alien3.png", size3, Vector2f(x, y), spacing3, off);
@@ -38,6 +41,9 @@ void Space_Invaders::draw(RenderWindow& window)
 	}
 
 	for (int i = 0; i < bullets.size(); i++) bullets[i].draw(window);
+
+	//xp
+	for (int i = 0; i < explosions.size(); i++) window.draw(explosions[i]);
 }
 
 void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
@@ -77,16 +83,35 @@ void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState
 		timer = 0.f;
 	}
 
+	//cAnOn
 	cannon.move(cannonx, 0);
 	if (cannon.getPosition().x < 0) cannon.setPosition(0, cannon.getPosition().y);
 	if (cannon.getPosition().x + cSize.x * space_scale > scrWidth) cannon.setPosition(scrWidth - cSize.x * space_scale, cannon.getPosition().y);
 	
+	//xp
+	time = xpClock.getElapsedTime().asSeconds();
+	xpClock.restart();
+	for (int i = 0; i < explosions.size(); i++) {
+		xptimer[i] += time;
+		if (xptimer[i] > xpdelay) {
+			xptimer.erase(xptimer.begin() + i);
+			explosions.erase(explosions.begin() + i);
+		}
+	}
+
 	//bullet
 	for (int i = 0; i < bullets.size(); i++) {
 		bool temp = 0;
 		for (int x = 0; x < invdM; x++) {
 			for (int y = 0; y < invdN; y++) {
+				//detect collision
 				if (bullets[i].projectile.getGlobalBounds().intersects(invaders[x][y].animation.animation.getGlobalBounds())) {
+					//explosion update
+					explosions.push_back(Sprite(xp));
+					explosions.back().setPosition(invaders[x][y].animation.animation.getPosition());
+					explosions.back().setScale(space_scale, space_scale);
+					xptimer.push_back(0);
+					//bullets and invaders update
 					bullets.erase(bullets.begin() + i);
 					invaders[x][y].speedx = 0;
 					invaders[x][y].animation.animation.setPosition(50, -50);
