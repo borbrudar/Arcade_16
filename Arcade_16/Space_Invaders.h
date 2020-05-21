@@ -54,11 +54,11 @@ private:
 	std::vector < std::vector<Invader> > invaders;
 	Button back;
 	Sprite cannon;
-	Texture c, proj, xp;
+	Texture c, proj, proj2, xp, xp2;
 
 	//invader varbs
 	Vector2f off{ 30,50 }; 
-	Vector2f size1{ 11,8 }, size2{ 8, 8 }, size3{ 12,8 }, cSize{ 13,8 }, bSize{ 1,5 };
+	Vector2f size1{ 11,8 }, size2{ 8, 8 }, size3{ 12,8 }, cSize{ 13,8 }, bSize{ 1,4 };
 	Vector2f spacing1{ 8,5 }, spacing2{ 17,5 }, spacing3{ 5,5 };
 	//cannon varbs
 	float cannonx = 0.f;

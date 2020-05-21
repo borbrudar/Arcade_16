@@ -21,6 +21,7 @@ Space_Invaders::Space_Invaders(Font& f)
 
 	//explosion
 	xp.loadFromFile("res/space/explosion.png");
+	xp2.loadFromFile("res/space/explosion2.png");
 
 	//invaders
 	invaders.resize(invdM);
@@ -84,6 +85,7 @@ void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState
 		bullets.push_back(Projectile(proj,
 			Vector2f((float)cannon.getPosition().x + (float) (cSize.x / 2.f - 0.5f) * space_scale,
 				cannon.getPosition().y - bSize.y * space_scale)));
+		bullets.back().speedy = -2.5f;
 		//clock reset
 		timer = 0.f;
 	}
@@ -120,20 +122,20 @@ void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState
 		for (int i = 0; i < alienI.size(); i++) if (alienI[i] >= 0) { bul = 1; break; }
 		while (bul) {
 			rand = dist(engine);
-			if (alienI[rand] >= 0) {bul = 0; chosen = 1;
-			}
+			if (alienI[rand] >= 0) { bul = 0; chosen = 1; }
 		}
 		
 		if (chosen) {
 			int x = invaders[rand][alienI[rand]].animation.animation.getPosition().x;
 			int y = invaders[rand][alienI[rand]].animation.animation.getPosition().y;
-			Vector2f size = invaders[rand][alienI[rand]].animation.size;
+			Vector2f size = bSize;
 			alienBullets.push_back(Projectile(proj, Vector2f(x + size.x / 2, y + size.y + 1)));
 			alienBullets.back().speedy = -alienBullets.back().speedy;
 		}
 	}
 
 	//bullets
+	//collision with invaders
 	for (int i = 0; i < bullets.size(); i++) {
 		bool temp = 0;
 		for (int x = 0; x < invdM; x++) {
@@ -160,8 +162,28 @@ void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState
 		}
 	}
 	
+	//collision with other bullets
 	for (int i = 0; i < bullets.size(); i++) {
-		if (bullets[i].pos.y < -30) {
+		bool temp = 0;
+		for (int j = 0; j < alienBullets.size(); j++) {
+			if (bullets[i].projectile.getGlobalBounds().intersects(alienBullets[j].projectile.getGlobalBounds())) {
+				//explosion
+				explosions.push_back(Sprite(xp2));
+				explosions.back().setPosition(alienBullets[j].projectile.getPosition());
+				explosions.back().setScale(space_scale, space_scale);
+				xptimer.push_back(0);
+				//erase both bullets
+				bullets.erase(bullets.begin() + i);
+				alienBullets.erase(alienBullets.begin() + j);
+				break;
+			}
+		}
+		if (temp) break;
+	}
+
+	//border bullets
+	for (int i = 0; i < bullets.size(); i++) {
+		if (bullets[i].pos.y < -30 || bullets[i].pos.y > scrHeight) {
 			bullets.erase(bullets.begin() + i);
 		}
 	}
