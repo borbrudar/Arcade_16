@@ -47,6 +47,7 @@ int main() {
 		state->update(mouse, window, gameState, e);
 		////////////////////////////////////////
 		window.clear(Color(50,50,50));
+		
 
 		state->draw(window);
 

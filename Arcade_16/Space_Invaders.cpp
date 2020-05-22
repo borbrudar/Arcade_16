@@ -35,6 +35,10 @@ Space_Invaders::Space_Invaders(Font& f)
 			if(y == 4 || y == 5) invaders[x][y].setup("res/space/alien3.png", size3, Vector2f(x, y), spacing3, off);
 		}
 	}
+
+	si.setPosition(300, 500);
+	si.setSize(Vector2f(5, 5));
+	si.setFillColor(Color::Green);
 }
 
 void Space_Invaders::draw(RenderWindow& window)
@@ -54,6 +58,8 @@ void Space_Invaders::draw(RenderWindow& window)
 
 	//xp
 	for (int i = 0; i < explosions.size(); i++) window.draw(explosions[i]);
+
+	window.draw(si);
 }
 
 void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)

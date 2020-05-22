@@ -1,6 +1,7 @@
 #pragma once
 #include "State.h"
 #include "Animation.h"
+#include "Shield.h"
 #include <vector>
 #include <random>
 
@@ -25,6 +26,7 @@ public:
 	float speedy = -1.f;
 };
 
+//invader class
 class Invader {
 public:
 	void setup(std::string string, Vector2f size, Vector2f number, Vector2f spacing, Vector2f off) {
@@ -70,19 +72,26 @@ private:
 	Animation death;
 	Clock deathC;
 	float dtimer = 0.f, dtime = 0.f, ddelay = 1.f;
+
 	//tic toc
 	Clock bClock;
 	float timer = 0, time = 0, delay = 0.3f;
+
 	//explosion
 	std::vector<Sprite> explosions;
 	std::vector<float> xptimer;
 	Clock xpClock;
 	float xptime = 0.f, xpdelay = 0.2f;
+
 	//projectile
 	std::vector<Projectile> bullets;
-	//counterprojectile
+
 	std::vector<int> alienI;
 	std::vector<Projectile> alienBullets;
 	Clock aClock;
 	float atime = 0.f, atimer = 0.f, adelay = 0.6f;
+
+	//shield
+	//Shield shield;
+	RectangleShape si;
 };
