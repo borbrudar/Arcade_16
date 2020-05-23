@@ -4,6 +4,7 @@
 #include "Shield.h"
 #include <vector>
 #include <random>
+#include <iostream>
 
 constexpr int invdM = 10, invdN = 6;
 const float space_scale = 3.f;
@@ -11,7 +12,12 @@ const float space_scale = 3.f;
 //projectile class
 class Projectile {
 public:
-	Projectile(Texture t1, Vector2f pos) : pos(pos) {
+	Projectile() = default;
+	Projectile(Texture t1, Vector2f pos) {
+		setup(t1, pos);
+	}
+	void setup(Texture t1, Vector2f pos) {
+		this->pos = pos;
 		projectile.setTexture(t1);
 		projectile.setScale(space_scale, space_scale);
 		projectile.setPosition(pos);
@@ -92,5 +98,5 @@ private:
 	float atime = 0.f, atimer = 0.f, adelay = 0.6f;
 
 	//shield
-	Shield shield;
+	std::vector<Shield> shields;
 };

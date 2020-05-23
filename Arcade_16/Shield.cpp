@@ -28,7 +28,7 @@ void Shield::Shield_Section::setup(type type, float startX, float startY)
 				Vertex temp;
 				temp.color = Color::Green;
 				temp.position = Vector2f(startX + x, startY + y);
-				points[y * 20 + x] = temp;
+				points[y * size + x] = temp;
 			}
 		}
 	}
@@ -38,7 +38,7 @@ void Shield::Shield_Section::setup(type type, float startX, float startY)
 				Vertex temp;
 				if (x <= y) temp.color = Color::Green; else temp.color = Color::Black;
 				temp.position = Vector2f(startX + x, startY + y);
-				points[y * 20 + x] = temp;
+				points[y * size + x] = temp;
 			}
 		}
 	}
@@ -48,7 +48,7 @@ void Shield::Shield_Section::setup(type type, float startX, float startY)
 				Vertex temp;
 				if (x >= y) temp.color = Color::Green; else temp.color = Color::Black;
 				temp.position = Vector2f(startX + x, startY + y);
-				points[y * 20 + x] = temp;
+				points[y * size + x] = temp;
 			}
 		}
 	}
@@ -58,7 +58,7 @@ void Shield::Shield_Section::setup(type type, float startX, float startY)
 				Vertex temp;
 				if (x - 20 > -y) temp.color = Color::Green; else temp.color = Color::Black;
 				temp.position = Vector2f(startX + x, startY + y);
-				points[y * 20 + x] = temp;
+				points[y * size + x] = temp;
 			}
 		}
 	}
@@ -68,7 +68,7 @@ void Shield::Shield_Section::setup(type type, float startX, float startY)
 				Vertex temp;
 				if (-x > y - 20) temp.color = Color::Green; else temp.color = Color::Black;
 				temp.position = Vector2f(startX + x, startY + y);
-				points[y * 20 + x] = temp;
+				points[y * size + x] = temp;
 			}
 		}
 	}

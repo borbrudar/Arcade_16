@@ -18,6 +18,7 @@ class Shield {
 		void draw(RenderWindow& window);
 	private:
 		std::array<Vertex, 400> points;
+		int size = 20;
 	};
 public:
 	void setup(float startX, float startY);

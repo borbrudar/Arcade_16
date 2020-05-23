@@ -27,16 +27,21 @@ Space_Invaders::Space_Invaders(Font& f)
 
 	//invaders
 	invaders.resize(invdM);
-	for (float x = 0; x < invdM; x++) {
+	for (int x = 0; x < invdM; x++) {
 		invaders[x].resize(invdN);
-		for (float y = 0; y < invdN; y++) {
+		for (int y = 0; y < invdN; y++) {
 			if(y == 0 || y == 1) invaders[x][y].setup("res/space/alien2.png", size2, Vector2f(x,y), spacing2, off);
 			if(y == 2 || y == 3) invaders[x][y].setup("res/space/alien1.png", size1, Vector2f(x, y), spacing1, off);
 			if(y == 4 || y == 5) invaders[x][y].setup("res/space/alien3.png", size3, Vector2f(x, y), spacing3, off);
 		}
 	}
 
-	shield.setup(300, 370);
+	//shield is 80 wide, 5 spaces of 64 = 640 (scrWidth)
+	shields.resize(4);
+	shields[0].setup(64, 350);
+	shields[1].setup(208, 350);
+	shields[2].setup(352, 350);
+	shields[3].setup(492, 350);
 }
 
 void Space_Invaders::draw(RenderWindow& window)
@@ -47,19 +52,23 @@ void Space_Invaders::draw(RenderWindow& window)
 	else if(transition)	death.draw(window);
 
 	back.draw(window);
+	
+	//shields
+	for (int i = 0; i < shields.size(); i++) shields[i].draw(window);
 
+	//invaders
 	for (int x = 0; x < invdM; x++) {
 		for (int y = 0; y < invdN; y++) invaders[x][y].draw(window);
 	}
 
 	//all bullets
 	for (int i = 0; i < bullets.size(); i++) bullets[i].draw(window);
+	
 	for (int i = 0; i < alienBullets.size(); i++) alienBullets[i].draw(window);
 
 	//xp
 	for (int i = 0; i < explosions.size(); i++) window.draw(explosions[i]);
 
-	shield.draw(window);
 }
 
 void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
@@ -139,8 +148,8 @@ void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState
 				}
 
 				if (chosen) {
-					int x = invaders[rand][alienI[rand]].animation.animation.getPosition().x;
-					int y = invaders[rand][alienI[rand]].animation.animation.getPosition().y;
+					float x = invaders[rand][alienI[rand]].animation.animation.getPosition().x;
+					float y = invaders[rand][alienI[rand]].animation.animation.getPosition().y;
 					Vector2f size = bSize;
 					alienBullets.push_back(Projectile(proj, Vector2f(x + size.x / 2, y + size.y + 1)));
 					alienBullets.back().speedy = -alienBullets.back().speedy;
@@ -265,6 +274,18 @@ void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState
 				if (e.key.code == Keyboard::R) {
 					gameOver = 0;
 					lives = 3;
+					
+					invaders.clear();
+					invaders.resize(invdM);
+					for (int x = 0; x < invdM; x++) {
+						invaders[x].resize(invdN);
+						for (int y = 0; y < invdN; y++) {
+							if (y == 0 || y == 1) invaders[x][y].setup("res/space/alien2.png", size2, Vector2f(x, y), spacing2, off);
+							if (y == 2 || y == 3) invaders[x][y].setup("res/space/alien1.png", size1, Vector2f(x, y), spacing1, off);
+							if (y == 4 || y == 5) invaders[x][y].setup("res/space/alien3.png", size3, Vector2f(x, y), spacing3, off);
+						}
+					}
+					
 				}
 			}
 		}
