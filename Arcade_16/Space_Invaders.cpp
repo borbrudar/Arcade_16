@@ -36,13 +36,13 @@ Space_Invaders::Space_Invaders(Font& f)
 		}
 	}
 
-	si.setPosition(300, 500);
-	si.setSize(Vector2f(5, 5));
-	si.setFillColor(Color::Green);
+	shield.setup(300, 370);
 }
 
 void Space_Invaders::draw(RenderWindow& window)
 {
+	window.clear(Color::Black);
+
 	if (!transition) window.draw(cannon);
 	else if(transition)	death.draw(window);
 
@@ -59,7 +59,7 @@ void Space_Invaders::draw(RenderWindow& window)
 	//xp
 	for (int i = 0; i < explosions.size(); i++) window.draw(explosions[i]);
 
-	window.draw(si);
+	shield.draw(window);
 }
 
 void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)

@@ -92,6 +92,5 @@ private:
 	float atime = 0.f, atimer = 0.f, adelay = 0.6f;
 
 	//shield
-	//Shield shield;
-	RectangleShape si;
+	Shield shield;
 };

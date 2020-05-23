@@ -4,16 +4,24 @@
 
 using namespace sf;
 
+enum class type {
+	block,
+	downLeft,
+	topRight,
+	downRight,
+	topLeft
+};
 class Shield {
 	class Shield_Section {
 	public:
-		void setup(bool type, float startX, float startY);
+		void setup(type type, float startX, float startY);
 		void draw(RenderWindow& window);
 	private:
 		std::array<Vertex, 400> points;
 	};
 public:
-	Shield();
+	void setup(float startX, float startY);
 	void draw(RenderWindow& window);
-	std::array<Shield_Section,1> parts;
+	std::array<Shield_Section,16> parts;
+	int size = 20;
 };
