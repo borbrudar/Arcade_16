@@ -104,6 +104,7 @@ bool Shield::Shield_Section::update(Vector2f pos, Vector2f size)
 							//update
 							points[y1 * mySize.x + x1].color = Color::Black;
 							count++;
+
 						}
 					}
 				}
