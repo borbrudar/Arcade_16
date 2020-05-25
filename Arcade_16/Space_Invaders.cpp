@@ -2,6 +2,11 @@
 
 Space_Invaders::Space_Invaders(Font& f)
 {
+	//score
+	scr.setPosition(20, 10);
+	scr.setCharacterSize(26);
+	scr.setFillColor(Color::White);
+	scr.setFont(f);
 	//back button
 	std::string text1;
 	text1.assign("Back");
@@ -69,6 +74,12 @@ void Space_Invaders::draw(RenderWindow& window)
 	//xp
 	for (int i = 0; i < explosions.size(); i++) window.draw(explosions[i]);
 
+	//draw score and highscore
+	std::string text2;
+	text2.assign("Score: ");
+	text2 = text2 + std::to_string(score);
+	scr.setString(text2);
+	window.draw(scr);
 }
 
 void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
@@ -107,7 +118,7 @@ void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState
 				bullets.push_back(Projectile(proj,
 					Vector2f((float)cannon.getPosition().x + (float)(cSize.x / 2.f - 0.5f) * space_scale,
 						cannon.getPosition().y - bSize.y * space_scale)));
-				bullets.back().speedy = -2.5f;
+				bullets.back().speedy = cannonshoot;
 				//clock reset
 				timer = 0.f;
 			}
@@ -117,7 +128,7 @@ void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState
 			if (cannon.getPosition().x < 0) cannon.setPosition(0, cannon.getPosition().y);
 			if (cannon.getPosition().x + cSize.x * space_scale > scrWidth) cannon.setPosition(scrWidth - cSize.x * space_scale, cannon.getPosition().y);
 
-			//xp
+			//explosion
 			time = xpClock.getElapsedTime().asSeconds();
 			xpClock.restart();
 			for (int i = 0; i < explosions.size(); i++) {
@@ -175,6 +186,11 @@ void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState
 							invaders[x][y].animation.animation.setPosition(50, -50);
 							invaders[x][y].alive = 0;
 
+							//update score
+							if (y == 5 || y == 4) score += 10;
+							else if (y == 3 || y == 2) score += 20;
+							else score += 30;
+ 
 							alienI[x]--;
 							temp = 1;
 							break;

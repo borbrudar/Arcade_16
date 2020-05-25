@@ -46,7 +46,7 @@ public:
 		animation.draw(window);
 	}
 	Animation animation;
-	float speedx = 0.2f;
+	float speedx = 0.1f;
 	bool alive = 1;
 };
 
@@ -64,6 +64,9 @@ private:
 	Sprite cannon;
 	Texture c, proj, proj2, xp, xp2;
 	bool gameOver = 0, transition = 0;
+	int score = 0;
+	Text scr;
+	float cannonshoot = -5.f;
 
 	//invader varbs
 	Vector2f off{ 30,50 }; 
@@ -95,7 +98,7 @@ private:
 	std::vector<int> alienI;
 	std::vector<Projectile> alienBullets;
 	Clock aClock;
-	float atime = 0.f, atimer = 0.f, adelay = 0.6f;
+	float atime = 0.f, atimer = 0.f, adelay = 0.3f;
 
 	//shield
 	std::vector<Shield> shields;
