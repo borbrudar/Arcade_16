@@ -248,13 +248,39 @@ void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState
 				if (t) break;
 			}
 
+			for (int i = 0; i < bullets.size(); i++) {
+				bool t = 0;
+				for (int j = 0; j < shields.size(); j++) {
+					if (bullets[i].projectile.getGlobalBounds().intersects(
+						shields[j].bigRect.getGlobalBounds())) {
+
+						//small part of the shield
+						for (int k = 0; k < shields[j].parts.size(); k++) {
+							if (shields[j].parts[k].smallRect.getGlobalBounds().intersects(
+								bullets[i].projectile.getGlobalBounds())) {
+
+								//funct to delete the shield
+								Vector2f tpos = bullets[i].projectile.getPosition();
+								if (shields[j].parts[k].update(tpos, Vector2f(bSize.x * space_scale, bSize.y * space_scale))) {
+									//misc
+									bullets.erase(bullets.begin() + i);
+									t = 1;
+									break;
+								}
+							}
+						}
+					}
+					if (t) break;
+				}
+				if (t) break;
+			}
+
 			//border bullets
 			for (int i = 0; i < bullets.size(); i++) {
 				if (bullets[i].pos.y < -30 || bullets[i].pos.y > scrHeight) {
 					bullets.erase(bullets.begin() + i);
 				}
 			}
-
 
 			//border detecion for invaders
 			float sped;
@@ -305,6 +331,14 @@ void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState
 					gameOver = 0;
 					lives = 3;
 					
+					//shields
+					shields.clear();
+					shields.resize(4);
+					shields[0].setup(64, 350);
+					shields[1].setup(208, 350);
+					shields[2].setup(352, 350);
+					shields[3].setup(492, 350);
+					//invaders
 					for(int i = 0; i < alienI.size();i++) alienI[i] = invdN - 1;
 					invaders.clear();
 					invaders.resize(invdM);

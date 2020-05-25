@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <array>
+#include <random>
 
 using namespace sf;
 
@@ -19,6 +20,7 @@ class Shield {
 		void draw(RenderWindow& window);
 		bool update(Vector2f pos, Vector2f size);
 		RectangleShape smallRect;
+		int ID;
 	private:
 		std::array<Vertex, 400> points;
 		int size = 20;
