@@ -67,11 +67,17 @@ private:
 	int score = 0;
 	Text scr;
 	float cannonshoot = -5.f;
+	//////////////////////////////////////////
+	// TURN RESET INTO A FUNCTION
+	//////////////////////////////////////////
+
+
 
 	//invader varbs
 	Vector2f off{ 30,50 }; 
 	Vector2f size1{ 11,8 }, size2{ 8, 8 }, size3{ 12,8 }, cSize{ 13,8 }, bSize{ 1,4 }, dSize{ 15,10 };
 	Vector2f spacing1{ 8,5 }, spacing2{ 17,5 }, spacing3{ 5,5 };
+	bool inThere = 1;
 	//cannon varbs
 	float cannonx = 0.f;
 	bool left = 0, right = 0, shoot = 0;

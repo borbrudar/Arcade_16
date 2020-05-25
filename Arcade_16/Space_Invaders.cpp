@@ -190,7 +190,22 @@ void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState
 							if (y == 5 || y == 4) score += 10;
 							else if (y == 3 || y == 2) score += 20;
 							else score += 30;
- 
+							
+							//check if there are any left
+							inThere = 0;
+							bool c = 0;
+							for (int in = 0; in < invaders.size(); in++) {
+								for (int in2 = 0; in2 < invaders[in].size(); in2++) {
+									if (invaders[in][in2].animation.animation.getPosition().y > 0) {
+										inThere = 1;
+										c = 1;
+										break;
+									}
+								}
+								if (c) break;
+							}
+
+							//other
 							alienI[x]--;
 							temp = 1;
 							break;
@@ -366,9 +381,32 @@ void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState
 							if (y == 4 || y == 5) invaders[x][y].setup("res/space/alien3.png", size3, Vector2f(x, y), spacing3, off);
 						}
 					}
-					
 				}
 			}
 		}
     }
+
+	//new wave of invaders
+	if (!inThere) {
+		//shields
+		shields.clear();
+		shields.resize(4);
+		shields[0].setup(64, 350);
+		shields[1].setup(208, 350);
+		shields[2].setup(352, 350);
+		shields[3].setup(492, 350);
+		//invaders
+		for (int i = 0; i < alienI.size(); i++) alienI[i] = invdN - 1;
+		inThere = 1;
+		invaders.clear();
+		invaders.resize(invdM);
+		for (int x = 0; x < invdM; x++) {
+			invaders[x].resize(invdN);
+			for (int y = 0; y < invdN; y++) {
+				if (y == 0 || y == 1) invaders[x][y].setup("res/space/alien2.png", size2, Vector2f(x, y), spacing2, off);
+				if (y == 2 || y == 3) invaders[x][y].setup("res/space/alien1.png", size1, Vector2f(x, y), spacing1, off);
+				if (y == 4 || y == 5) invaders[x][y].setup("res/space/alien3.png", size3, Vector2f(x, y), spacing3, off);
+			}
+		}
+	}
 }
