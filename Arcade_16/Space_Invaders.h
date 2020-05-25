@@ -5,6 +5,7 @@
 #include <vector>
 #include <random>
 #include <iostream>
+#include <fstream>
 
 constexpr int invdM = 10, invdN = 6;
 const float space_scale = 3.f;
@@ -64,15 +65,13 @@ private:
 	Sprite cannon;
 	Texture c, proj, proj2, xp, xp2;
 	bool gameOver = 0, transition = 0;
-	int score = 0;
+	int score = 0, highscore;
 	Text scr;
 	float cannonshoot = -5.f;
+	std::fstream high;
 	//////////////////////////////////////////
 	// TURN RESET INTO A FUNCTION
 	//////////////////////////////////////////
-
-
-
 	//invader varbs
 	Vector2f off{ 30,50 }; 
 	Vector2f size1{ 11,8 }, size2{ 8, 8 }, size3{ 12,8 }, cSize{ 13,8 }, bSize{ 1,4 }, dSize{ 15,10 };

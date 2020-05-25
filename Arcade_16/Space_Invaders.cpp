@@ -2,11 +2,19 @@
 
 Space_Invaders::Space_Invaders(Font& f)
 {
-	//score
+	//scores
 	scr.setPosition(20, 10);
 	scr.setCharacterSize(26);
 	scr.setFillColor(Color::White);
 	scr.setFont(f);
+
+	//read from file
+	std::string hsc;
+	high.open("res/space/hs.txt");
+	std::getline(high, hsc);
+	highscore = std::stoi(hsc);
+	high.close();
+
 	//back button
 	std::string text1;
 	text1.assign("Back");
@@ -79,11 +87,27 @@ void Space_Invaders::draw(RenderWindow& window)
 	text2.assign("Score: ");
 	text2 = text2 + std::to_string(score);
 	scr.setString(text2);
+	scr.setPosition(20, 10);
+	window.draw(scr);
+
+	text2.assign("Highscore: ");
+	text2 = text2 + std::to_string(highscore);
+	scr.setString(text2);
+	scr.setPosition(200, 10);
 	window.draw(scr);
 }
 
 void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
 {
+	//update score
+	if (score > highscore) {
+		highscore = score;
+		//write to file and close it
+		high.open("res/space/hs.txt", std::ios::out | std::ios::trunc);
+		high << highscore;
+		high.close();
+	}
+
 	//clock
 	time = bClock.getElapsedTime().asSeconds();
 	timer += time;
