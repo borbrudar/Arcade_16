@@ -132,11 +132,11 @@ void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState
 			std::random_device rd;
 			std::default_random_engine engine(rd());
 			std::uniform_int_distribution<int> dist(0, invdM - 1);
-
-
+			
 			atime = aClock.getElapsedTime().asSeconds();
 			atimer += atime;
 			aClock.restart();
+
 			if (atimer > adelay) {
 				atimer = 0;
 				int rand = 0;
@@ -220,6 +220,34 @@ void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState
 				}
 			}
 
+			//collision with the shield
+			for (int i = 0; i < alienBullets.size(); i++) {
+				bool t = 0;
+				for (int j = 0; j < shields.size(); j++) {
+					if (alienBullets[i].projectile.getGlobalBounds().intersects(
+						shields[j].bigRect.getGlobalBounds())) {
+
+						//small part of the shield
+						for (int k = 0; k < shields[j].parts.size(); k++) {
+							if (shields[j].parts[k].smallRect.getGlobalBounds().intersects(
+								alienBullets[i].projectile.getGlobalBounds())) {
+
+								//funct to delete the shield
+								Vector2f tpos = alienBullets[i].projectile.getPosition();
+								if (shields[j].parts[k].update(tpos, Vector2f(bSize.x * space_scale, bSize.y * space_scale))) {
+									//misc
+									alienBullets.erase(alienBullets.begin() + i);
+									t = 1;
+									break;
+								}
+							}
+						}
+					}
+					if (t) break;
+				}
+				if (t) break;
+			}
+
 			//border bullets
 			for (int i = 0; i < bullets.size(); i++) {
 				if (bullets[i].pos.y < -30 || bullets[i].pos.y > scrHeight) {
@@ -228,7 +256,7 @@ void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState
 			}
 
 
-			//border detecion
+			//border detecion for invaders
 			float sped;
 			bool temp = 0;
 			for (int x = 0; x < invdM; x++) {
@@ -256,6 +284,7 @@ void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState
 			}
 		}
 		else {
+		//transition period
 			while (window.pollEvent(e)) {
 				if (e.type == Event::Closed) window.close();
 			}
@@ -268,6 +297,7 @@ void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState
 		}
 	}
     else {
+	//restart the game
 		while (window.pollEvent(e)) {
 			if (e.type == Event::Closed) window.close();
 			if (e.type == Event::KeyPressed) {
@@ -275,6 +305,7 @@ void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState
 					gameOver = 0;
 					lives = 3;
 					
+					for(int i = 0; i < alienI.size();i++) alienI[i] = invdN - 1;
 					invaders.clear();
 					invaders.resize(invdM);
 					for (int x = 0; x < invdM; x++) {
