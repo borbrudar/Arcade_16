@@ -151,6 +151,7 @@
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="Pong.cpp" />
     <ClCompile Include="Shield.cpp" />
     <ClCompile Include="Space_Invaders.cpp" />
     <ClCompile Include="Tetris.cpp" />
@@ -160,6 +161,7 @@
     <ClInclude Include="Arkanoid.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="Pong.h" />
     <ClInclude Include="Shield.h" />
     <ClInclude Include="Space_Invaders.h" />
     <ClInclude Include="State.h" />

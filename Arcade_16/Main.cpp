@@ -4,6 +4,7 @@
 #include "Arkanoid.h"
 #include "Space_Invaders.h"
 #include "stateEnum.h"
+#include "Pong.h"
 
 using namespace sf;
 
@@ -17,9 +18,9 @@ int main() {
 	Font arial;
 	arial.loadFromFile("res/font/arial.ttf");
 
-	state gameState = state::space_invaders;
+	state gameState = state::menu;
 	state prevState = gameState;
-	std::unique_ptr<State> state = std::make_unique<Space_Invaders>(arial); //FOR TEST YOU HAVE TO SWITCH THE TOP ONES TOO!!!
+	std::unique_ptr<State> state = std::make_unique<Menu>(arial); //FOR TEST YOU HAVE TO SWITCH THE TOP ONES TOO!!!
 
 
 	//game loop
@@ -40,6 +41,9 @@ int main() {
 				break;
 			case state::space_invaders:
 				state = std::make_unique<Space_Invaders>(arial);
+				break;
+			case state::pong:
+				state = std::make_unique<Pong>(arial);
 				break;
 			}
 		}

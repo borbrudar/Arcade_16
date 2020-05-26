@@ -422,13 +422,6 @@ void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState
 
 	//new wave of invaders
 	if (!inThere) {
-		//shields
-		shields.clear();
-		shields.resize(4);
-		shields[0].setup(64, 350);
-		shields[1].setup(208, 350);
-		shields[2].setup(352, 350);
-		shields[3].setup(492, 350);
 		//invaders
 		for (int i = 0; i < alienI.size(); i++) alienI[i] = invdN - 1;
 		inThere = 1;
