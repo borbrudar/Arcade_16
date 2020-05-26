@@ -69,6 +69,7 @@ private:
 	Text scr;
 	float cannonshoot = -5.f;
 	std::fstream high;
+	Sprite dlife;
 	//////////////////////////////////////////
 	// TURN RESET INTO A FUNCTION
 	//////////////////////////////////////////

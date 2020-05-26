@@ -55,6 +55,9 @@ Space_Invaders::Space_Invaders(Font& f)
 	shields[1].setup(208, 350);
 	shields[2].setup(352, 350);
 	shields[3].setup(492, 350);
+
+	//lives
+	dlife.setTexture(c);
 }
 
 void Space_Invaders::draw(RenderWindow& window)
@@ -95,6 +98,13 @@ void Space_Invaders::draw(RenderWindow& window)
 	scr.setString(text2);
 	scr.setPosition(200, 10);
 	window.draw(scr);
+
+	//lives indicator
+	for (int i = 0; i < lives; i++) {
+		dlife.setScale(space_scale, space_scale);
+		dlife.setPosition((400 + i * space_scale * c.getSize().x + i * 10), 10);
+		window.draw(dlife);
+	}
 }
 
 void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
@@ -385,7 +395,7 @@ void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState
 				if (e.key.code == Keyboard::R) {
 					gameOver = 0;
 					lives = 3;
-					
+					score = 0;
 					//shields
 					shields.clear();
 					shields.resize(4);
