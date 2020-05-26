@@ -1,5 +1,6 @@
 #pragma once
 #include "State.h"
+#include <random>
 
 
 using namespace sf;
@@ -8,6 +9,7 @@ public:
 	Pong(Font& f);
 	void draw(RenderWindow& window);
 	void update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e);
+	void aiMove();
 	 
 	Button back;
 	RectangleShape line;
@@ -15,13 +17,18 @@ public:
 	Text points;
 
 	//player
-	RectangleShape player, ball;
+	RectangleShape player, ball, ai;
 	RectangleShape p1, p2, p3;
+	RectangleShape a1, a2, a3;
 	Vector2f prevPos;
 	bool up = 0, down = 0;
 	float speedy = 0, csped = 1.0f;
 	
 	//ball
-	float orgx = -1.f, orgy = 1.f;
-	float bspedx = -1.f, bspedy = 1.f;
+	float orgx = -0.8f, orgy = 0.8f;
+	float bspedx = -.8f, bspedy = .8f;
+
+	float aiy = 0, aisped = 1.f;
+	bool aiu = 0, aid = 0;
+	float prob = 0.2f;
 };

@@ -16,6 +16,15 @@ Pong::Pong(Font& f)
 	p2.setSize(Vector2f(8, 2));
 	p3.setSize(Vector2f(2, 40));
 
+	//ai
+	ai.setFillColor(Color::White);
+	ai.setSize(Vector2f(10, 40));
+	ai.setPosition(scrWidth - 50, scrHeight / 2 - 100);
+
+	a1.setSize(Vector2f(6, 2));
+	a2.setSize(Vector2f(6, 2));
+	a3.setSize(Vector2f(4, 40));
+
 	//ball
 	ball.setFillColor(Color::White);
 	ball.setSize(Vector2f(10, 10));
@@ -44,6 +53,7 @@ void Pong::draw(RenderWindow& window)
 	back.draw(window);
 	window.draw(player);
 	window.draw(ball);
+	window.draw(ai);
 
 	//draw scores
 	std::string text2;
@@ -77,35 +87,54 @@ void Pong::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e
 	}
 	if (back.isClicked(mouse, window)) gameState = state::menu;
 
+	//movement
 	if (up) speedy = -csped;
 	else if (down) speedy = csped;
 	else speedy = 0;
+
+	//ai movement
+	aiMove();
+	if (aiu) aiy = -aisped;
+	else if (aid) aiy = aisped;
+	else aiy = 0;
 
 	//border stuff
 	if (player.getPosition().y < 0) player.setPosition(player.getPosition().x, 0);
 	if (player.getPosition().y + player.getSize().y > scrHeight)
 	player.setPosition(player.getPosition().x, scrHeight - player.getSize().y);
+
+	if (ai.getPosition().y < 0) ai.setPosition(ai.getPosition().x, 0);
+	if (ai.getPosition().y + ai.getSize().y > scrHeight)
+		ai.setPosition(ai.getPosition().x, scrHeight - ai.getSize().y);
 		
 	player.move(0, speedy);
+	ai.move(0, aiy);
 
 	p1.setPosition(player.getPosition());
 	p2.setPosition(player.getPosition().x, player.getPosition().y + player.getSize().y);
-	p3.setPosition(player.getPosition().x + player.getSize().x - p3.getSize().x, player.getPosition().y);
+	p3.setPosition(player.getPosition().x + player.getSize().x - p3.getSize().x, player.getPosition().y + p1.getSize().y);
+
+	a1.setPosition(ai.getPosition());
+	a2.setPosition(ai.getPosition().x, ai.getPosition().y + ai.getSize().y);
+	a3.setPosition(ai.getPosition().x, ai.getPosition().y);
 
 	//ball stuff
 	ball.move(bspedx, bspedy);
 
-	if (ball.getGlobalBounds().intersects(p3.getGlobalBounds())) {
+	if (ball.getGlobalBounds().intersects(p3.getGlobalBounds()) ||
+		ball.getGlobalBounds().intersects(a3.getGlobalBounds())) {
 		bspedx = -bspedx;
-		ball.setPosition(prevPos.x - 1, prevPos.y - 1);
+		ball.setPosition(prevPos);
 	}
-	else if (ball.getGlobalBounds().intersects(p2.getGlobalBounds())) {
+	else if (ball.getGlobalBounds().intersects(p2.getGlobalBounds()) ||
+		ball.getGlobalBounds().intersects(a2.getGlobalBounds())) {
 		bspedy = -bspedy;
-		ball.setPosition(prevPos.x - 1, prevPos.y - 1);
+		ball.setPosition(prevPos);
 	}
-	else if (ball.getGlobalBounds().intersects(p1.getGlobalBounds())) {
+	else if (ball.getGlobalBounds().intersects(p1.getGlobalBounds()) ||
+		ball.getGlobalBounds().intersects(a1.getGlobalBounds())) {
 		bspedy = -bspedy;
-		ball.setPosition(prevPos.x - 1, prevPos.y - 1);
+		ball.setPosition(prevPos);
 	}
 
 	//ball border
@@ -121,5 +150,26 @@ void Pong::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e
 		ball.setPosition(scrWidth / 2, 0);
 		bspedx = orgx; bspedy = orgy;
 		score1++;
+	}
+}
+
+void Pong::aiMove()
+{
+	std::random_device rd;
+	std::default_random_engine engine(rd());
+	std::uniform_real_distribution<float> dist(0, 1);
+
+	float rand = dist(engine);
+	if (ball.getPosition().y > ai.getPosition().y && rand > prob) {
+		aid = 1;
+		aiu = 0;
+	}
+	else if(ball.getPosition().y < ai.getPosition().y && rand > prob) {
+		aiu = 1;
+		aid = 0;
+	}
+	else {
+		aiu = 0;
+		aid = 0;
 	}
 }
