@@ -12,6 +12,10 @@ Pong::Pong(Font& f)
 	player.setSize(Vector2f(10, 40));
 	player.setPosition(50, scrHeight / 2);
 
+	p1.setSize(Vector2f(8, 2));
+	p2.setSize(Vector2f(8, 2));
+	p3.setSize(Vector2f(2, 40));
+
 	//ball
 	ball.setFillColor(Color::White);
 	ball.setSize(Vector2f(10, 10));
@@ -52,10 +56,13 @@ void Pong::draw(RenderWindow& window)
 	points.setString(text2);
 	points.setPosition(scrWidth / 4  * 3, 10);
 	window.draw(points);
+	
 }
 
 void Pong::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
 {
+	prevPos = ball.getPosition();
+
 	//clicky boi
 	while (window.pollEvent(e)) {
 		if (e.type == Event::Closed) window.close();
@@ -78,11 +85,29 @@ void Pong::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e
 	if (player.getPosition().y < 0) player.setPosition(player.getPosition().x, 0);
 	if (player.getPosition().y + player.getSize().y > scrHeight)
 	player.setPosition(player.getPosition().x, scrHeight - player.getSize().y);
-	
+		
 	player.move(0, speedy);
 
+	p1.setPosition(player.getPosition());
+	p2.setPosition(player.getPosition().x, player.getPosition().y + player.getSize().y);
+	p3.setPosition(player.getPosition().x + player.getSize().x - p3.getSize().x, player.getPosition().y);
+
 	//ball stuff
-	if (ball.getGlobalBounds().intersects(player.getGlobalBounds())) bspedx = -bspedx;
+	ball.move(bspedx, bspedy);
+
+	if (ball.getGlobalBounds().intersects(p3.getGlobalBounds())) {
+		bspedx = -bspedx;
+		ball.setPosition(prevPos.x - 1, prevPos.y - 1);
+	}
+	else if (ball.getGlobalBounds().intersects(p2.getGlobalBounds())) {
+		bspedy = -bspedy;
+		ball.setPosition(prevPos.x - 1, prevPos.y - 1);
+	}
+	else if (ball.getGlobalBounds().intersects(p1.getGlobalBounds())) {
+		bspedy = -bspedy;
+		ball.setPosition(prevPos.x - 1, prevPos.y - 1);
+	}
+
 	//ball border
 	if (ball.getPosition().y < 0) bspedy = -bspedy;
 	if (ball.getPosition().y + ball.getSize().y > scrHeight) bspedy = -bspedy;
@@ -97,6 +122,4 @@ void Pong::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e
 		bspedx = orgx; bspedy = orgy;
 		score1++;
 	}
-
-	ball.move(bspedx, bspedy);
 }

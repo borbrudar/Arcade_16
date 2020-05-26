@@ -16,6 +16,8 @@ public:
 
 	//player
 	RectangleShape player, ball;
+	RectangleShape p1, p2, p3;
+	Vector2f prevPos;
 	bool up = 0, down = 0;
 	float speedy = 0, csped = 1.0f;
 	
