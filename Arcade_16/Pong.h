@@ -12,7 +12,9 @@ public:
 	Button back;
 	RectangleShape line;
 	 
-	RectangleShape player;
+	RectangleShape player, ball;
 	bool up = 0, down = 0;
-	float speedy = 0, csped = 0.5f;
+	float speedy = 0, csped = 1.0f;
+	float orgx = -0.5f, orgy = 0.5f;
+	float bspedx = -0.5f, bspedy = 0.5f;
 };
