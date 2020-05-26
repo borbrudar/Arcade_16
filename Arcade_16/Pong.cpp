@@ -20,6 +20,11 @@ Pong::Pong(Font& f)
 	//line
 	line.setFillColor(Color::White);
 	line.setSize(Vector2f(5, 20));
+
+	//text setup
+	points.setCharacterSize(30);
+	points.setFillColor(Color::White);
+	points.setFont(f);
 }
 
 void Pong::draw(RenderWindow& window)
@@ -35,6 +40,18 @@ void Pong::draw(RenderWindow& window)
 	back.draw(window);
 	window.draw(player);
 	window.draw(ball);
+
+	//draw scores
+	std::string text2;
+	text2 = std::to_string(score1);
+	points.setString(text2);
+	points.setPosition(scrWidth / 4, 10);
+	window.draw(points);
+
+	text2 = std::to_string(score2);
+	points.setString(text2);
+	points.setPosition(scrWidth / 4  * 3, 10);
+	window.draw(points);
 }
 
 void Pong::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
@@ -69,10 +86,16 @@ void Pong::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e
 	//ball border
 	if (ball.getPosition().y < 0) bspedy = -bspedy;
 	if (ball.getPosition().y + ball.getSize().y > scrHeight) bspedy = -bspedy;
-	//ball reset
-	if (ball.getPosition().x < 0 || ball.getPosition().x + ball.getSize().x > scrWidth) {
+	//ball reset + score
+	if (ball.getPosition().x < 0) {
 		ball.setPosition(scrWidth / 2, 0);
 		bspedx = orgx; bspedy = orgy;
+		score2++;
+	}
+	else if (ball.getPosition().x + ball.getSize().x > scrWidth) {
+		ball.setPosition(scrWidth / 2, 0);
+		bspedx = orgx; bspedy = orgy;
+		score1++;
 	}
 
 	ball.move(bspedx, bspedy);

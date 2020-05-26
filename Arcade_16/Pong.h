@@ -11,10 +11,15 @@ public:
 	 
 	Button back;
 	RectangleShape line;
-	 
+	int score1 = 0, score2 = 0;
+	Text points;
+
+	//player
 	RectangleShape player, ball;
 	bool up = 0, down = 0;
 	float speedy = 0, csped = 1.0f;
-	float orgx = -0.5f, orgy = 0.5f;
-	float bspedx = -0.5f, bspedy = 0.5f;
+	
+	//ball
+	float orgx = -1.f, orgy = 1.f;
+	float bspedx = -1.f, bspedy = 1.f;
 };
