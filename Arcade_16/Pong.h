@@ -10,7 +10,7 @@ public:
 	void draw(RenderWindow& window);
 	void update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e);
 	void aiMove();
-	 
+	
 	Button back;
 	RectangleShape line;
 	int score1 = 0, score2 = 0;
@@ -18,14 +18,15 @@ public:
 
 	//player
 	RectangleShape player, ball, ai;
-	RectangleShape p1, p2, p3;
-	RectangleShape a1, a2, a3;
+	std::vector<RectangleShape> b;
+	Vector2f bSize{ 10,10 };
 	Vector2f prevPos;
 	bool up = 0, down = 0;
 	float speedy = 0, csped = 1.0f;
 	
 	//ball
 	float orgx = -0.8f, orgy = 0.8f;
+	float tx, ty;
 	float bspedx = -.8f, bspedy = .8f;
 
 	float aiy = 0, aisped = 1.f;

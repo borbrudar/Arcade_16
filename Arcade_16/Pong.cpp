@@ -9,26 +9,24 @@ Pong::Pong(Font& f)
 
 	//player setup
 	player.setFillColor(Color::White);
-	player.setSize(Vector2f(10, 40));
+	player.setSize(Vector2f(12, 40));
 	player.setPosition(50, scrHeight / 2);
-
-	p1.setSize(Vector2f(8, 2));
-	p2.setSize(Vector2f(8, 2));
-	p3.setSize(Vector2f(2, 40));
 
 	//ai
 	ai.setFillColor(Color::White);
-	ai.setSize(Vector2f(10, 40));
+	ai.setSize(Vector2f(12, 40));
 	ai.setPosition(scrWidth - 50, scrHeight / 2 - 100);
-
-	a1.setSize(Vector2f(6, 2));
-	a2.setSize(Vector2f(6, 2));
-	a3.setSize(Vector2f(4, 40));
 
 	//ball
 	ball.setFillColor(Color::White);
-	ball.setSize(Vector2f(10, 10));
+	ball.setSize(bSize);
 	ball.setPosition(scrWidth / 2, 0);
+	
+	b.resize(4);
+	b[0].setSize(Vector2f(bSize.x - 2, 1));
+	b[1].setSize(Vector2f(bSize.x - 2, 1));
+	b[2].setSize(Vector2f(1, bSize.y - 2));
+	b[3].setSize(Vector2f(1, bSize.y - 2));
 
 	//line
 	line.setFillColor(Color::White);
@@ -66,12 +64,11 @@ void Pong::draw(RenderWindow& window)
 	points.setString(text2);
 	points.setPosition(scrWidth / 4  * 3, 10);
 	window.draw(points);
-	
+
 }
 
 void Pong::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
 {
-	prevPos = ball.getPosition();
 
 	//clicky boi
 	while (window.pollEvent(e)) {
@@ -98,42 +95,40 @@ void Pong::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e
 	else if (aid) aiy = aisped;
 	else aiy = 0;
 
-	//border stuff
-	if (player.getPosition().y < 0) player.setPosition(player.getPosition().x, 0);
-	if (player.getPosition().y + player.getSize().y > scrHeight)
-	player.setPosition(player.getPosition().x, scrHeight - player.getSize().y);
-
-	if (ai.getPosition().y < 0) ai.setPosition(ai.getPosition().x, 0);
-	if (ai.getPosition().y + ai.getSize().y > scrHeight)
-		ai.setPosition(ai.getPosition().x, scrHeight - ai.getSize().y);
-		
-	player.move(0, speedy);
-	ai.move(0, aiy);
-
-	p1.setPosition(player.getPosition());
-	p2.setPosition(player.getPosition().x, player.getPosition().y + player.getSize().y);
-	p3.setPosition(player.getPosition().x + player.getSize().x - p3.getSize().x, player.getPosition().y + p1.getSize().y);
-
-	a1.setPosition(ai.getPosition());
-	a2.setPosition(ai.getPosition().x, ai.getPosition().y + ai.getSize().y);
-	a3.setPosition(ai.getPosition().x, ai.getPosition().y);
-
 	//ball stuff
-	ball.move(bspedx, bspedy);
 
-	if (ball.getGlobalBounds().intersects(p3.getGlobalBounds()) ||
-		ball.getGlobalBounds().intersects(a3.getGlobalBounds())) {
+	ty = 0, tx = 0;
+	bool x = 0, y = 0;
+	//collision
+	b[0].setPosition(ball.getPosition().x + 1, ball.getPosition().y);
+	b[1].setPosition(ball.getPosition().x + 1, ball.getPosition().y + bSize.y - 1);
+	b[2].setPosition(ball.getPosition().x, ball.getPosition().y + 1);
+	b[3].setPosition(ball.getPosition().x + ball.getSize().x - 1, ball.getPosition().y + 1);
+
+	//b0 & b1
+	if (b[0].getGlobalBounds().intersects(player.getGlobalBounds()) &&
+		b[0].getPosition().x > player.getPosition().x + player.getSize().x)	y = 1;
+	else if (b[1].getGlobalBounds().intersects(ai.getGlobalBounds()) &&
+		b[0].getPosition().x < ai.getPosition().x) y = 1;
+
+	else if (b[1].getGlobalBounds().intersects(player.getGlobalBounds()) &&
+		b[1].getPosition().x > player.getPosition().x + player.getSize().x) y = 1;
+	else if (b[1].getGlobalBounds().intersects(ai.getGlobalBounds()) &&
+		b[1].getPosition().x < ai.getPosition().x) y = 1;
+
+	//b2 & b3
+	if (b[2].getGlobalBounds().intersects(player.getGlobalBounds()))	x = 1;
+	else if (b[3].getGlobalBounds().intersects(ai.getGlobalBounds())) x = 1;
+
+	if (y) {
+		bspedy = -bspedy;
+		ty = 15 * bspedy;
+		ball.setPosition(prevPos);
+	}
+	else if (x) {
 		bspedx = -bspedx;
-		ball.setPosition(prevPos);
-	}
-	else if (ball.getGlobalBounds().intersects(p2.getGlobalBounds()) ||
-		ball.getGlobalBounds().intersects(a2.getGlobalBounds())) {
-		bspedy = -bspedy;
-		ball.setPosition(prevPos);
-	}
-	else if (ball.getGlobalBounds().intersects(p1.getGlobalBounds()) ||
-		ball.getGlobalBounds().intersects(a1.getGlobalBounds())) {
-		bspedy = -bspedy;
+		speedy = 0;
+		tx = 15 * bspedx;
 		ball.setPosition(prevPos);
 	}
 
@@ -151,6 +146,21 @@ void Pong::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e
 		bspedx = orgx; bspedy = orgy;
 		score1++;
 	}
+
+	prevPos = ball.getPosition();
+
+	ball.move(bspedx + tx, bspedy + ty);
+	//border stuff
+	if (player.getPosition().y < 0) player.setPosition(player.getPosition().x, 0);
+	if (player.getPosition().y + player.getSize().y > scrHeight)
+	player.setPosition(player.getPosition().x, scrHeight - player.getSize().y);
+
+	if (ai.getPosition().y < 0) ai.setPosition(ai.getPosition().x, 0);
+	if (ai.getPosition().y + ai.getSize().y > scrHeight)
+		ai.setPosition(ai.getPosition().x, scrHeight - ai.getSize().y);
+		
+	player.move(0, speedy);
+	ai.move(0, aiy);
 }
 
 void Pong::aiMove()
@@ -160,11 +170,11 @@ void Pong::aiMove()
 	std::uniform_real_distribution<float> dist(0, 1);
 
 	float rand = dist(engine);
-	if (ball.getPosition().y > ai.getPosition().y && rand > prob) {
+	if (ball.getPosition().y - ball.getSize().y / 2 > ai.getPosition().y && rand > prob) {
 		aid = 1;
 		aiu = 0;
 	}
-	else if(ball.getPosition().y < ai.getPosition().y && rand > prob) {
+	else if(ball.getPosition().y - ball.getSize().y / 2 < ai.getPosition().y && rand > prob) {
 		aiu = 1;
 		aid = 0;
 	}
