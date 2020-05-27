@@ -30,7 +30,7 @@ private:
 	//ball
 	float orgx = -0.8f, orgy = 0.8f;
 	float orgy2 = -0.8f, orgx2 = 0.8f;
-	float tx, ty;
+	float tx = 0, ty = 0;
 	float bspedx = -.8f, bspedy = .8f;
 
 	float aiy = 0, aisped = 1.f;

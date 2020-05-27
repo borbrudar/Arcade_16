@@ -20,7 +20,7 @@ class Shield {
 		void draw(RenderWindow& window);
 		bool update(Vector2f pos, Vector2f size);
 		RectangleShape smallRect;
-		int ID;
+		int ID = 0;
 	private:
 		std::array<Vertex, 400> points;
 		int size = 20;

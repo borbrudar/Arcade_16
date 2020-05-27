@@ -31,6 +31,9 @@
     <Filter Include="Games\Pong">
       <UniqueIdentifier>{7430425f-46a3-4eb5-9230-5ced78811f25}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Games\Asteroids">
+      <UniqueIdentifier>{44b78ba8-fa64-4ce9-ba97-be092a984021}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -59,6 +62,9 @@
     </ClCompile>
     <ClCompile Include="Pong.cpp">
       <Filter>Games\Pong</Filter>
+    </ClCompile>
+    <ClCompile Include="Asteroids.cpp">
+      <Filter>Games\Asteroids</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -91,6 +97,9 @@
     </ClInclude>
     <ClInclude Include="Pong.h">
       <Filter>Games\Pong</Filter>
+    </ClInclude>
+    <ClInclude Include="Asteroids.h">
+      <Filter>Games\Asteroids</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

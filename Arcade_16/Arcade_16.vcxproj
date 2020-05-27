@@ -148,6 +148,7 @@
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Arkanoid.cpp" />
+    <ClCompile Include="Asteroids.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Menu.cpp" />
@@ -159,6 +160,7 @@
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Arkanoid.h" />
+    <ClInclude Include="Asteroids.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Pong.h" />

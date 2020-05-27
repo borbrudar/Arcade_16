@@ -5,5 +5,6 @@ enum class state {
 	tetris,
 	arkanoid,
 	space_invaders,
-	pong
+	pong,
+	asteroids
 };

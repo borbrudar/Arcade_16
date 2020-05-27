@@ -18,6 +18,10 @@ Menu::Menu(Font& f)
 	//pong
 	text1.assign("4. Pong");
 	pong.setup(f, text1, Color::Green, Vector2f(350, 50), Vector2f(70, 300), 24);
+
+	//asteroids
+	text1.assign("5. Asteroids");
+	asteroids.setup(f, text1, Color::Green, Vector2f(350, 50), Vector2f(70, 380), 24);
 }
 
 
@@ -27,6 +31,7 @@ void Menu::draw(RenderWindow &window)
 	arkanoid.draw(window);
 	spaceinvaders.draw(window);
 	pong.draw(window);
+	asteroids.draw(window);
 }
 
 void Menu::update(Mouse &mouse, RenderWindow& window, state &gameState, Event &e)
@@ -40,4 +45,5 @@ void Menu::update(Mouse &mouse, RenderWindow& window, state &gameState, Event &e
 	if (arkanoid.isClicked(mouse, window)) gameState = state::arkanoid;
 	if (spaceinvaders.isClicked(mouse, window)) gameState = state::space_invaders;
 	if (pong.isClicked(mouse, window)) gameState = state::pong;
+	if (asteroids.isClicked(mouse, window)) gameState = state::asteroids;
 }
