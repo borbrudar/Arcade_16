@@ -137,12 +137,12 @@ void Pong::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e
 	if (ball.getPosition().y + ball.getSize().y > scrHeight) bspedy = -bspedy;
 	//ball reset + score
 	if (ball.getPosition().x < 0) {
-		ball.setPosition(scrWidth / 2, 0);
-		bspedx = orgx; bspedy = orgy;
+		ball.setPosition(bpos[1]);
+		bspedx = orgx2; bspedy = orgy2;
 		score2++;
 	}
 	else if (ball.getPosition().x + ball.getSize().x > scrWidth) {
-		ball.setPosition(scrWidth / 2, 0);
+		ball.setPosition(bpos[0]);
 		bspedx = orgx; bspedy = orgy;
 		score1++;
 	}
