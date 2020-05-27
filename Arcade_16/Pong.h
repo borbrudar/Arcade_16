@@ -10,7 +10,8 @@ public:
 	void draw(RenderWindow& window);
 	void update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e);
 	void aiMove();
-	
+
+private:	
 	Button back;
 	RectangleShape line;
 	int score1 = 0, score2 = 0;
