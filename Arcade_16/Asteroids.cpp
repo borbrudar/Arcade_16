@@ -34,11 +34,13 @@ void Asteroids::update(Mouse& mouse, RenderWindow& window, state& gameState, Eve
 			if (e.key.code == Keyboard::Left) left = 1;
 			else if (e.key.code == Keyboard::Right) right = 1;
 			if (e.key.code == Keyboard::Space) shoot = 1;
+			if (e.key.code == Keyboard::Up) move = 1;
 		}
 		if (e.type == Event::KeyReleased) {
 			if (e.key.code == Keyboard::Left) left = 0;
 			if (e.key.code == Keyboard::Right) right = 0;
 			if (e.key.code == Keyboard::Space) shoot = 0;
+			if (e.key.code == Keyboard::Up) move = 0;
 		}
 	}
 	if (back.isClicked(mouse, window)) gameState = state::menu;
@@ -49,6 +51,30 @@ void Asteroids::update(Mouse& mouse, RenderWindow& window, state& gameState, Eve
 	else rot = 0;
 	ship.rotate(rot);
 
+	//ship move
+	if (move) {
+		vel.x += std::cos(ship.getRotation() * 3.14159 / 180) * 0.2; //convert degress to radians
+		vel.y += std::sin(ship.getRotation() * 3.14159 / 180) * 0.2;
+	}
+	else {
+		vel.x *= drag;
+		vel.y *= drag;
+	}
+
+	float sped = std::sqrt(vel.x * vel.x + vel.y * vel.y);
+	if (sped > maxsped) {
+		vel.x *= maxsped / sped;
+		vel.y *= maxsped / sped;
+	}
+
+
+	ship.move(vel);
+
+	//ship border
+	if (ship.getPosition().x < 0) ship.setPosition(scrWidth, ship.getPosition().y);
+	if (ship.getPosition().x > scrWidth) ship.setPosition(0, ship.getPosition().y);
+	if (ship.getPosition().y < 0) ship.setPosition(ship.getPosition().x, scrHeight);
+	if (ship.getPosition().y > scrHeight) ship.setPosition(ship.getPosition().x, 0);
 
 	//ship shoot
 	stime = sClock.getElapsedTime().asSeconds();

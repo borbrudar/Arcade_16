@@ -32,7 +32,10 @@ private:
 	bool left = 0, right = 0;
 
 	//ship movement
-	Vector2f pos, vel, acc;
+	Vector2f vel{ 0,0 };
+	float drag = 0.99f;
+	bool move = 0;
+	float maxsped = 2.5f;
 
 	//pew pew pew
 	bool shoot = 0;
