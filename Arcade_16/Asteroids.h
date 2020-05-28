@@ -4,6 +4,7 @@
 
 using namespace sf;
 
+const float ast_r = 2.f;
 class astproj {
 public:
 	astproj(Vector2f pos, Vector2f vel);
@@ -12,7 +13,6 @@ public:
 
 	CircleShape projectile;
 	Vector2f pos, vel;
-	float r = 2.f;
 };
 
 class Asteroids : public State {
@@ -39,4 +39,5 @@ private:
 	std::vector<astproj> bullets;
 	Clock sClock;
 	float stime = 0, stimer = 0, sdelay = 0.2f;
+	float bulsped = 0.5f;
 };

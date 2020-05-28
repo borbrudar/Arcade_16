@@ -57,7 +57,15 @@ void Asteroids::update(Mouse& mouse, RenderWindow& window, state& gameState, Eve
 
 	if (shoot && stimer > sdelay) {
 		stimer = 0;
-		bullets.push_back(astproj(Vector2f(0, 0), Vector2f(0.5, 0.5)));
+
+		//calulate the right direction 
+		float x = std::cos(ship.getRotation() * 3.14159 / 180); //convert degress to radians
+		float y = std::sin(ship.getRotation() * 3.14159 / 180);
+		Vector2f pos = ship.getPosition();
+		float s = sh.getSize().x * ship_scale;
+
+		bullets.push_back(astproj(Vector2f(pos.x + x * s, pos.y + y * s),
+			Vector2f(x * bulsped, y * bulsped)));
 	}
 
 	//erase bullets which are offscreen
@@ -66,8 +74,9 @@ void Asteroids::update(Mouse& mouse, RenderWindow& window, state& gameState, Eve
 
 astproj::astproj(Vector2f pos, Vector2f vel) : pos(pos), vel(vel)
 {
-	projectile.setRadius(r);
+	projectile.setRadius(ast_r);
 	projectile.setFillColor(Color::White);
+	projectile.setPosition(pos);
 }
 
 void astproj::draw(RenderWindow& window)
@@ -79,8 +88,8 @@ void astproj::draw(RenderWindow& window)
 
 bool astproj::isOffScreen()
 {
-	if (pos.x < 0 || pos.x + r > scrWidth || 
-	pos.y < 0 || pos.y + r > scrHeight) return true;
+	if (pos.x < 0 || pos.x + ast_r > scrWidth || 
+	pos.y < 0 || pos.y + ast_r > scrHeight) return true;
 
 	return false;
 }
