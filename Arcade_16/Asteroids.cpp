@@ -28,13 +28,14 @@ void Asteroids::draw(RenderWindow& window)
 void Asteroids::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
 {
 	//click click
+	
 	while (window.pollEvent(e)) {
 		if (e.type == Event::Closed) window.close();
 		if (e.type == Event::KeyPressed) {
-			if (e.key.code == Keyboard::Left) left = 1;
-			else if (e.key.code == Keyboard::Right) right = 1;
+			if (e.key.code == Keyboard::Left) left = 1; 
+			if (e.key.code == Keyboard::Right) right = 1; 
 			if (e.key.code == Keyboard::Space) shoot = 1;
-			if (e.key.code == Keyboard::Up) move = 1;
+			if (e.key.code == Keyboard::Up) move = 1; 
 		}
 		if (e.type == Event::KeyReleased) {
 			if (e.key.code == Keyboard::Left) left = 0;
@@ -53,8 +54,8 @@ void Asteroids::update(Mouse& mouse, RenderWindow& window, state& gameState, Eve
 
 	//ship move
 	if (move) {
-		vel.x += std::cos(ship.getRotation() * 3.14159 / 180) * 0.2; //convert degress to radians
-		vel.y += std::sin(ship.getRotation() * 3.14159 / 180) * 0.2;
+		vel.x += std::cos(ship.getRotation() * 3.14159 / 180) * 0.07; //convert degress to radians
+		vel.y += std::sin(ship.getRotation() * 3.14159 / 180) * 0.07;
 	}
 	else {
 		vel.x *= drag;

@@ -33,14 +33,14 @@ private:
 
 	//ship movement
 	Vector2f vel{ 0,0 };
-	float drag = 0.99f;
+	float drag = 0.997f;
 	bool move = 0;
-	float maxsped = 2.5f;
+	float maxsped = 1.5f;
 
 	//pew pew pew
 	bool shoot = 0;
 	std::vector<astproj> bullets;
 	Clock sClock;
 	float stime = 0, stimer = 0, sdelay = 0.2f;
-	float bulsped = 0.5f;
+	float bulsped = 1.f;
 };
