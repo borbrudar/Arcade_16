@@ -13,6 +13,8 @@ Asteroids::Asteroids(Font& f)
 	ship.setScale(ship_scale, ship_scale); 
 	ship.setOrigin(sh.getSize().x / 2, sh.getSize().y / 2);
 	ship.setPosition(scrWidth / 2, scrHeight / 2);
+
+	test.setup(0, 0, Vector2f(100, 100));
 }
 
 void Asteroids::draw(RenderWindow& window)
@@ -23,12 +25,13 @@ void Asteroids::draw(RenderWindow& window)
 	window.draw(ship);
 
 	for (int i = 0; i < bullets.size(); i++) bullets[i].draw(window);
+
+	test.draw(window);
 }
 
 void Asteroids::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
 {
 	//click click
-	
 	while (window.pollEvent(e)) {
 		if (e.type == Event::Closed) window.close();
 		if (e.type == Event::KeyPressed) {

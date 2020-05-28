@@ -25,14 +25,14 @@
     <Filter Include="Games\Arkanoid">
       <UniqueIdentifier>{4a030796-1630-47d0-826e-2befea083b19}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Games\Space_Invaders">
-      <UniqueIdentifier>{b3d61615-3911-4da3-b749-29a7a4a0ea49}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Games\Pong">
       <UniqueIdentifier>{7430425f-46a3-4eb5-9230-5ced78811f25}</UniqueIdentifier>
     </Filter>
     <Filter Include="Games\Asteroids">
       <UniqueIdentifier>{44b78ba8-fa64-4ce9-ba97-be092a984021}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Games\Space_Invaders">
+      <UniqueIdentifier>{b3d61615-3911-4da3-b749-29a7a4a0ea49}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -65,6 +65,9 @@
     </ClCompile>
     <ClCompile Include="Asteroids.cpp">
       <Filter>Games\Asteroids</Filter>
+    </ClCompile>
+    <ClCompile Include="Astro.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -99,6 +102,9 @@
       <Filter>Games\Pong</Filter>
     </ClInclude>
     <ClInclude Include="Asteroids.h">
+      <Filter>Games\Asteroids</Filter>
+    </ClInclude>
+    <ClInclude Include="Astro.h">
       <Filter>Games\Asteroids</Filter>
     </ClInclude>
   </ItemGroup>
