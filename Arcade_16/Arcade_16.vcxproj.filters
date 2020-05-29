@@ -67,7 +67,7 @@
       <Filter>Games\Asteroids</Filter>
     </ClCompile>
     <ClCompile Include="Astro.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Games\Asteroids</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -2,18 +2,20 @@
 #include "State.h"
 #include <SFML/Graphics.hpp>
 #include <random>
+#include <iostream>
 
 using namespace sf;
 
 class Astro {
 public:
+	Astro() = default;
 	void setup(int type, int size, Vector2f pos);
 	void draw(RenderWindow& window);
-	Sprite spr;
+
 	CircleShape ast;
-	Texture tex;
+	float rot = 0;
+	Vector2f vel{ 0,0 };
 private:
 	std::vector<RectangleShape> parts;
-	Vector2f vel{ 0,0 };
-	float rot = 0;
+	Texture tex;
 };

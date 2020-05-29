@@ -14,7 +14,9 @@ Asteroids::Asteroids(Font& f)
 	ship.setOrigin(sh.getSize().x / 2, sh.getSize().y / 2);
 	ship.setPosition(scrWidth / 2, scrHeight / 2);
 
-	test.setup(0, 0, Vector2f(100, 100));
+	
+	big.push_back(Astro());
+	big.back().setup(0, 0, Vector2f(100, 100));
 }
 
 void Asteroids::draw(RenderWindow& window)
@@ -26,7 +28,11 @@ void Asteroids::draw(RenderWindow& window)
 
 	for (int i = 0; i < bullets.size(); i++) bullets[i].draw(window);
 
-	test.draw(window);
+	for (int i = 0; i < big.size(); i++) big[i].draw(window);
+	for (int i = 0; i < medium.size(); i++) medium[i].draw(window);
+	for (int i = 0; i < small.size(); i++) small[i].draw(window);
+
+	//test.draw(window);
 }
 
 void Asteroids::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
@@ -57,8 +63,8 @@ void Asteroids::update(Mouse& mouse, RenderWindow& window, state& gameState, Eve
 
 	//ship move
 	if (move) {
-		vel.x += std::cos(ship.getRotation() * 3.14159 / 180) * 0.07; //convert degress to radians
-		vel.y += std::sin(ship.getRotation() * 3.14159 / 180) * 0.07;
+		vel.x += std::cos(ship.getRotation() * 3.14159 / 180) * 0.01; //convert degress to radians
+		vel.y += std::sin(ship.getRotation() * 3.14159 / 180) * 0.01;
 	}
 	else {
 		vel.x *= drag;
@@ -71,9 +77,7 @@ void Asteroids::update(Mouse& mouse, RenderWindow& window, state& gameState, Eve
 		vel.y *= maxsped / sped;
 	}
 
-
 	ship.move(vel);
-
 	//ship border
 	if (ship.getPosition().x < 0) ship.setPosition(scrWidth, ship.getPosition().y);
 	if (ship.getPosition().x > scrWidth) ship.setPosition(0, ship.getPosition().y);
@@ -100,6 +104,37 @@ void Asteroids::update(Mouse& mouse, RenderWindow& window, state& gameState, Eve
 
 	//erase bullets which are offscreen
 	for (int i = 0; i < bullets.size(); i++) if (bullets[i].isOffScreen()) bullets.erase(bullets.begin() + i);
+
+	//bullet collision
+	for (int i = 0; i < bullets.size(); i++) {
+		bool b = 0;
+		for (int j = 0; j < big.size(); j++) {
+			//circle to circle collision
+			Vector2f c1 = bullets[i].projectile.getPosition();
+			Vector2f c2 = big[j].ast.getPosition();
+			float r1 = bullets[i].projectile.getRadius(), r2 = big[j].ast.getRadius();
+
+			float x = std::abs(c1.x - c2.x), y = std::abs(c1.y - c2.y);
+			float dist = std::sqrt(x * x + y * y);
+
+			//collision detected
+			if (dist < r1 + r2) {
+				medium.push_back(Astro());
+				medium.back().setup(0, 1, big[j].ast.getPosition());
+				medium.back().vel = big[j].vel; medium.back().rot = big[j].rot;
+				medium.push_back(Astro());
+				medium.back().setup(0, 1, big[j].ast.getPosition());
+				medium.back().vel = -big[j].vel; medium.back().rot = -big[j].rot;
+
+				bullets.erase(bullets.begin() + i);
+				big.erase(big.begin() + j);
+				b = 0;
+				break;
+			}
+			
+		}
+		if (b) break;
+	}
 }
 
 astproj::astproj(Vector2f pos, Vector2f vel) : pos(pos), vel(vel)

@@ -37,7 +37,7 @@ private:
 	Vector2f vel{ 0,0 };
 	float drag = 0.997f;
 	bool move = 0;
-	float maxsped = 1.5f;
+	float maxsped = 0.5f;
 
 	//pew pew pew
 	bool shoot = 0;
@@ -47,5 +47,8 @@ private:
 	float bulsped = 1.f;
 
 	//actual asteroids
+	std::vector<Astro> big;
+	std::vector<Astro> medium;
+	std::vector<Astro> small;
 	Astro test;
 };

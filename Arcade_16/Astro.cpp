@@ -2,11 +2,19 @@
 
 void Astro::setup(int type, int size, Vector2f pos)
 {
-	tex.loadFromFile("res/asteroids/big_ast1.png");
-	ast.setTexture(&tex);
+	if (size == 0) {
+		if (!tex.loadFromFile("res/asteroids/big_ast1.png")) std::cout << "EROR";
+	}
 
-	ast.setRadius(25.f);
-	ast.setOrigin(12.5, 12.5);
+	ast.setTexture(&tex);
+	
+	float r = 0;
+	if (size == 0) r = 25.f;
+	else if (size == 1) r = 12.5f;
+	else if (size == 2) r = 6.25f;
+
+	ast.setRadius(r);
+	ast.setOrigin(r/2, r/2);
 	ast.setPosition(pos);
 	
 	std::random_device rd;
@@ -14,7 +22,7 @@ void Astro::setup(int type, int size, Vector2f pos)
 	std::uniform_real_distribution<float> dist(0, 1);
 
 	vel = Vector2f(dist(engine) / 5, dist(engine) / 5);
-	rot = dist(engine);
+	rot = dist(engine) / 5;
 }
 
 void Astro::draw(RenderWindow& window)
@@ -26,8 +34,8 @@ void Astro::draw(RenderWindow& window)
 	if (pos.y < 0) ast.setPosition(ast.getPosition().x, scrHeight);
 	if (pos.y > scrHeight) ast.setPosition(ast.getPosition().x, 0);
 
-
 	ast.move(vel);
 	ast.rotate(rot);
+
 	window.draw(ast);
 }
