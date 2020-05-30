@@ -2,9 +2,6 @@
 
 Astro::Astro(int size, Texture &tex, Vector2f pos)
 {
-	if (size == 0) 	tex.loadFromFile("res/asteroids/big_ast1.png");
-	if (size == 1) 	tex.loadFromFile("res/asteroids/med_ast1.png");
-
 	ast.setTexture(&tex);
 
 	float r = 0;

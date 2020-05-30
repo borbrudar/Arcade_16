@@ -15,7 +15,7 @@ Asteroids::Asteroids(Font& f)
 	ship.setPosition(scrWidth / 2, scrHeight / 2);
 
 	
-	big1.loadFromFile("res/asteroids/big_ast1.png");
+	big1.loadFromFile("res/asteroids/big_ast3.png");
 	med1.loadFromFile("res/asteroids/med_ast1.png");
 	sma1.loadFromFile("res/asteroids/med_ast1.png");
 	big.push_back(Astro(0, big1, Vector2f(100, 100)));
