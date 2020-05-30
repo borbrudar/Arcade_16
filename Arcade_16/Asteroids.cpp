@@ -28,8 +28,11 @@ Asteroids::Asteroids(Font& f)
 	smat[1].loadFromFile("res/asteroids/small_ast2.png");
 	smat[2].loadFromFile("res/asteroids/small_ast3.png");
 
-
 	big.push_back(Astro(0, bigt[0], Vector2f(100, 100)));
+
+	//collision setup
+	col.setRadius(sh.getSize().x * ship_scale / 2);
+	col.setOrigin(Vector2f(col.getRadius(), col.getRadius()));
 }
 
 void Asteroids::draw(RenderWindow& window)
@@ -45,7 +48,6 @@ void Asteroids::draw(RenderWindow& window)
 	for (int i = 0; i < medium.size(); i++) medium[i].draw(window);
 	for (int i = 0; i < small.size(); i++) small[i].draw(window);
 
-	//test.draw(window);
 }
 
 void Asteroids::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
@@ -54,10 +56,10 @@ void Asteroids::update(Mouse& mouse, RenderWindow& window, state& gameState, Eve
 	while (window.pollEvent(e)) {
 		if (e.type == Event::Closed) window.close();
 		if (e.type == Event::KeyPressed) {
-			if (e.key.code == Keyboard::Left) left = 1; 
-			if (e.key.code == Keyboard::Right) right = 1; 
+			if (e.key.code == Keyboard::Left) left = 1;
+			if (e.key.code == Keyboard::Right) right = 1;
 			if (e.key.code == Keyboard::Space) shoot = 1;
-			if (e.key.code == Keyboard::Up) move = 1; 
+			if (e.key.code == Keyboard::Up) move = 1;
 		}
 		if (e.type == Event::KeyReleased) {
 			if (e.key.code == Keyboard::Left) left = 0;
@@ -67,7 +69,7 @@ void Asteroids::update(Mouse& mouse, RenderWindow& window, state& gameState, Eve
 		}
 	}
 	if (back.isClicked(mouse, window)) gameState = state::menu;
-	
+
 	//ship rot
 	if (left) rot = -rots;
 	else if (right)	rot = rots;
@@ -113,6 +115,51 @@ void Asteroids::update(Mouse& mouse, RenderWindow& window, state& gameState, Eve
 
 		bullets.push_back(astproj(Vector2f(pos.x + x * s, pos.y + y * s),
 			Vector2f(x * bulsped, y * bulsped)));
+	}
+
+	//ship asteroid collison
+	col.setPosition(ship.getPosition());
+	//big
+	for (int i = 0; i < big.size(); i++) {
+		Vector2f c1 = big[i].ast.getPosition();
+		Vector2f c2 = col.getPosition();
+		float r1 = big[i].ast.getRadius(), r2 = col.getRadius();
+
+		float x = std::abs(c1.x - c2.x), y = std::abs(c1.y - c2.y);
+		float dist = std::sqrt(x * x + y * y);
+
+		//collision detected
+		if (dist < r1 + r2) {
+			std::cout << "COL" << std::endl;
+		}
+	}
+	//medium
+	for (int i = 0; i < medium.size(); i++) {
+		Vector2f c1 = medium[i].ast.getPosition();
+		Vector2f c2 = col.getPosition();
+		float r1 = medium[i].ast.getRadius(), r2 = col.getRadius();
+
+		float x = std::abs(c1.x - c2.x), y = std::abs(c1.y - c2.y);
+		float dist = std::sqrt(x * x + y * y);
+
+		//collision detected
+		if (dist < r1 + r2) {
+			std::cout << "COL" << std::endl;
+		}
+	}
+	//small
+	for (int i = 0; i < small.size(); i++) {
+		Vector2f c1 = small[i].ast.getPosition();
+		Vector2f c2 = col.getPosition();
+		float r1 = small[i].ast.getRadius(), r2 = col.getRadius();
+
+		float x = std::abs(c1.x - c2.x), y = std::abs(c1.y - c2.y);
+		float dist = std::sqrt(x * x + y * y);
+
+		//collision detected
+		if (dist < r1 + r2) {
+			std::cout << "COL" << std::endl;
+		}
 	}
 
 	//erase bullets which are offscreen
@@ -202,6 +249,7 @@ void Asteroids::update(Mouse& mouse, RenderWindow& window, state& gameState, Eve
 
 		if (b) break;
 	}
+
 }
 
 astproj::astproj(Vector2f pos, Vector2f vel) : pos(pos), vel(vel)

@@ -2,6 +2,7 @@
 #include "State.h"
 #include "Astro.h"
 #include <vector>
+#include <iostream>
 
 using namespace sf;
 
@@ -51,4 +52,7 @@ private:
 	std::vector<Astro> medium;
 	std::vector<Astro> small;
 	std::vector<Texture> bigt,medt, smat;
+
+	//ast-ship collision
+	CircleShape col;
 };
