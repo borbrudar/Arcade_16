@@ -14,11 +14,22 @@ Asteroids::Asteroids(Font& f)
 	ship.setOrigin(sh.getSize().x / 2, sh.getSize().y / 2);
 	ship.setPosition(scrWidth / 2, scrHeight / 2);
 
-	
-	big1.loadFromFile("res/asteroids/big_ast3.png");
-	med1.loadFromFile("res/asteroids/med_ast1.png");
-	sma1.loadFromFile("res/asteroids/med_ast1.png");
-	big.push_back(Astro(0, big1, Vector2f(100, 100)));
+	bigt.resize(3); medt.resize(3); smat.resize(3);
+
+	bigt[0].loadFromFile("res/asteroids/big_ast1.png");
+	bigt[1].loadFromFile("res/asteroids/big_ast2.png");
+	bigt[2].loadFromFile("res/asteroids/big_ast3.png");
+
+	medt[0].loadFromFile("res/asteroids/med_ast1.png");
+	medt[1].loadFromFile("res/asteroids/med_ast2.png");
+	medt[2].loadFromFile("res/asteroids/med_ast3.png");
+
+	smat[0].loadFromFile("res/asteroids/small_ast1.png");
+	smat[1].loadFromFile("res/asteroids/small_ast2.png");
+	smat[2].loadFromFile("res/asteroids/small_ast3.png");
+
+
+	big.push_back(Astro(0, bigt[0], Vector2f(100, 100)));
 }
 
 void Asteroids::draw(RenderWindow& window)
@@ -123,10 +134,14 @@ void Asteroids::update(Mouse& mouse, RenderWindow& window, state& gameState, Eve
 
 			//collision detected
 			if (dist < r1 + r2) {
-				medium.push_back(Astro(1, med1, big[j].ast.getPosition()));
+				std::random_device rd;
+				std::default_random_engine engine(rd());
+				std::uniform_int_distribution<int> dist(0, 2);
+
+				medium.push_back(Astro(1, medt[dist(engine)], big[j].ast.getPosition()));
 				medium.back().vel = big[j].vel; medium.back().rot = big[j].rot;
 
-				medium.push_back(Astro(1, med1, big[j].ast.getPosition()));
+				medium.push_back(Astro(1, medt[dist(engine)], big[j].ast.getPosition()));
 				medium.back().vel = Vector2f(-big[j].vel.x, -big[j].vel.y); medium.back().rot = -big[j].rot;
 
 				bullets.erase(bullets.begin() + i);
@@ -149,10 +164,14 @@ void Asteroids::update(Mouse& mouse, RenderWindow& window, state& gameState, Eve
 
 			//collision detected
 			if (dist < r1 + r2) {
-				small.push_back(Astro(2, sma1, medium[j].ast.getPosition()));
+				std::random_device rd;
+				std::default_random_engine engine(rd());
+				std::uniform_int_distribution<int> dist(0, 2);
+
+				small.push_back(Astro(2, smat[dist(engine)], medium[j].ast.getPosition()));
 				small.back().vel = medium[j].vel; small.back().rot = medium[j].rot;
 
-				small.push_back(Astro(2, sma1, medium[j].ast.getPosition()));
+				small.push_back(Astro(2, smat[dist(engine)], medium[j].ast.getPosition()));
 				small.back().vel = Vector2f(-medium[j].vel.x, -medium[j].vel.y); medium.back().rot = -medium[j].rot;
 
 				bullets.erase(bullets.begin() + i);
