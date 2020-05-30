@@ -15,8 +15,10 @@ Asteroids::Asteroids(Font& f)
 	ship.setPosition(scrWidth / 2, scrHeight / 2);
 
 	
-	big.push_back(Astro());
-	big.back().setup(0, 0, Vector2f(100, 100));
+	big1.loadFromFile("res/asteroids/big_ast1.png");
+	med1.loadFromFile("res/asteroids/med_ast1.png");
+	sma1.loadFromFile("res/asteroids/med_ast1.png");
+	big.push_back(Astro(0, big1, Vector2f(100, 100)));
 }
 
 void Asteroids::draw(RenderWindow& window)
@@ -108,31 +110,77 @@ void Asteroids::update(Mouse& mouse, RenderWindow& window, state& gameState, Eve
 	//bullet collision
 	for (int i = 0; i < bullets.size(); i++) {
 		bool b = 0;
+		//big asteroids
 		for (int j = 0; j < big.size(); j++) {
+			if (b) break;
 			//circle to circle collision
 			Vector2f c1 = bullets[i].projectile.getPosition();
 			Vector2f c2 = big[j].ast.getPosition();
-			float r1 = bullets[i].projectile.getRadius(), r2 = big[j].ast.getRadius();
+			float r1 = bullets[i].projectile.getRadius(), r2 = big[j].r;
 
 			float x = std::abs(c1.x - c2.x), y = std::abs(c1.y - c2.y);
 			float dist = std::sqrt(x * x + y * y);
 
 			//collision detected
 			if (dist < r1 + r2) {
-				medium.push_back(Astro());
-				medium.back().setup(0, 1, big[j].ast.getPosition());
+				medium.push_back(Astro(1, med1, big[j].ast.getPosition()));
 				medium.back().vel = big[j].vel; medium.back().rot = big[j].rot;
-				medium.push_back(Astro());
-				medium.back().setup(0, 1, big[j].ast.getPosition());
-				medium.back().vel = -big[j].vel; medium.back().rot = -big[j].rot;
+
+				medium.push_back(Astro(1, med1, big[j].ast.getPosition()));
+				medium.back().vel = Vector2f(-big[j].vel.x, -big[j].vel.y); medium.back().rot = -big[j].rot;
 
 				bullets.erase(bullets.begin() + i);
 				big.erase(big.begin() + j);
-				b = 0;
+				b = 1;
 				break;
 			}
 			
 		}
+		//medium asteroids
+		for (int j = 0; j < medium.size(); j++) {
+			if (b) break;
+			//circle to circle collision
+			Vector2f c1 = bullets[i].projectile.getPosition();
+			Vector2f c2 = medium[j].ast.getPosition();
+			float r1 = bullets[i].projectile.getRadius(), r2 = medium[j].r;
+
+			float x = std::abs(c1.x - c2.x), y = std::abs(c1.y - c2.y);
+			float dist = std::sqrt(x * x + y * y);
+
+			//collision detected
+			if (dist < r1 + r2) {
+				small.push_back(Astro(2, sma1, medium[j].ast.getPosition()));
+				small.back().vel = medium[j].vel; small.back().rot = medium[j].rot;
+
+				small.push_back(Astro(2, sma1, medium[j].ast.getPosition()));
+				small.back().vel = Vector2f(-medium[j].vel.x, -medium[j].vel.y); medium.back().rot = -medium[j].rot;
+
+				bullets.erase(bullets.begin() + i);
+				medium.erase(medium.begin() + j);
+				b = 1;
+				break;
+			}
+		}
+		//small asteroids
+		for (int j = 0; j < small.size(); j++) {
+			if (b) break;
+			//circle to circle collision
+			Vector2f c1 = bullets[i].projectile.getPosition();
+			Vector2f c2 = small[j].ast.getPosition();
+			float r1 = bullets[i].projectile.getRadius(), r2 = small[j].r;
+
+			float x = std::abs(c1.x - c2.x), y = std::abs(c1.y - c2.y);
+			float dist = std::sqrt(x * x + y * y);
+
+			//collision detected
+			if (dist < r1 + r2) {
+				bullets.erase(bullets.begin() + i);
+				small.erase(small.begin() + j);
+				b = 1;
+				break;
+			}
+		}
+
 		if (b) break;
 	}
 }

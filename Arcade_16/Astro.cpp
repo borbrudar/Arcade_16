@@ -1,22 +1,22 @@
 #include "Astro.h"
 
-void Astro::setup(int type, int size, Vector2f pos)
+Astro::Astro(int size, Texture &tex, Vector2f pos)
 {
-	if (size == 0) {
-		if (!tex.loadFromFile("res/asteroids/big_ast1.png")) std::cout << "EROR";
-	}
+	if (size == 0) 	tex.loadFromFile("res/asteroids/big_ast1.png");
+	if (size == 1) 	tex.loadFromFile("res/asteroids/med_ast1.png");
 
 	ast.setTexture(&tex);
-	
-	float r = 0;
-	if (size == 0) r = 25.f;
-	else if (size == 1) r = 12.5f;
-	else if (size == 2) r = 6.25f;
 
+	float r = 0;
+	if (size == 0) r = 40.f;
+	else if (size == 1) r = 20.f;
+	else if (size == 2) r = 10.f;
+
+	this->r = r;
 	ast.setRadius(r);
-	ast.setOrigin(r/2, r/2);
+	ast.setOrigin(r / 2, r / 2);
 	ast.setPosition(pos);
-	
+
 	std::random_device rd;
 	std::default_random_engine engine(rd());
 	std::uniform_real_distribution<float> dist(0, 1);

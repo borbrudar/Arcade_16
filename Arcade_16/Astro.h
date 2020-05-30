@@ -9,13 +9,10 @@ using namespace sf;
 class Astro {
 public:
 	Astro() = default;
-	void setup(int type, int size, Vector2f pos);
+	Astro(int type, Texture &tex, Vector2f pos);
 	void draw(RenderWindow& window);
 
 	CircleShape ast;
-	float rot = 0;
+	float rot = 0, r = 0;
 	Vector2f vel{ 0,0 };
-private:
-	std::vector<RectangleShape> parts;
-	Texture tex;
 };

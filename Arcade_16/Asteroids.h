@@ -50,5 +50,5 @@ private:
 	std::vector<Astro> big;
 	std::vector<Astro> medium;
 	std::vector<Astro> small;
-	Astro test;
+	Texture big1, med1, sma1;
 };
