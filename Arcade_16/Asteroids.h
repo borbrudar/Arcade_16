@@ -13,6 +13,7 @@ public:
 	astproj(Vector2f pos, Vector2f vel);
 	void draw(RenderWindow& window);
 	bool isOffScreen();
+	
 
 	CircleShape projectile;
 	Vector2f pos, vel;
@@ -23,6 +24,7 @@ public:
 	Asteroids(Font& f);
 	void draw(RenderWindow& window);
 	void update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e);
+	Vector2f pos();
 
 private:
 	Texture sh;
@@ -52,6 +54,9 @@ private:
 	std::vector<Astro> medium;
 	std::vector<Astro> small;
 	std::vector<Texture> bigt,medt, smat;
+	Clock aClock;
+	float atimer = 0, atime = 0, adelay = 2.0f;
+	int amax = 4;
 
 	//ast-ship collision
 	CircleShape col;

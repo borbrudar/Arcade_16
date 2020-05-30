@@ -28,7 +28,16 @@ Asteroids::Asteroids(Font& f)
 	smat[1].loadFromFile("res/asteroids/small_ast2.png");
 	smat[2].loadFromFile("res/asteroids/small_ast3.png");
 
-	big.push_back(Astro(0, bigt[0], Vector2f(100, 100)));
+	//asteroids
+	std::random_device rd;
+	std::default_random_engine engine(rd());
+	std::uniform_int_distribution<int> dist(0, 2);
+
+	big.push_back(Astro(0, bigt[dist(engine)], pos() ) );
+	big.push_back(Astro(0, bigt[dist(engine)], pos() ) );
+	big.push_back(Astro(0, bigt[dist(engine)], pos() ) );
+	big.push_back(Astro(0, bigt[dist(engine)], pos() ) );
+	big.push_back(Astro(0, bigt[dist(engine)], pos() ) );
 
 	//collision setup
 	col.setRadius(sh.getSize().x * ship_scale / 2);
@@ -252,6 +261,26 @@ void Asteroids::update(Mouse& mouse, RenderWindow& window, state& gameState, Eve
 
 }
 
+Vector2f Asteroids::pos()
+{
+	float x1 = 0, y1 = 0;
+	std::random_device rd;
+	std::default_random_engine engine(rd());
+	std::uniform_int_distribution<int> xd(0, scrWidth - bigt[0].getSize().x);
+	std::uniform_int_distribution<int> yd(0, scrHeight - bigt[0].getSize().x);
+	std::uniform_int_distribution<int> p(0, 1);
+
+	if (p(engine) == 0) {
+		x1 = 0;
+		y1 = yd(engine);
+	}
+	else {
+		x1 = xd(engine);
+		y1 = 0;
+	}
+	return Vector2f(x1, y1);
+}
+
 astproj::astproj(Vector2f pos, Vector2f vel) : pos(pos), vel(vel)
 {
 	projectile.setRadius(ast_r);
@@ -273,3 +302,5 @@ bool astproj::isOffScreen()
 
 	return false;
 }
+
+
