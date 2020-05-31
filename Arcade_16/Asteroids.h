@@ -3,6 +3,7 @@
 #include "Astro.h"
 #include <vector>
 #include <iostream>
+#include <fstream>
 
 using namespace sf;
 
@@ -14,7 +15,6 @@ public:
 	void draw(RenderWindow& window);
 	bool isOffScreen();
 	
-
 	CircleShape projectile;
 	Vector2f pos, vel;
 };
@@ -30,6 +30,9 @@ private:
 	Texture sh;
 	Sprite ship;
 	Button back;
+	long score = 0, highscore;
+	std::fstream hs;
+	Text scr;
 
 	//ship rotation
 	const float ship_scale = 0.2f;

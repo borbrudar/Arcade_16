@@ -2,6 +2,19 @@
 
 Asteroids::Asteroids(Font& f)
 {	
+	//scores
+	scr.setPosition(20, 10);
+	scr.setCharacterSize(26);
+	scr.setFillColor(Color::White);
+	scr.setFont(f);
+
+	//read from file
+	std::string hsc;
+	hs.open("res/asteroids/hs.txt");
+	std::getline(hs, hsc);
+	highscore = std::stoi(hsc);
+	hs.close();
+
 	//setup back button
 	std::string text1;
 	text1.assign("Back");
@@ -57,10 +70,32 @@ void Asteroids::draw(RenderWindow& window)
 	for (int i = 0; i < medium.size(); i++) medium[i].draw(window);
 	for (int i = 0; i < small.size(); i++) small[i].draw(window);
 
+	//draw score and highscore
+	std::string text2;
+	text2.assign("Score: ");
+	text2 = text2 + std::to_string(score);
+	scr.setString(text2);
+	scr.setPosition(20, 10);
+	window.draw(scr);
+
+	text2.assign("Highscore: ");
+	text2 = text2 + std::to_string(highscore);
+	scr.setString(text2);
+	scr.setPosition(200, 10);
+	window.draw(scr);
 }
 
 void Asteroids::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
 {
+	//update highscore
+	if (score > highscore){
+		highscore = score;
+		//write to file and close it
+		hs.open("res/asteroids/hs.txt", std::ios::out | std::ios::trunc);
+		hs << highscore;
+		hs.close();
+	}
+
 	//click click
 	while (window.pollEvent(e)) {
 		if (e.type == Event::Closed) window.close();
@@ -190,6 +225,7 @@ void Asteroids::update(Mouse& mouse, RenderWindow& window, state& gameState, Eve
 
 			//collision detected
 			if (dist < r1 + r2) {
+				score += 10;
 				std::random_device rd;
 				std::default_random_engine engine(rd());
 				std::uniform_int_distribution<int> dist(0, 2);
@@ -220,6 +256,7 @@ void Asteroids::update(Mouse& mouse, RenderWindow& window, state& gameState, Eve
 
 			//collision detected
 			if (dist < r1 + r2) {
+				score += 20;
 				std::random_device rd;
 				std::default_random_engine engine(rd());
 				std::uniform_int_distribution<int> dist(0, 2);
@@ -249,6 +286,7 @@ void Asteroids::update(Mouse& mouse, RenderWindow& window, state& gameState, Eve
 
 			//collision detected
 			if (dist < r1 + r2) {
+				score += 30;
 				bullets.erase(bullets.begin() + i);
 				small.erase(small.begin() + j);
 				b = 1;
