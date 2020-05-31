@@ -6,22 +6,27 @@ Menu::Menu(Font& f)
 	//tetris
 	std::string text1;
 	text1.assign("1.Tetris");
-	tetris.setup(f, text1, Color::Green, Vector2f(350, 50), Vector2f(70, 50), 24);
+	tetris.setup(f, text1, Color::Green, Vector2f(350, 40), Vector2f(70, 30), 22);
 	//arkanoid
 	text1.assign("2. Arkanoid");
-	arkanoid.setup(f, text1, Color::Green, Vector2f(350, 50), Vector2f(70, 140), 24);
+	arkanoid.setup(f, text1, Color::Green, Vector2f(350, 40), Vector2f(70, 90), 22);
 
 	//space invaders
 	text1.assign("3. Space Invaders");
-	spaceinvaders.setup(f, text1, Color::Green, Vector2f(350, 50), Vector2f(70, 220), 24);
+	spaceinvaders.setup(f, text1, Color::Green, Vector2f(350, 40), Vector2f(70, 150), 22);
 
 	//pong
 	text1.assign("4. Pong");
-	pong.setup(f, text1, Color::Green, Vector2f(350, 50), Vector2f(70, 300), 24);
+	pong.setup(f, text1, Color::Green, Vector2f(350, 40), Vector2f(70, 210), 22);
 
 	//asteroids
 	text1.assign("5. Asteroids");
-	asteroids.setup(f, text1, Color::Green, Vector2f(350, 50), Vector2f(70, 380), 24);
+	asteroids.setup(f, text1, Color::Green, Vector2f(350, 40), Vector2f(70, 270), 22);
+
+	//pac man
+	text1.assign("6.Pac Man");
+	pacman.setup(f, text1, Color::Green, Vector2f(350, 40), Vector2f(70, 330), 22);
+
 }
 
 
@@ -32,6 +37,7 @@ void Menu::draw(RenderWindow &window)
 	spaceinvaders.draw(window);
 	pong.draw(window);
 	asteroids.draw(window);
+	pacman.draw(window);
 }
 
 void Menu::update(Mouse &mouse, RenderWindow& window, state &gameState, Event &e)
@@ -46,4 +52,5 @@ void Menu::update(Mouse &mouse, RenderWindow& window, state &gameState, Event &e
 	if (spaceinvaders.isClicked(mouse, window)) gameState = state::space_invaders;
 	if (pong.isClicked(mouse, window)) gameState = state::pong;
 	if (asteroids.isClicked(mouse, window)) gameState = state::asteroids;
+	if (pacman.isClicked(mouse, window)) gameState = state::pacman;
 }

@@ -6,5 +6,6 @@ enum class state {
 	arkanoid,
 	space_invaders,
 	pong,
-	asteroids
+	asteroids, 
+	pacman
 };

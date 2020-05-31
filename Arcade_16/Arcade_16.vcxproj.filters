@@ -34,6 +34,9 @@
     <Filter Include="Games\Space_Invaders">
       <UniqueIdentifier>{b3d61615-3911-4da3-b749-29a7a4a0ea49}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Games\Pac_Man">
+      <UniqueIdentifier>{4a0ba12b-87f9-4950-aed5-08fac92cf73b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -68,6 +71,9 @@
     </ClCompile>
     <ClCompile Include="Astro.cpp">
       <Filter>Games\Asteroids</Filter>
+    </ClCompile>
+    <ClCompile Include="Pac_Man.cpp">
+      <Filter>Games\Pac_Man</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -106,6 +112,9 @@
     </ClInclude>
     <ClInclude Include="Button.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Pac_Man.h">
+      <Filter>Games\Pac_Man</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
