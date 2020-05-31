@@ -33,11 +33,11 @@ Asteroids::Asteroids(Font& f)
 	std::default_random_engine engine(rd());
 	std::uniform_int_distribution<int> dist(0, 2);
 
-	big.push_back(Astro(0, bigt[dist(engine)], pos() ) );
-	big.push_back(Astro(0, bigt[dist(engine)], pos() ) );
-	big.push_back(Astro(0, bigt[dist(engine)], pos() ) );
-	big.push_back(Astro(0, bigt[dist(engine)], pos() ) );
-	big.push_back(Astro(0, bigt[dist(engine)], pos() ) );
+	big.push_back(Astro(0, bigt[dist(engine)], pos() ) ) ;
+	big.push_back(Astro(0, bigt[dist(engine)], pos() ) ) ;
+	big.push_back(Astro(0, bigt[dist(engine)], pos() ) ) ;
+	big.push_back(Astro(0, bigt[dist(engine)], pos() ) ) ;
+	big.push_back(Astro(0, bigt[dist(engine)], pos() ) ) ;
 
 	//collision setup
 	col.setRadius(sh.getSize().x * ship_scale / 2);
@@ -258,6 +258,22 @@ void Asteroids::update(Mouse& mouse, RenderWindow& window, state& gameState, Eve
 
 		if (b) break;
 	}
+
+	//add new asteroids
+	if (big.size() < bmax && medium.size() < mmax && small.size() < smax) {
+		atime = aClock.getElapsedTime().asSeconds();
+		atimer += atime;
+		aClock.restart();
+
+		if (atimer > adelay) {
+			std::random_device rd;
+			std::default_random_engine engine(rd());
+			std::uniform_int_distribution<int> dist(0, 2);
+
+			big.push_back(Astro(0, bigt[dist(engine)], pos()));
+			atimer = 0;
+		}
+	} 
 
 }
 

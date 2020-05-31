@@ -55,8 +55,8 @@ private:
 	std::vector<Astro> small;
 	std::vector<Texture> bigt,medt, smat;
 	Clock aClock;
-	float atimer = 0, atime = 0, adelay = 2.0f;
-	int amax = 4;
+	float atimer = 0, atime = 0, adelay = 10.0f;
+	int bmax = 4, mmax = 8, smax = 12;
 
 	//ast-ship collision
 	CircleShape col;
