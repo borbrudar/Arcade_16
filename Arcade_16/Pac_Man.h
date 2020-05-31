@@ -1,5 +1,18 @@
 #pragma once
 #include "State.h"
+#include "Animation.h"
+
+class Wall {
+public:
+	Wall(Vector2f pos, Vector2f size, Texture &tex, int rot = 0) {
+		wall.setTexture(&tex);
+		wall.setPosition(pos);
+		wall.setSize(size);
+		wall.setRotation(rot);
+	};
+	RectangleShape wall;
+};
+
 
 class Pac_Man : public State {
 public:
@@ -9,4 +22,15 @@ public:
 
 private:
 	Button back;
+
+	//pacman
+	Animation pacman;
+	bool up = 0, down = 0, left = 0, right = 0;
+	float speed = 0.5f, pscale = 0.25f; 
+	Vector2f pSize{ 80,80 }, prevPos;
+
+	//walls
+	Texture pp, st, cp, cr;
+	Image lvl;
+	std::vector<Wall> walls;
 };

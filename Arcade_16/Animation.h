@@ -15,6 +15,6 @@ public:
 private:
 	Clock clock;
 	float time = 0, timer = 0, delay = 0.2f;
-	Texture t1, t2;
+	Texture t1;
 	int swap = 0;
 };
