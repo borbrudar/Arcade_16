@@ -24,15 +24,18 @@ public:
 	Asteroids(Font& f);
 	void draw(RenderWindow& window);
 	void update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e);
-	Vector2f pos();
 
 private:
+	Vector2f pos();
+	void shipCol(std::vector<Astro>& vec);
+
 	Texture sh;
 	Sprite ship;
 	Button back;
 	long score = 0, highscore;
 	std::fstream hs;
 	Text scr;
+	bool gameOver = 0;
 
 	//ship rotation
 	const float ship_scale = 0.2f;

@@ -24,6 +24,10 @@ Astro::Astro(int size, Texture &tex, Vector2f pos)
 
 void Astro::draw(RenderWindow& window)
 {
+	window.draw(ast);
+}
+
+void Astro::update() {
 	Vector2f pos = ast.getPosition();
 
 	if (pos.x < 0) ast.setPosition(scrWidth, ast.getPosition().y);
@@ -33,6 +37,4 @@ void Astro::draw(RenderWindow& window)
 
 	ast.move(vel);
 	ast.rotate(rot);
-
-	window.draw(ast);
 }
