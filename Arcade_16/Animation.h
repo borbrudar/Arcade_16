@@ -6,7 +6,7 @@ class Animation {
 public:
 	Animation() = default;
 	Animation(std::string res1, Vector2f size);
-	void setup(std::string res1, Vector2f size);
+	void setup(std::string res1, Vector2f size, Vector2f start = Vector2f(0,0));
 	void draw(RenderWindow& window);
 
 	Sprite animation;

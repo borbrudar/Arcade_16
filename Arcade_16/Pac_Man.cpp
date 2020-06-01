@@ -56,6 +56,9 @@ Pac_Man::Pac_Man(Font& f)
 
 		}
 	}
+
+	//ghosts
+	slinky.setup(0);
 }
 
 void Pac_Man::draw(RenderWindow& window)
@@ -66,6 +69,8 @@ void Pac_Man::draw(RenderWindow& window)
 	pacman.draw(window);
 
 	for (int i = 0; i < walls.size(); i++) window.draw(walls[i].wall);
+
+	slinky.draw(window);
 }
 
 void Pac_Man::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)

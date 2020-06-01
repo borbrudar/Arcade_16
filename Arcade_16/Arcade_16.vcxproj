@@ -151,6 +151,7 @@
     <ClCompile Include="Asteroids.cpp" />
     <ClCompile Include="Astro.cpp" />
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Ghost.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Pac_Man.cpp" />
@@ -165,6 +166,7 @@
     <ClInclude Include="Asteroids.h" />
     <ClInclude Include="Astro.h" />
     <ClInclude Include="Button.h" />
+    <ClInclude Include="Ghost.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Pac_Man.h" />
     <ClInclude Include="Pong.h" />

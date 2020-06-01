@@ -1,6 +1,7 @@
 #pragma once
 #include "State.h"
 #include "Animation.h"
+#include "Ghost.h"
 
 class Wall {
 public:
@@ -37,4 +38,7 @@ private:
 	Texture pp, st, cp, cr;
 	Image lvl;
 	std::vector<Wall> walls;
+
+	//ghosts
+	Ghost slinky;
 };
