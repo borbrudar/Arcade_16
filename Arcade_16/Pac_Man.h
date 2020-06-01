@@ -8,6 +8,10 @@ public:
 		wall.setTexture(&tex);
 		wall.setPosition(pos);
 		wall.setSize(size);
+
+		if (rot == 90) { wall.setOrigin(0 , size.y); }
+		if (rot == 180) wall.setOrigin(size.x, size.y);
+		if (rot == 270) wall.setOrigin(size.x, 0);
 		wall.setRotation(rot);
 	};
 	RectangleShape wall;
@@ -26,7 +30,7 @@ private:
 	//pacman
 	Animation pacman;
 	bool up = 0, down = 0, left = 0, right = 0;
-	float speed = 0.5f, pscale = 0.25f; 
+	float speed = 0.5f, pscale = 0.2f; 
 	Vector2f pSize{ 80,80 }, prevPos;
 
 	//walls

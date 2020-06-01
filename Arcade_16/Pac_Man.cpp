@@ -10,24 +10,49 @@ Pac_Man::Pac_Man(Font& f)
 	//pacman
 	pacman.setup("res/pacman/pacman.png", pSize);
 	pacman.animation.setOrigin(pSize.x / 2, pSize.y / 2);
-	pacman.animation.setScale(pscale, pscale);
-	pacman.animation.setPosition(scrWidth / 2, scrHeight / 2);
+	pacman.animation.setScale(pscale , pscale);
+	pacman.animation.setPosition(10 * 20 - 10, 19 * 20 -10);
 
 	//walls
 	pp.loadFromFile("res/pacman/pipe.png");
 	cp.loadFromFile("res/pacman/straight.png");
 	st.loadFromFile("res/pacman/par.png");
+	cr.loadFromFile("res/pacman/corner.png");
 
 	//level
-	float sx = pSize.x * pscale, sy = pSize.y * pscale;
+	float sx = pSize.x * 0.25, sy = pSize.y * 0.25;
 	lvl.loadFromFile("res/pacman/lvl.png");
 
 	for (int x = 0; x < lvl.getSize().x; x++) {
 		for (int y = 0; y < lvl.getSize().y; y++) {
-			if (lvl.getPixel(x, y) == Color::White)
-				walls.push_back(Wall(Vector2f(x * sx + sx, y * sy), Vector2f(sx, sy), st));
+			//parrarel
+			if (lvl.getPixel(x, y) == Color(255,255,255,255))
+				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), st));
 			if (lvl.getPixel(x, y) == Color::Black)
-				walls.push_back(Wall(Vector2f(x * sx + sx, y * sy), Vector2f(sx, sy), st, 90));
+				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), st, 90));
+			//corners
+			if (lvl.getPixel(x, y) == Color(255,255,255,254))
+				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), cr));
+			if (lvl.getPixel(x, y) == Color(255, 255, 255, 253))
+				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), cr, 90));
+			if (lvl.getPixel(x, y) == Color(255, 255, 255, 252))
+				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), cr, 180));
+			if (lvl.getPixel(x, y) == Color(255, 255, 255, 251))
+				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), cr, 270));
+			//pipe
+			if (lvl.getPixel(x, y) == Color(255, 0, 0, 255))
+				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), pp));
+			if (lvl.getPixel(x, y) == Color(255, 0, 0, 253))
+				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), pp, 90));
+			if (lvl.getPixel(x, y) == Color(255, 1, 1, 253))
+				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), pp, 180));
+			if (lvl.getPixel(x, y) == Color(255, 0, 0, 252))
+				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), pp, 270));
+			//straight
+			if (lvl.getPixel(x, y) == Color(0, 0, 255, 255))
+				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), cp));
+			if (lvl.getPixel(x, y) == Color(1, 1, 255, 255))
+				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), cp, 180));
 
 		}
 	}
