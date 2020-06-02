@@ -7,11 +7,7 @@ Pac_Man::Pac_Man(Font& f)
 	text1.assign("Back");
 	back.setup(f, text1, Color::Blue, Vector2f(50, 30), Vector2f(580, 20), 14);
 
-	//pacman
-	pacman.setup("res/pacman/pacman.png", pSize);
-	pacman.animation.setOrigin(pSize.x / 2, pSize.y / 2);
-	pacman.animation.setScale(pscale , pscale);
-	pacman.animation.setPosition(10 * 20 - 10, 19 * 20 -10);
+
 
 	//walls
 	pp.loadFromFile("res/pacman/pipe.png");
@@ -19,46 +15,59 @@ Pac_Man::Pac_Man(Font& f)
 	st.loadFromFile("res/pacman/par.png");
 	cr.loadFromFile("res/pacman/corner.png");
 
-	//level
+	//size
 	float sx = pSize.x * 0.25, sy = pSize.y * 0.25;
+
+	//pacman
+	pacman.setup("res/pacman/pacman.png", pSize);
+	pacman.animation.setOrigin(pSize.x / 2, pSize.y / 2);
+	pacman.animation.setScale(pscale, pscale);
+	pacman.animation.setPosition(10 * sx - sx / 2 + start.x, 17 * sy - sy / 2 + start.y);
+
+	//level
 	lvl.loadFromFile("res/pacman/lvl.png");
 
+	field.resize(19);
 	for (int x = 0; x < lvl.getSize().x; x++) {
+		field[x].resize(22);
 		for (int y = 0; y < lvl.getSize().y; y++) {
+			int size = walls.size();
 			//parrarel
-			if (lvl.getPixel(x, y) == Color(255,255,255,255))
-				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), st));
+			if (lvl.getPixel(x, y) == Color(255, 255, 255, 255))
+				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), st, start));
 			if (lvl.getPixel(x, y) == Color::Black)
-				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), st, 90));
+				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), st, start, 90));
 			//corners
-			if (lvl.getPixel(x, y) == Color(255,255,255,254))
-				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), cr));
+			if (lvl.getPixel(x, y) == Color(255, 255, 255, 254))
+				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), cr, start));
 			if (lvl.getPixel(x, y) == Color(255, 255, 255, 253))
-				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), cr, 90));
+				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), cr, start, 90));
 			if (lvl.getPixel(x, y) == Color(255, 255, 255, 252))
-				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), cr, 180));
+				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), cr, start, 180));
 			if (lvl.getPixel(x, y) == Color(255, 255, 255, 251))
-				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), cr, 270));
+				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), cr, start, 270));
 			//pipe
 			if (lvl.getPixel(x, y) == Color(255, 0, 0, 255))
-				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), pp));
+				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), pp, start));
 			if (lvl.getPixel(x, y) == Color(255, 0, 0, 253))
-				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), pp, 90));
+				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), pp, start, 90));
 			if (lvl.getPixel(x, y) == Color(255, 1, 1, 253))
-				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), pp, 180));
+				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), pp, start, 180));
 			if (lvl.getPixel(x, y) == Color(255, 0, 0, 252))
-				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), pp, 270));
+				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), pp, start, 270));
 			//straight
 			if (lvl.getPixel(x, y) == Color(0, 0, 255, 255))
-				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), cp));
+				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), cp, start));
 			if (lvl.getPixel(x, y) == Color(1, 1, 255, 255))
-				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), cp, 180));
-
+				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), cp, start, 180));
+			
+			//field
+			if (field.size() > size) field[x][y] = 1; else field[x][y] = 0;
 		}
 	}
 
 	//ghosts
-	slinky.setup(0);
+	blinky.setup(0, Vector2f{ 9,10 }, Vector2f(sx, sy), start, field);
 }
 
 void Pac_Man::draw(RenderWindow& window)
@@ -66,15 +75,18 @@ void Pac_Man::draw(RenderWindow& window)
 	window.clear(Color::Black);
 	back.draw(window);
 
-	pacman.draw(window);
+	
 
 	for (int i = 0; i < walls.size(); i++) window.draw(walls[i].wall);
 
-	slinky.draw(window);
+	pacman.draw(window);
+	blinky.draw(window);
 }
 
 void Pac_Man::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
 {
+	blinky.update(pacman.animation.getPosition());
+
 	while (window.pollEvent(e)) {
 		if (e.type == Event::Closed) window.close();
 		if (e.type == Event::KeyPressed) {
@@ -94,7 +106,8 @@ void Pac_Man::update(Mouse& mouse, RenderWindow& window, state& gameState, Event
 			}
 		}
 	}
-
+	if (back.isClicked(mouse, window)) gameState = state::menu;
+	
 	//movement
 	prevPos = pacman.animation.getPosition();
 	if (up) {
@@ -120,6 +133,4 @@ void Pac_Man::update(Mouse& mouse, RenderWindow& window, state& gameState, Event
 			pacman.animation.setPosition(prevPos);
 		}
 	}
-
-	if (back.isClicked(mouse, window)) gameState = state::menu;
 }

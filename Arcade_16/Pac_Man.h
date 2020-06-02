@@ -5,9 +5,9 @@
 
 class Wall {
 public:
-	Wall(Vector2f pos, Vector2f size, Texture &tex, int rot = 0) {
+	Wall(Vector2f pos, Vector2f size, Texture &tex, Vector2f start,int rot = 0) {
 		wall.setTexture(&tex);
-		wall.setPosition(pos);
+		wall.setPosition(pos.x + start.x, pos.y + start.y);
 		wall.setSize(size);
 
 		if (rot == 90) { wall.setOrigin(0 , size.y); }
@@ -27,6 +27,8 @@ public:
 
 private:
 	Button back;
+	Vector2f start{ 150, 20 };
+	std::vector<std::vector<int>> field;
 
 	//pacman
 	Animation pacman;
@@ -40,5 +42,5 @@ private:
 	std::vector<Wall> walls;
 
 	//ghosts
-	Ghost slinky;
+	Ghost blinky;
 };
