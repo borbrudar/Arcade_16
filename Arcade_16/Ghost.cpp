@@ -6,94 +6,123 @@ void Ghost::setup(int type, Vector2f pos, Vector2f size, Vector2f start, std::ve
 	this->type = type;
 	this->field = field;
 	this->tSize = size;
-	up.setup("res/pacman/gh.png", this->size);
-	up.animation.setScale(scale);
+	animation.animation.setScale(scale);
+	animation.delay = 0.4f;
 	this->pos = Vector2f(pos.x * size.x + start.x, pos.y * size.y + start.y);
 }
 
 void Ghost::draw(RenderWindow& window)
 {
-	up.animation.setPosition(pos);
-	up.draw(window);
+	animation.animation.setPosition(pos);
+	animation.draw(window);
 
-	for(int i = 0; i < test.size();i++) window.draw(test[i]);
 }
 
 void Ghost::update(Vector2f player)
 {
-	//remove multipliers, add pathfinding alg
-	Vector2f target = Vector2f((std::round((player.x) / size.x) ), (std::round((player.y) / size.y)));
-	Vector2f pos = Vector2f(std::round(this->pos.x / size.x), std::round(this->pos.y/ size.y));
+	//normalize coords to integers
+	Vector2i pac = Vector2i((std::round((player.x - start.x) / size.x)) , (std::round((player.y - start.y) / size.y)));
+	Vector2i pos = Vector2i(std::round((this->pos.x - start.x) / size.x), std::round((this->pos.y - start.y)/ size.y));
+	
+	if(beg) {
+		findPath(pac, pos); beg = 0;
+	}
+	//if move done find next target
+	if (move(pos)) findPath(pac, pos);
 
-	if (pos.x >= target.x) ud = 0; else ud = 1;
-	if (pos.y >= target.y) lr = 0; else lr = 1;
+}
 
-	findPath(player, pos);
+void Ghost::findPath(Vector2i target, Vector2i curPos)
+{
+	//check all the neighbours
+	std::vector<float> neighbours;
+
+	//check if out of bounds and add to the list 
+	  //right
+	if ((curPos.x++) < (target.x ) &&
+		(curPos.x++) > 0 && field[curPos.x++][curPos.y] != 1) {
+		neighbours.push_back(std::sqrt(std::pow(target.x - curPos.x, 2) + std::pow(target.y - curPos.y, 2)));
+	}
+	else neighbours.push_back(99999);
+	//left
+	if ((curPos.x--) < (target.x) &&
+		(curPos.x--) > start.x && field[curPos.x--][curPos.y] != 1) {
+		neighbours.push_back(std::sqrt(std::pow(target.x - curPos.x, 2) + std::pow(target.y - curPos.y, 2)));
+	}
+	else neighbours.push_back(99999);
+	//down
+	if ((curPos.y++) < ( target.y) &&
+		(curPos.y++) > 0 && field[curPos.x][curPos.y++] != 1) {
+		neighbours.push_back(std::sqrt(std::pow(target.x - curPos.x, 2) + std::pow(target.y - curPos.y, 2)));
+	}
+	else neighbours.push_back(99999);
+	//up
+	if ((curPos.y--) < (target.y) &&
+		(curPos.y--) > 0 && field[curPos.x][curPos.y--] != 1) {
+		neighbours.push_back(std::sqrt(std::pow(target.x - curPos.x, 2) + std::pow(target.y - curPos.y, 2)));
+	}
+	else neighbours.push_back(99999);
 
 
-	test.resize(path.size());
-	for (int i = 0; i < test.size(); i++) {
-		test[i].setFillColor(Color(0, 0, 0, 0));
-		test[i].setOutlineColor(Color::Red);
-		test[i].setOutlineThickness(2.f);
-		test[i].setSize(tSize);
-		
-		test[i].setPosition(path[i]);
+	//choose the one with lowest value and add to instructions
+	int lowest = 999999;
+	for (int i = 0; i < neighbours.size(); i++) {
+		if (neighbours[i] < lowest) {
+			lowest = neighbours[i];
+			instruction = i;
+			switch (i) {
+			case 0:
+				newPos = Vector2i(curPos.x += tSize.x, curPos.y);
+				break;
+			case 1:
+				newPos = Vector2i(curPos.x -= tSize.x, curPos.y);
+				break;
+			case 2:
+				newPos = Vector2i(curPos.x, curPos.y += tSize.x);
+				break;
+			case 3:
+				newPos = Vector2i(curPos.x, curPos.y -= tSize.x);
+				break;
+			}
+
+			if (i == 0) {
+				int c = 0;
+			}
+		}
 	}
 
 }
 
-void Ghost::findPath(Vector2f target, Vector2f curPos)
+bool Ghost::move(Vector2i curPos)
 {
-	if (curPos == target) {
-		foundPath = 1; return;
+	switch (instruction) {
+	case 0:
+		//right
+		animation.setup("res/pacman/gh.png", size, Vector2f(size.x * 6, 0));
+		pos.x += speed;
+		break;
+	case 1: 
+		//left
+		animation.setup("res/pacman/gh.png", size, Vector2f(size.x * 4, 0));
+		pos.x -= speed;
+		break;
+	case 2:
+		//down
+		animation.setup("res/pacman/gh.png", size, Vector2f(size.x * 2,0));
+		pos.y += speed;
+		break;
+	case 3:
+		//up
+		animation.setup("res/pacman/gh.png", size);
+		pos.y -= speed;
+		break;
 	}
 
-	//pathfind
-	int way = 0;
-	if (way == 0) {
-		if (curPos.x + 1 < sfield.x) {
-			if (field[curPos.x + 1][curPos.y] != 1) {
-				path.push_back(Vector2f(curPos));
-				findPath(target, Vector2f(curPos.x + 1, curPos.y));
-			}
-			else way++;
-		}
-		else way++;
-	}
-	else way++;
-	if (way == 1 ) {
-		if ((curPos.x - 1) >= 0) {
-			if (field[curPos.x - 1][curPos.y] != 1) {
-				path.push_back(Vector2f(curPos));
-				findPath(target, Vector2f(curPos.x - 1, curPos.y));
-			}
-			else way++;
-		}
-		else way++;
-	}
-	else way++;
-	if (way == 2 ) {
-		if (curPos.y + 1 < sfield.y) {
-			if (field[curPos.x][curPos.y + 1] != 1) {
-				path.push_back(Vector2f(curPos));
-				findPath(target, Vector2f(curPos.x, curPos.y + 1));
-			}
-			else way++;
-		}
-		else way++;
-	}
-	else way++;
-	if (way == 3 ) {
-		if (curPos.y - 1 >= 0) {
-			if (field[curPos.x][curPos.y - 1] != 1) {
-				path.push_back(Vector2f(curPos));
-				findPath(target, Vector2f(curPos.x, curPos.y - 1));
-			}
-		}
-	}
-	else way++;
+	distTraveled += speed;
 
-	if (foundPath) return;
-	if(path.size() > 0) path.pop_back();
+	if (distTraveled > tSize.x) {
+		distTraveled = 0.f;
+		return 1;
+	}
+	return 0;
 }

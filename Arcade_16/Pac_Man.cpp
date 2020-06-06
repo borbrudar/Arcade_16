@@ -62,12 +62,12 @@ Pac_Man::Pac_Man(Font& f)
 				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), cp, start, 180));
 			
 			//field
-			if (field.size() > size) field[x][y] = 1; else field[x][y] = 0;
+			if (walls.size() > size) field[x][y] = 1; else field[x][y] = 0;
 		}
 	}
 
 	//ghosts
-	blinky.setup(0, Vector2f{ 9,10 }, Vector2f(sx, sy), start, field);
+	blinky.setup(0, Vector2f{ 11,8 }, Vector2f(sx, sy), start, field);
 }
 
 void Pac_Man::draw(RenderWindow& window)

@@ -11,10 +11,10 @@ public:
 
 	Sprite animation;
 	Vector2f size;
-
+	float delay = 0.2f;
 private:
 	Clock clock;
-	float time = 0, timer = 0, delay = 0.2f;
+	float time = 0, timer = 0;
 	Texture t1;
 	int swap = 0;
 };
