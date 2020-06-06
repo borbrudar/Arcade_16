@@ -21,9 +21,10 @@ void Ghost::draw(RenderWindow& window)
 void Ghost::update(Vector2f player)
 {
 	//normalize coords to integers
-	Vector2i pac = Vector2i((std::round((player.x - start.x) / size.x)) , (std::round((player.y - start.y) / size.y)));
-	Vector2i pos = Vector2i(std::round((this->pos.x - start.x) / size.x), std::round((this->pos.y - start.y)/ size.y));
+	Vector2i pac = Vector2i((std::round((player.x - start.x) / tSize.x)) , (std::round((player.y - start.y) / tSize.y)));
+	Vector2i pos = Vector2i(std::round((this->pos.x - start.x) / tSize.x), std::round((this->pos.y - start.y)/ tSize.y));
 	
+	std::cout << pac.x << std::endl;
 	if(beg) {
 		findPath(pac, pos); beg = 0;
 	}
@@ -39,27 +40,23 @@ void Ghost::findPath(Vector2i target, Vector2i curPos)
 
 	//check if out of bounds and add to the list 
 	  //right
-	if ((curPos.x++) < (target.x ) &&
-		(curPos.x++) > 0 && field[curPos.x++][curPos.y] != 1) {
-		neighbours.push_back(std::sqrt(std::pow(target.x - curPos.x, 2) + std::pow(target.y - curPos.y, 2)));
+	if (field[curPos.x++][curPos.y] != 1) {
+		neighbours.push_back(std::sqrt(std::pow(target.x - curPos.x++, 2) + std::pow(target.y - curPos.y, 2)));
 	}
 	else neighbours.push_back(99999);
 	//left
-	if ((curPos.x--) < (target.x) &&
-		(curPos.x--) > start.x && field[curPos.x--][curPos.y] != 1) {
-		neighbours.push_back(std::sqrt(std::pow(target.x - curPos.x, 2) + std::pow(target.y - curPos.y, 2)));
+	if (field[curPos.x--][curPos.y] != 1) {
+		neighbours.push_back(std::sqrt(std::pow(target.x - curPos.x--, 2) + std::pow(target.y - curPos.y, 2)));
 	}
 	else neighbours.push_back(99999);
 	//down
-	if ((curPos.y++) < ( target.y) &&
-		(curPos.y++) > 0 && field[curPos.x][curPos.y++] != 1) {
-		neighbours.push_back(std::sqrt(std::pow(target.x - curPos.x, 2) + std::pow(target.y - curPos.y, 2)));
+	if (field[curPos.x][curPos.y++] != 1) {
+		neighbours.push_back(std::sqrt(std::pow(target.x - curPos.x, 2) + std::pow(target.y - curPos.y++, 2)));
 	}
 	else neighbours.push_back(99999);
 	//up
-	if ((curPos.y--) < (target.y) &&
-		(curPos.y--) > 0 && field[curPos.x][curPos.y--] != 1) {
-		neighbours.push_back(std::sqrt(std::pow(target.x - curPos.x, 2) + std::pow(target.y - curPos.y, 2)));
+	if (field[curPos.x][curPos.y--] != 1) {
+		neighbours.push_back(std::sqrt(std::pow(target.x - curPos.x, 2) + std::pow(target.y - curPos.y--, 2)));
 	}
 	else neighbours.push_back(99999);
 
@@ -71,22 +68,6 @@ void Ghost::findPath(Vector2i target, Vector2i curPos)
 			lowest = neighbours[i];
 			instruction = i;
 			switch (i) {
-			case 0:
-				newPos = Vector2i(curPos.x += tSize.x, curPos.y);
-				break;
-			case 1:
-				newPos = Vector2i(curPos.x -= tSize.x, curPos.y);
-				break;
-			case 2:
-				newPos = Vector2i(curPos.x, curPos.y += tSize.x);
-				break;
-			case 3:
-				newPos = Vector2i(curPos.x, curPos.y -= tSize.x);
-				break;
-			}
-
-			if (i == 0) {
-				int c = 0;
 			}
 		}
 	}
