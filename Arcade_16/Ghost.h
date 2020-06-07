@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "Animation.h"
 #include <random>
+#include <cmath>
 #include <iostream>
 
 using namespace sf;
@@ -21,6 +22,7 @@ private:
 	bool beg = 1;
 
 	float distTraveled = 0.f;
+	Vector2i prevPos;
 	Vector2f pos, size{ 28,34 }, start{ 0,0 };
 	Vector2f scale{ 0.714,0.588 }, sfield{ 19,22 }, tSize;
 };

@@ -60,7 +60,10 @@ Pac_Man::Pac_Man(Font& f)
 				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), cp, start));
 			if (lvl.getPixel(x, y) == Color(1, 1, 255, 255))
 				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), cp, start, 180));
-			
+			//im the invisible man
+			if (lvl.getPixel(x, y) == Color(1, 1, 1,1))
+				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(0,0), cp, start));
+
 			//field
 			if (walls.size() > size) field[x][y] = 1; else field[x][y] = 0;
 		}
@@ -68,6 +71,7 @@ Pac_Man::Pac_Man(Font& f)
 
 	//ghosts
 	blinky.setup(0, Vector2f{ 11,8 }, Vector2f(sx, sy), start, field);
+
 }
 
 void Pac_Man::draw(RenderWindow& window)
