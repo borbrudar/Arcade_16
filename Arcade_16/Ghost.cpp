@@ -7,7 +7,6 @@ void Ghost::setup(int type, Vector2f pos, Vector2f size, Vector2f start, std::ve
 	this->tSize = size;
 	this->field = field;
 	animation.animation.setScale(scale);
-	animation.delay = 0.4f;
 	this->pos = Vector2f(pos.x * size.x + start.x, pos.y * size.y + start.y);
 
 	/*for (int x = 0; x < this->field.size(); x++) {
@@ -25,19 +24,51 @@ void Ghost::draw(RenderWindow& window)
 
 }
 
+//blinky
 void Ghost::update(Vector2f player)
 {
 	//normalize coords to integers
-	Vector2i pac = Vector2i((std::round((player.x - start.x) / tSize.x)) , (std::round((player.y - start.y) / tSize.y)));
+	Vector2i tar = Vector2i((std::round((player.x - start.x) / tSize.x)), (std::round((player.y - start.y) / tSize.y)));
 	Vector2i pos = Vector2i(std::round((this->pos.x - start.x) / tSize.x), std::round((this->pos.y - start.y)/ tSize.y));
-	
+
 	if(beg) {
-		findPath(pac, pos); beg = 0;
+		findPath(tar, pos); beg = 0;
 	}
 	//if move done find next target
-	if (move(pos)) { findPath(pac, pos); }
+	if (move()) { findPath(tar, pos); }
 
 }
+
+//pinky
+void Ghost::update(Vector2f player, int rot)
+{
+	//normalize coords to integers
+	Vector2i tar;
+	Vector2i pos = Vector2i(std::round((this->pos.x - start.x) / tSize.x), std::round((this->pos.y - start.y) / tSize.y));
+
+	switch (rot) {
+	case 0:
+		tar = Vector2i((std::round((player.x - start.x) / tSize.x)) + 2, (std::round((player.y - start.y) / tSize.y)));
+		break;
+	case 180:
+		tar = Vector2i((std::round((player.x - start.x) / tSize.x)) - 2, (std::round((player.y - start.y) / tSize.y)));
+		break;
+	case 90:
+		tar = Vector2i((std::round((player.x - start.x) / tSize.x)), (std::round((player.y - start.y) / tSize.y)) + 2);
+		break;
+	case 270:
+		tar = Vector2i((std::round((player.x - start.x) / tSize.x)), (std::round((player.y - start.y) / tSize.y)) - 2);
+		break;
+	}
+	
+	if (beg) {
+		findPath(tar, pos); beg = 0;
+	}
+	//if move done find next target
+	if (move()) { findPath(tar, pos); }
+}
+
+
 
 void Ghost::findPath(Vector2i target, Vector2i curPos)
 {
@@ -45,7 +76,7 @@ void Ghost::findPath(Vector2i target, Vector2i curPos)
 	std::vector<float> neighbours;
 
 	//check if out of bounds and add to the list
-	// 
+	// alert no out of bounds exceptions and shit
 	  //right
 	if (field[curPos.x + 1][curPos.y] != 1 && Vector2i(curPos.x + 1, curPos.y) != prevPos) {
 		neighbours.push_back(std::sqrt((target.x - curPos.x - 1) * (target.x - curPos.x - 1) +
@@ -84,27 +115,27 @@ void Ghost::findPath(Vector2i target, Vector2i curPos)
 	prevPos = curPos;
 }
 
-bool Ghost::move(Vector2i curPos)
+bool Ghost::move()
 {
 	switch (instruction) {
 	case 0:
 		//right
-		animation.setup("res/pacman/gh.png", size, Vector2f(size.x * 6, 0));
+		animation.setup("res/pacman/gh.png", size, Vector2f(size.x * 6, type * size.y));
 		pos.x += speed;
 		break;
 	case 1: 
 		//left
-		animation.setup("res/pacman/gh.png", size, Vector2f(size.x * 4, 0));
+		animation.setup("res/pacman/gh.png", size, Vector2f(size.x * 4, type * size.y));
 		pos.x -= speed;
 		break;
 	case 2:
 		//down
-		animation.setup("res/pacman/gh.png", size, Vector2f(size.x * 2,0));
+		animation.setup("res/pacman/gh.png", size, Vector2f(size.x * 2, type * size.y));
 		pos.y += speed;
 		break;
 	case 3:
 		//up
-		animation.setup("res/pacman/gh.png", size);
+		animation.setup("res/pacman/gh.png", size, Vector2f(0, type * size.y));
 		pos.y -= speed;
 		break;
 	}

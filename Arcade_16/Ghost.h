@@ -11,9 +11,12 @@ class Ghost {
 public:
 	void setup(int type, Vector2f pos, Vector2f size, Vector2f start, std::vector<std::vector<int>> field);
 	void draw(RenderWindow& window);
-	void update(Vector2f player);
 	void findPath(Vector2i target, Vector2i curPos);
-	bool move(Vector2i curPos);
+	bool move();
+	//blinky
+	void update(Vector2f player);
+	//pinky
+	void update(Vector2f player, int rot);
 private:
 	std::vector<std::vector<int>> field;
 	int type = 0, instruction = 0;
