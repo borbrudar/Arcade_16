@@ -17,15 +17,19 @@ public:
 	void update(Vector2f player);
 	//pinky
 	void update(Vector2f player, int rot);
+	//inky
+	void update(Vector2f player, int rot, Vector2f blinky);
+
+	Vector2f pos;
 private:
 	std::vector<std::vector<int>> field;
 	int type = 0, instruction = 0;
-	float speed = 0.3f;
 	Animation animation;
+	float speed = 0.3f;
 	bool beg = 1;
 
 	float distTraveled = 0.f;
 	Vector2i prevPos;
-	Vector2f pos, size{ 28,34 }, start{ 0,0 };
+	Vector2f size{ 28,34 }, start{ 0,0 };
 	Vector2f scale{ 0.714,0.588 }, sfield{ 19,22 }, tSize;
 };

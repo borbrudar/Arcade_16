@@ -9,19 +9,12 @@ void Ghost::setup(int type, Vector2f pos, Vector2f size, Vector2f start, std::ve
 	animation.animation.setScale(scale);
 	this->pos = Vector2f(pos.x * size.x + start.x, pos.y * size.y + start.y);
 
-	/*for (int x = 0; x < this->field.size(); x++) {
-		for (int y = 0; y < this->field.size(); y++) {
-			std::cout << field[x][y] << " ";
-		}
-		std::cout << std::endl;
-	}*/
 }
 
 void Ghost::draw(RenderWindow& window)
 {
 	animation.animation.setPosition(pos);
 	animation.draw(window);
-
 }
 
 //blinky
@@ -64,6 +57,44 @@ void Ghost::update(Vector2f player, int rot)
 	if (beg) {
 		findPath(tar, pos); beg = 0;
 	}
+	//if move done find next target
+	if (move()) { findPath(tar, pos); }
+}
+
+//inky
+void Ghost::update(Vector2f player, int rot, Vector2f blinky)
+{
+	//normalize coords to integers
+	Vector2i tar, origin;
+	Vector2i pos = Vector2i(std::round((this->pos.x - start.x) / tSize.x), std::round((this->pos.y - start.y) / tSize.y));
+	Vector2i bli = Vector2i(std::round((blinky.x - start.x) / tSize.x), std::round((blinky.y - start.y) / tSize.y));
+
+	switch (rot) {
+	case 0:
+		origin = Vector2i((std::round((player.x - start.x) / tSize.x)) + 1, (std::round((player.y - start.y) / tSize.y)));
+		break;
+	case 180:
+		origin = Vector2i((std::round((player.x - start.x) / tSize.x)) - 1, (std::round((player.y - start.y) / tSize.y)));
+		break;
+	case 90:
+		origin = Vector2i((std::round((player.x - start.x) / tSize.x)), (std::round((player.y - start.y) / tSize.y)) + 1);
+		break;
+	case 270:
+		origin = Vector2i((std::round((player.x - start.x) / tSize.x)), (std::round((player.y - start.y) / tSize.y)) - 1);
+		break;
+	}
+
+	//rotate 180 degress around the point to find the new point and stuff
+	float angle = 180.f;
+	tar.x = ((bli.x - origin.x) * std::cos(angle)) - ((origin.y - bli.y) * std::sin(angle)) + origin.x;
+	tar.y = ((origin.y - bli.y) * std::cos(angle)) - ((bli.x - origin.x) * std::sin(angle)) + origin.y;
+
+	test.setPosition(tar.x * tSize.x, tar.y * tSize.y);
+
+	if (beg) {
+		findPath(tar, pos); beg = 0;
+	}
+
 	//if move done find next target
 	if (move()) { findPath(tar, pos); }
 }
