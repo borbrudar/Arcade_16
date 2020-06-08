@@ -169,6 +169,7 @@
     <ClInclude Include="Ghost.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Pac_Man.h" />
+    <ClInclude Include="Pellet.h" />
     <ClInclude Include="Pong.h" />
     <ClInclude Include="Shield.h" />
     <ClInclude Include="Space_Invaders.h" />

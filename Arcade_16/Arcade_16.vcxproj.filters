@@ -122,5 +122,8 @@
     <ClInclude Include="Ghost.h">
       <Filter>Games\Pac_Man</Filter>
     </ClInclude>
+    <ClInclude Include="Pellet.h">
+      <Filter>Games\Pac_Man</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

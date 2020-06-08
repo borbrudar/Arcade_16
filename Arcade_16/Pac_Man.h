@@ -2,6 +2,7 @@
 #include "State.h"
 #include "Animation.h"
 #include "Ghost.h"
+#include "Pellet.h"
 
 class Wall {
 public:
@@ -44,6 +45,7 @@ private:
 
 	//ghosts
 	Ghost blinky, pinky, inky, clyde;
-	Clock gc;
-	float gtime = 0, gtimer = 0, gdelay = 0.5f;
+
+	//pellets
+	std::vector<Pellet> pellets;
 };

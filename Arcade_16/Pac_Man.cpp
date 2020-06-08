@@ -68,7 +68,7 @@ Pac_Man::Pac_Man(Font& f)
 			//field
 			if (walls.size() > size) field[x][y] = 1; else field[x][y] = 0;
 
-			
+			if (field[x][y] == 0) pellets.push_back(Pellet(Vector2f(x * sx + start.x + sx/2, y * sy + start.y + sy/2)));
 		}
 	}
 
@@ -84,10 +84,16 @@ void Pac_Man::draw(RenderWindow& window)
 	window.clear(Color::Black);
 	back.draw(window);
 
+	//walls
 	for (int i = 0; i < walls.size(); i++) window.draw(walls[i].wall);
 
+	//pellets
+	for (int i = 0; i < pellets.size(); i++) pellets[i].draw(window);
+
+	//pacman
 	pacman.draw(window);
 
+	//ghosts
 	blinky.draw(window);
 	pinky.draw(window);
 	inky.draw(window);
