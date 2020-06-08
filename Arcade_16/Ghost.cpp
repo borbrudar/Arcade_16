@@ -18,7 +18,7 @@ void Ghost::draw(RenderWindow& window)
 }
 
 //blinky and clyde
-void Ghost::update(Vector2f player)
+void Ghost::update(Vector2f player, bool fright)
 {
 	//normalize coords to integers
 	Vector2i tar = Vector2i((std::round((player.x - start.x) / tSize.x)), (std::round((player.y - start.y) / tSize.y)));
@@ -38,7 +38,7 @@ void Ghost::update(Vector2f player)
 		float dist = std::sqrt(std::pow(pos.x - tar.x, 2) + std::pow(pos.y - tar.y, 2));
 
 		if (dist > 4) {
-			if (move()) findPath(tar, pos); 
+			if (move(fright)) findPath(tar, pos); 
 		}
 		else {
 			//else run to the nearest corner
@@ -57,13 +57,13 @@ void Ghost::update(Vector2f player)
 				}
 			}
 
-			if (move()) findPath(tar, pos);
+			if (move(fright)) findPath(tar, pos);
 		}
 	}
 }
 
 //pinky
-void Ghost::update(Vector2f player, int rot)
+void Ghost::update(Vector2f player, int rot, bool fright)
 {
 	//normalize coords to integers
 	Vector2i tar;
@@ -88,11 +88,11 @@ void Ghost::update(Vector2f player, int rot)
 		findPath(tar, pos); beg = 0;
 	}
 	//if move done find next target
-	if (move()) { findPath(tar, pos); }
+	if (move(fright)) { findPath(tar, pos); }
 }
 
 //inky
-void Ghost::update(Vector2f player, int rot, Vector2f blinky)
+void Ghost::update(Vector2f player, int rot, Vector2f blinky, bool fright)
 {
 	//normalize coords to integers
 	Vector2i tar, origin;
@@ -125,7 +125,7 @@ void Ghost::update(Vector2f player, int rot, Vector2f blinky)
 	}
 
 	//if move done find next target
-	if (move()) { findPath(tar, pos); }
+	if (move(fright)) { findPath(tar, pos); }
 }
 
 void Ghost::findPath(Vector2i target, Vector2i curPos)
@@ -181,27 +181,35 @@ void Ghost::findPath(Vector2i target, Vector2i curPos)
 	prevPos = curPos;
 }
 
-bool Ghost::move()
+void Ghost::random(Vector2i curPos)
+{
+}
+
+bool Ghost::move(bool fright)
 {
 	switch (instruction) {
 	case 0:
 		//right
-		animation.setup("res/pacman/gh.png", size, Vector2f(size.x * 6, type * size.y));
+		if (fright) animation.setup("res/pacman/gh.png", size, Vector2f(0, size.y * 4));
+		else animation.setup("res/pacman/gh.png", size, Vector2f(size.x * 6, type * size.y));
 		pos.x += speed;
 		break;
 	case 1: 
 		//left
-		animation.setup("res/pacman/gh.png", size, Vector2f(size.x * 4, type * size.y));
+		if (fright) animation.setup("res/pacman/gh.png", size, Vector2f(0, size.y * 4));
+		else animation.setup("res/pacman/gh.png", size, Vector2f(size.x * 4, type * size.y));
 		pos.x -= speed;
 		break;
 	case 2:
 		//down
-		animation.setup("res/pacman/gh.png", size, Vector2f(size.x * 2, type * size.y));
+		if (fright) animation.setup("res/pacman/gh.png", size, Vector2f(0, size.y * 4));
+		else animation.setup("res/pacman/gh.png", size, Vector2f(size.x * 2, type * size.y));
 		pos.y += speed;
 		break;
 	case 3:
 		//up
-		animation.setup("res/pacman/gh.png", size, Vector2f(0, type * size.y));
+		if (fright) animation.setup("res/pacman/gh.png", size, Vector2f(0, size.y * 4));
+		else animation.setup("res/pacman/gh.png", size, Vector2f(0, type * size.y));
 		pos.y -= speed;
 		break;
 	}

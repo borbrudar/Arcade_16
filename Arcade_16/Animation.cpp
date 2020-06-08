@@ -8,6 +8,7 @@ Animation::Animation(std::string res1,Vector2f size)
 void Animation::setup(std::string res1, Vector2f size, Vector2f start)
 {
 	this->size = size;
+	this->start = start;
 	t1.loadFromFile(res1);
 	animation.setTexture(t1);
 	animation.setTextureRect(IntRect(start.x, start.y, size.x, size.y));
@@ -22,10 +23,10 @@ void Animation::draw(RenderWindow& window)
 
 	if (timer > delay) {
 		if (swap == 1) {
-			animation.setTextureRect(IntRect(swap * size.x, 0, size.x, size.y)); swap = 0;
+			animation.setTextureRect(IntRect(swap * size.x, start.y, size.x, size.y)); swap = 0;
 		}
 		else if (swap == 0) {
-			animation.setTextureRect(IntRect(swap * size.x, 0, size.x, size.y)); swap = 1;
+			animation.setTextureRect(IntRect(swap * size.x , start.y, size.x, size.y)); swap = 1;
 		}
 		timer = 0;
 	}

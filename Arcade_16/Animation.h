@@ -17,4 +17,5 @@ private:
 	float time = 0, timer = 0;
 	Texture t1;
 	int swap = 0;
+	Vector2f start;
 };

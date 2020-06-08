@@ -89,8 +89,8 @@ void Pac_Man::draw(RenderWindow& window)
 
 void Pac_Man::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
 {
-	blinky.update(pacman.animation.getPosition(), pacman.animation.getRotation());
-	inky.update(pacman.animation.getPosition(), pacman.animation.getRotation(), blinky.pos);
+	blinky.update(pacman.animation.getPosition(), pacman.animation.getRotation(), 1);
+	inky.update(pacman.animation.getPosition(), pacman.animation.getRotation(), blinky.pos, 1);
 
 	//normalite the position
 	Vector2f pos = pacman.animation.getPosition();
