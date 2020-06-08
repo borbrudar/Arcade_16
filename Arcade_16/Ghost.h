@@ -30,7 +30,7 @@ private:
 	int st = 1;
 	std::vector<std::vector<int>> field;
 	int type = 0, instruction = -1;
-	float speed = 0.3f;
+	float speed = 0.7f;
 	bool beg = 1, alive = 1;
 
 	float distTraveled = 0.f;

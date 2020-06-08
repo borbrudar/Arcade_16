@@ -73,9 +73,9 @@ Pac_Man::Pac_Man(Font& f)
 	}
 
 	//ghosts
-	//blinky.setup(0, Vector2f{ 9,8 }, Vector2f(sx, sy), start, field);
-	//pinky.setup(1, Vector2f{9,9 }, Vector2f(sx, sy), start, field);
-	//inky.setup(2, Vector2f{ 8,9 }, Vector2f(sx, sy), start, field);
+	blinky.setup(0, Vector2f{ 9,8 }, Vector2f(sx, sy), start, field);
+	pinky.setup(1, Vector2f{9,10 }, Vector2f(sx, sy), start, field);
+	inky.setup(2, Vector2f{ 8,10 }, Vector2f(sx, sy), start, field); 
 	clyde.setup(3, Vector2f{ 10,10 }, Vector2f(sx, sy), start, field);
 }
 
@@ -88,21 +88,21 @@ void Pac_Man::draw(RenderWindow& window)
 
 	pacman.draw(window);
 
-	//blinky.draw(window);
-	//pinky.draw(window);
-	//inky.draw(window);
+	blinky.draw(window);
+	pinky.draw(window);
+	inky.draw(window);
 	clyde.draw(window);
 }
 
 void Pac_Man::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
 {
-	//blinky.update(pacman.animation.getPosition());
-	//pinky.update(pacman.animation.getPosition(), pacman.animation.getRotation(),
-	//	blinky.animation.animation.getPosition());
-	//inky.update(pacman.animation.getPosition(), pacman.animation.getRotation(), blinky.pos);
+	blinky.update(pacman.animation.getPosition());
+	pinky.update(pacman.animation.getPosition(), pacman.animation.getRotation(),
+		blinky.animation.animation.getPosition());
+	inky.update(pacman.animation.getPosition(), pacman.animation.getRotation(), blinky.pos);
 	clyde.update(pacman.animation.getPosition());
 
-	//normalite the position
+	//normalize the position
 	Vector2f pos = pacman.animation.getPosition();
 	Vector2i tPos = Vector2i(std::round((pos.x - start.x) / tSize.x), std::round((pos.y - start.y) / tSize.y));
 

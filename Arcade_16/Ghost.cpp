@@ -11,10 +11,9 @@ void Ghost::setup(int type, Vector2f pos, Vector2f size, Vector2f start, std::ve
 
 	if (type == 1) {
 		beggining.push_back(3);
-		beggining.push_back(3);
+		st = 0;
 	}
 	else if (type == 2) {
-		beggining.push_back(3);
 		beggining.push_back(3);
 		beggining.push_back(0);
 	}
@@ -99,8 +98,14 @@ void Ghost::update(Vector2f player, float rot, bool fright)
 	if (fright) {
 		if(move(fright)) random(pos);
 	}
+	else if(beg) {
+		if (st != -1) instruction = beggining[st]; else {
+			beg = 0;
+		}
+		if (move()) st--;
+	}
 	else {
-
+		st = 1;
 		switch ((int)rot) {
 		case 0:
 			tar = Vector2i((std::round((player.x - start.x) / tSize.x)) + 2, (std::round((player.y - start.y) / tSize.y)));
@@ -135,7 +140,14 @@ void Ghost::update(Vector2f player, float rot, Vector2f blinky, bool fright)
 	if (fright) {
 		if (move(fright)) random(pos);
 	}
+	else if (beg) {
+		if (st != -1) instruction = beggining[st]; else {
+			beg = 0;
+		}
+		if (move()) st--;
+	}
 	else {
+		st = 2;
 		switch ((int)rot) {
 		case 0:
 			origin = Vector2i((std::round((player.x - start.x) / tSize.x)) + 1, (std::round((player.y - start.y) / tSize.y)));
@@ -230,6 +242,12 @@ void Ghost::random(Vector2i curPos)
 
 bool Ghost::move(bool fright)
 {
+	if (distTraveled > tSize.x) {
+		distTraveled = 0.f;
+		return 1;
+	}
+	distTraveled += speed;
+
 	switch (instruction) {
 	case 0:
 		//right
@@ -237,7 +255,7 @@ bool Ghost::move(bool fright)
 		else animation.setup("res/pacman/gh.png", size, Vector2f(size.x * 6, type * size.y));
 		pos.x += speed;
 		break;
-	case 1: 
+	case 1:
 		//left
 		if (fright) animation.setup("res/pacman/gh.png", size, Vector2f(0, size.y * 4));
 		else animation.setup("res/pacman/gh.png", size, Vector2f(size.x * 4, type * size.y));
@@ -255,18 +273,11 @@ bool Ghost::move(bool fright)
 		else animation.setup("res/pacman/gh.png", size, Vector2f(0, type * size.y));
 		pos.y -= speed;
 		break;
-	default: 
+	default:
 		animation.setup("res/pacman/gh.png", size, Vector2f(0, type * size.y));
 		break;
 	}
 
-
-	distTraveled += speed;
-
-	if (distTraveled > tSize.x) {
-		distTraveled = 0.f;
-		return 1;
-	}
 	return 0;
 }
 
