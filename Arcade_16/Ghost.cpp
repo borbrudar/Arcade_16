@@ -24,42 +24,47 @@ void Ghost::update(Vector2f player, bool fright)
 	Vector2i tar = Vector2i((std::round((player.x - start.x) / tSize.x)), (std::round((player.y - start.y) / tSize.y)));
 	Vector2i pos = Vector2i(std::round((this->pos.x - start.x) / tSize.x), std::round((this->pos.y - start.y)/ tSize.y));
 
-	if(beg) {
-		findPath(tar, pos); beg = 0;
+	if (fright) {
+		if (move(fright)) random(pos);
 	}
-
-	//blinky
-	if (type == 0) {
-		//if move done find next target
-		if (move()) { findPath(tar, pos); }
-	}//idiot clyde
-
-	else if (type == 3) {
-		float dist = std::sqrt(std::pow(pos.x - tar.x, 2) + std::pow(pos.y - tar.y, 2));
-
-		if (dist > 4) {
-			if (move(fright)) findPath(tar, pos); 
+	else {
+		if (beg) {
+			findPath(tar, pos); beg = 0;
 		}
-		else {
-			//else run to the nearest corner
-			std::vector<Vector2i> c{ {1,1},{ 18,1 },{ 1,21 },{ 18,21 } }; 
-			std::vector<float> dists;
-			dists.push_back(std::sqrt(std::pow(pos.x - c[0].x, 2) + std::pow(pos.y - c[0].y, 2)));
-			dists.push_back(std::sqrt(std::pow(pos.x - c[1].x, 2) + std::pow(pos.y - c[1].y, 2)));
-			dists.push_back(std::sqrt(std::pow(pos.x - c[2].x, 2) + std::pow(pos.y - c[2].y, 2)));
-			dists.push_back(std::sqrt(std::pow(pos.x - c[3].x, 2) + std::pow(pos.y - c[3].y, 2)));
+		//blinky
+		if (type == 0) {
+			//if move done find next target
+			if (move()) { findPath(tar, pos); }
+		}//idiot clyde
 
-			float temp = 99999;
-			for (int i = 0; i < dists.size(); i++) {
-				if (dists[i] < temp) {
-					temp = dists[i];
-					tar = c[i];
-				}
+		else if (type == 3) {
+			float dist = std::sqrt(std::pow(pos.x - tar.x, 2) + std::pow(pos.y - tar.y, 2));
+
+			if (dist > 4) {
+				if (move(fright)) findPath(tar, pos);
 			}
+			else {
+				//else run to the nearest corner
+				std::vector<Vector2i> c{ {1,1},{ 18,1 },{ 1,21 },{ 18,21 } };
+				std::vector<float> dists;
+				dists.push_back(std::sqrt(std::pow(pos.x - c[0].x, 2) + std::pow(pos.y - c[0].y, 2)));
+				dists.push_back(std::sqrt(std::pow(pos.x - c[1].x, 2) + std::pow(pos.y - c[1].y, 2)));
+				dists.push_back(std::sqrt(std::pow(pos.x - c[2].x, 2) + std::pow(pos.y - c[2].y, 2)));
+				dists.push_back(std::sqrt(std::pow(pos.x - c[3].x, 2) + std::pow(pos.y - c[3].y, 2)));
 
-			if (move(fright)) findPath(tar, pos);
+				float temp = 99999;
+				for (int i = 0; i < dists.size(); i++) {
+					if (dists[i] < temp) {
+						temp = dists[i];
+						tar = c[i];
+					}
+				}
+
+				if (move(fright)) findPath(tar, pos);
+			}
 		}
 	}
+
 }
 
 //pinky
@@ -69,26 +74,32 @@ void Ghost::update(Vector2f player, int rot, bool fright)
 	Vector2i tar;
 	Vector2i pos = Vector2i(std::round((this->pos.x - start.x) / tSize.x), std::round((this->pos.y - start.y) / tSize.y));
 
-	switch (rot) {
-	case 0:
-		tar = Vector2i((std::round((player.x - start.x) / tSize.x)) + 2, (std::round((player.y - start.y) / tSize.y)));
-		break;
-	case 180:
-		tar = Vector2i((std::round((player.x - start.x) / tSize.x)) - 2, (std::round((player.y - start.y) / tSize.y)));
-		break;
-	case 90:
-		tar = Vector2i((std::round((player.x - start.x) / tSize.x)), (std::round((player.y - start.y) / tSize.y)) + 2);
-		break;
-	case 270:
-		tar = Vector2i((std::round((player.x - start.x) / tSize.x)), (std::round((player.y - start.y) / tSize.y)) - 2);
-		break;
+	if (fright) {
+		if(move(fright)) random(pos);
 	}
-	
-	if (beg) {
-		findPath(tar, pos); beg = 0;
+	else {
+
+		switch (rot) {
+		case 0:
+			tar = Vector2i((std::round((player.x - start.x) / tSize.x)) + 2, (std::round((player.y - start.y) / tSize.y)));
+			break;
+		case 180:
+			tar = Vector2i((std::round((player.x - start.x) / tSize.x)) - 2, (std::round((player.y - start.y) / tSize.y)));
+			break;
+		case 90:
+			tar = Vector2i((std::round((player.x - start.x) / tSize.x)), (std::round((player.y - start.y) / tSize.y)) + 2);
+			break;
+		case 270:
+			tar = Vector2i((std::round((player.x - start.x) / tSize.x)), (std::round((player.y - start.y) / tSize.y)) - 2);
+			break;
+		}
+
+		if (beg) {
+			findPath(tar, pos); beg = 0;
+		}
+		//if move done find next target
+		if (move(fright)) { findPath(tar, pos); }
 	}
-	//if move done find next target
-	if (move(fright)) { findPath(tar, pos); }
 }
 
 //inky
@@ -99,33 +110,37 @@ void Ghost::update(Vector2f player, int rot, Vector2f blinky, bool fright)
 	Vector2i pos = Vector2i(std::round((this->pos.x - start.x) / tSize.x), std::round((this->pos.y - start.y) / tSize.y));
 	Vector2i bli = Vector2i(std::round((blinky.x - start.x) / tSize.x), std::round((blinky.y - start.y) / tSize.y));
 
-	switch (rot) {
-	case 0:
-		origin = Vector2i((std::round((player.x - start.x) / tSize.x)) + 1, (std::round((player.y - start.y) / tSize.y)));
-		break;
-	case 180:
-		origin = Vector2i((std::round((player.x - start.x) / tSize.x)) - 1, (std::round((player.y - start.y) / tSize.y)));
-		break;
-	case 90:
-		origin = Vector2i((std::round((player.x - start.x) / tSize.x)), (std::round((player.y - start.y) / tSize.y)) + 1);
-		break;
-	case 270:
-		origin = Vector2i((std::round((player.x - start.x) / tSize.x)), (std::round((player.y - start.y) / tSize.y)) - 1);
-		break;
+	if (fright) {
+		if (move(fright)) random(pos);
 	}
+	else {
+		switch (rot) {
+		case 0:
+			origin = Vector2i((std::round((player.x - start.x) / tSize.x)) + 1, (std::round((player.y - start.y) / tSize.y)));
+			break;
+		case 180:
+			origin = Vector2i((std::round((player.x - start.x) / tSize.x)) - 1, (std::round((player.y - start.y) / tSize.y)));
+			break;
+		case 90:
+			origin = Vector2i((std::round((player.x - start.x) / tSize.x)), (std::round((player.y - start.y) / tSize.y)) + 1);
+			break;
+		case 270:
+			origin = Vector2i((std::round((player.x - start.x) / tSize.x)), (std::round((player.y - start.y) / tSize.y)) - 1);
+			break;
+		}
 
-	//rotate 180 degress around the point to find the new point and stuff
-	float angle = 180.f;
-	tar.x = ((bli.x - origin.x) * std::cos(angle)) - ((origin.y - bli.y) * std::sin(angle)) + origin.x;
-	tar.y = ((origin.y - bli.y) * std::cos(angle)) - ((bli.x - origin.x) * std::sin(angle)) + origin.y;
+		//rotate 180 degress around the point to find the new point and stuff
+		float angle = 180.f;
+		tar.x = ((bli.x - origin.x) * std::cos(angle)) - ((origin.y - bli.y) * std::sin(angle)) + origin.x;
+		tar.y = ((origin.y - bli.y) * std::cos(angle)) - ((bli.x - origin.x) * std::sin(angle)) + origin.y;
 
 
-	if (beg) {
-		findPath(tar, pos); beg = 0;
+		if (beg) {
+			findPath(tar, pos); beg = 0;
+		}
+		//if move done find next target
+		if (move(fright)) findPath(tar, pos);
 	}
-
-	//if move done find next target
-	if (move(fright)) { findPath(tar, pos); }
 }
 
 void Ghost::findPath(Vector2i target, Vector2i curPos)
@@ -183,6 +198,13 @@ void Ghost::findPath(Vector2i target, Vector2i curPos)
 
 void Ghost::random(Vector2i curPos)
 {
+	//goto your corner
+	std::vector<Vector2i> c{ {1,1},{ 18,1 },{ 1,21 },{ 18,21 } };
+
+	if (type == 0) findPath(c[0], curPos);
+	else if (type == 1) findPath(c[1], curPos);
+	else if (type == 2) findPath(c[2], curPos);
+	else if (type == 3) findPath(c[3], curPos);
 }
 
 bool Ghost::move(bool fright)
