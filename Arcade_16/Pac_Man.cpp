@@ -14,6 +14,7 @@ Pac_Man::Pac_Man(Font& f)
 	cp.loadFromFile("res/pacman/straight.png");
 	st.loadFromFile("res/pacman/par.png");
 	cr.loadFromFile("res/pacman/corner.png");
+	inv.loadFromFile("res/pacman/inv.png");
 
 	//size
 	float sx = pSize.x * 0.25, sy = pSize.y * 0.25;
@@ -60,9 +61,10 @@ Pac_Man::Pac_Man(Font& f)
 				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), cp, start));
 			if (lvl.getPixel(x, y) == Color(1, 1, 255, 255))
 				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), cp, start, 180));
+
 			//im the invisible man
 			if (lvl.getPixel(x, y) == Color(1, 1, 1,1))
-				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(0,0), cp, start));
+				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx,sy), inv, start));
 
 			//field
 			if (walls.size() > size) field[x][y] = 1; else field[x][y] = 0;

@@ -37,7 +37,7 @@ private:
 	Vector2f pSize{ 80,80 }, prevPos;
 
 	//walls
-	Texture pp, st, cp, cr;
+	Texture pp, st, cp, cr, inv;
 	Image lvl;
 	std::vector<Wall> walls;
 
