@@ -132,7 +132,9 @@ void Pac_Man::update(Mouse& mouse, RenderWindow& window, state& gameState, Event
 
 	//collision
 	for (int i = 0; i < walls.size(); i++) {
-		if (walls[i].wall.getGlobalBounds().intersects(pacman.animation.getGlobalBounds())) {
+		if (walls[i].wall.getGlobalBounds().intersects(FloatRect(pacman.animation.getPosition() - 
+			Vector2f(pSize.x * pscale / 2, pSize.y * pscale / 2),
+			Vector2f(pSize.x * pscale - 2,pSize.y * pscale - 2)))) {
 			pacman.animation.setPosition(prevPos);
 		}
 	}
