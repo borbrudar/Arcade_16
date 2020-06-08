@@ -132,52 +132,54 @@ void Ghost::update(Vector2f player, int rot, Vector2f blinky)
 
 void Ghost::findPath(Vector2i target, Vector2i curPos)
 {
-	//TODO:
-	//manually check if in the "exit"
-	//and make him go the other way
-	//until he is out
+	//this is mostly for inky so he doesnt crash the program chilling in the pipes
+	if (curPos == Vector2i(1, 10)) 	instruction = 0;
+	else if (curPos == Vector2i(18, 10)) instruction = 1;
+
+	//pathfinding
+	else {
+		//check all the neighbours
+		std::vector<float> neighbours;
+
+		//check if out of bounds and add to the list
+		// alert no out of bounds exceptions and shit
+		  //right
+		if (field[curPos.x + 1][curPos.y] != 1 && Vector2i(curPos.x + 1, curPos.y) != prevPos) {
+			neighbours.push_back(std::sqrt((target.x - curPos.x - 1) * (target.x - curPos.x - 1) +
+				(target.y - curPos.y) * (target.y - curPos.y)));
+		}
+		else neighbours.push_back(99999);
+		//left
+		if (field[curPos.x - 1][curPos.y] != 1 && Vector2i(curPos.x - 1, curPos.y) != prevPos) {
+			neighbours.push_back(std::sqrt((target.x - curPos.x + 1) * (target.x - curPos.x + 1) +
+				(target.y - curPos.y) * (target.y - curPos.y)));
+		}
+		else neighbours.push_back(99999);
+		//down
+		if (field[curPos.x][curPos.y + 1] != 1 && Vector2i(curPos.x, curPos.y + 1) != prevPos) {
+			neighbours.push_back(std::sqrt((target.x - curPos.x) * (target.x - curPos.x) +
+				(target.y - curPos.y - 1) * (target.y - curPos.y - 1)));
+		}
+		else neighbours.push_back(99999);
+		//up
+		if (field[curPos.x][curPos.y - 1] != 1 && Vector2i(curPos.x, curPos.y - 1) != prevPos) {
+			neighbours.push_back(std::sqrt((target.x - curPos.x) * (target.x - curPos.x) +
+				(target.y - curPos.y + 1) * (target.y - curPos.y + 1)));
+		}
+		else neighbours.push_back(99999);
 
 
-	//check all the neighbours
-	std::vector<float> neighbours;
-
-	//check if out of bounds and add to the list
-	// alert no out of bounds exceptions and shit
-	  //right
-	if (field[curPos.x + 1][curPos.y] != 1 && Vector2i(curPos.x + 1, curPos.y) != prevPos) {
-		neighbours.push_back(std::sqrt((target.x - curPos.x - 1) * (target.x - curPos.x - 1) +
-			(target.y - curPos.y) * (target.y - curPos.y)));
-	}
-	else neighbours.push_back(99999);
-	//left
-	if (field[curPos.x - 1][curPos.y] != 1 && Vector2i(curPos.x - 1, curPos.y) != prevPos) {
-		neighbours.push_back(std::sqrt((target.x - curPos.x + 1) * (target.x - curPos.x + 1) +
-			(target.y - curPos.y) * (target.y - curPos.y)));
-	}
-	else neighbours.push_back(99999);
-	//down
-	if (field[curPos.x][curPos.y + 1] != 1 && Vector2i(curPos.x, curPos.y + 1) != prevPos) {
-		neighbours.push_back(std::sqrt((target.x - curPos.x) * (target.x - curPos.x) +
-			(target.y - curPos.y - 1) * (target.y - curPos.y - 1)));
-	}
-	else neighbours.push_back(99999);
-	//up
-	if (field[curPos.x][curPos.y - 1] != 1 && Vector2i(curPos.x, curPos.y - 1) != prevPos) {
-		neighbours.push_back(std::sqrt((target.x - curPos.x) * (target.x - curPos.x) + 
-			(target.y - curPos.y + 1) * (target.y - curPos.y + 1)));
-	}
-	else neighbours.push_back(99999);
-
-
-	//choose the one with lowest value and add to instructions
-	float lowest = 99999999;
-	for (int i = 0; i < neighbours.size(); i++) {
-		if (neighbours[i] < lowest) {
-			lowest = neighbours[i];
-			instruction = i;
+		//choose the one with lowest value and add to instructions
+		float lowest = 99999999;
+		for (int i = 0; i < neighbours.size(); i++) {
+			if (neighbours[i] < lowest) {
+				lowest = neighbours[i];
+				instruction = i;
+			}
 		}
 	}
-
+	
+	//set for later tests
 	prevPos = curPos;
 }
 

@@ -42,5 +42,5 @@ private:
 	std::vector<Wall> walls;
 
 	//ghosts
-	Ghost blinky;
+	Ghost blinky, inky;
 };
