@@ -70,8 +70,7 @@ Pac_Man::Pac_Man(Font& f)
 	}
 
 	//ghosts
-	blinky.setup(0, Vector2f{ 11,8 }, Vector2f(sx, sy), start, field);
-	inky.setup(2, Vector2f{ 11,8 }, Vector2f(sx, sy), start, field);
+	blinky.setup(3, Vector2f{ 11,8 }, Vector2f(sx, sy), start, field);
 }
 
 void Pac_Man::draw(RenderWindow& window)
@@ -83,13 +82,11 @@ void Pac_Man::draw(RenderWindow& window)
 
 	pacman.draw(window);
 	blinky.draw(window);
-	inky.draw(window);
 }
 
 void Pac_Man::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
 {
 	blinky.update(pacman.animation.getPosition());
-	inky.update(pacman.animation.getPosition(), pacman.animation.getRotation(), blinky.pos);
 
 	while (window.pollEvent(e)) {
 		if (e.type == Event::Closed) window.close();

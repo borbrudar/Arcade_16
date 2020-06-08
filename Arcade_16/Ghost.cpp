@@ -17,7 +17,7 @@ void Ghost::draw(RenderWindow& window)
 	animation.draw(window);
 }
 
-//blinky
+//blinky and clyde
 void Ghost::update(Vector2f player)
 {
 	//normalize coords to integers
@@ -27,9 +27,39 @@ void Ghost::update(Vector2f player)
 	if(beg) {
 		findPath(tar, pos); beg = 0;
 	}
-	//if move done find next target
-	if (move()) { findPath(tar, pos); }
 
+	//blinky
+	if (type == 0) {
+		//if move done find next target
+		if (move()) { findPath(tar, pos); }
+	}//idiot clyde
+
+	else if (type == 3) {
+		float dist = std::sqrt(std::pow(pos.x - tar.x, 2) + std::pow(pos.y - tar.y, 2));
+
+		if (dist > 4) {
+			if (move()) findPath(tar, pos); 
+		}
+		else {
+			//else run to the nearest corner
+			std::vector<Vector2i> c{ {1,1},{ 18,1 },{ 1,21 },{ 18,21 } }; 
+			std::vector<float> dists;
+			dists.push_back(std::sqrt(std::pow(pos.x - c[0].x, 2) + std::pow(pos.y - c[0].y, 2)));
+			dists.push_back(std::sqrt(std::pow(pos.x - c[1].x, 2) + std::pow(pos.y - c[1].y, 2)));
+			dists.push_back(std::sqrt(std::pow(pos.x - c[2].x, 2) + std::pow(pos.y - c[2].y, 2)));
+			dists.push_back(std::sqrt(std::pow(pos.x - c[3].x, 2) + std::pow(pos.y - c[3].y, 2)));
+
+			float temp = 99999;
+			for (int i = 0; i < dists.size(); i++) {
+				if (dists[i] < temp) {
+					temp = dists[i];
+					tar = c[i];
+				}
+			}
+
+			if (move()) findPath(tar, pos);
+		}
+	}
 }
 
 //pinky
@@ -89,7 +119,6 @@ void Ghost::update(Vector2f player, int rot, Vector2f blinky)
 	tar.x = ((bli.x - origin.x) * std::cos(angle)) - ((origin.y - bli.y) * std::sin(angle)) + origin.x;
 	tar.y = ((origin.y - bli.y) * std::cos(angle)) - ((bli.x - origin.x) * std::sin(angle)) + origin.y;
 
-	test.setPosition(tar.x * tSize.x, tar.y * tSize.y);
 
 	if (beg) {
 		findPath(tar, pos); beg = 0;
@@ -103,6 +132,12 @@ void Ghost::update(Vector2f player, int rot, Vector2f blinky)
 
 void Ghost::findPath(Vector2i target, Vector2i curPos)
 {
+	//TODO:
+	//manually check if in the "exit"
+	//and make him go the other way
+	//until he is out
+
+
 	//check all the neighbours
 	std::vector<float> neighbours;
 
