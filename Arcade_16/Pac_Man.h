@@ -48,4 +48,9 @@ private:
 
 	//pellets
 	std::vector<Pellet> pellets;
+
+	//frightened mode
+	bool frightened = 0;
+	Clock fclock;
+	float ftime = 0, ftimer = 0, fdelay = 5.f;
 };

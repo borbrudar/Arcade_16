@@ -10,16 +10,18 @@ public:
 	}
 	void setup(Vector2f pos, bool super = 0) {
 		this->super = super;
+		pellet.setFillColor(Color::Yellow);
+		pellet.setPosition(pos);
 		//normal
 		if (!super) {
-			pellet.setFillColor(Color::Yellow);
 			pellet.setSize(Vector2f(5, 5));
 			pellet.setOrigin(2.5, 2.5);
-			pellet.setPosition(pos);
 		}
 		//super
 		else {
-
+			pellet.setSize(Vector2f(8, 8));
+			pellet.setOrigin(4, 4);
+			pellet.setRotation(45.f);
 		}
 	}
 	void draw(RenderWindow& window) {

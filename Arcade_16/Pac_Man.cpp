@@ -68,7 +68,20 @@ Pac_Man::Pac_Man(Font& f)
 			//field
 			if (walls.size() > size) field[x][y] = 1; else field[x][y] = 0;
 
-			if (field[x][y] == 0) pellets.push_back(Pellet(Vector2f(x * sx + start.x + sx/2, y * sy + start.y + sy/2)));
+			if (field[x][y] == 0) {
+				//except some parts
+				if (!(x == 0 && y == 8) && !(x == 1 && y == 8) && !(x == 2 && y == 8) && 
+					!(x == 0 && y == 12) && !(x == 1 && y == 12) && !(x == 2 && y == 12) &&
+					!(x == 16 && y == 8) && !(x == 17 && y == 8) && !(x == 18 && y == 8) &&
+					!(x == 16 && y == 12) && !(x == 17 && y == 12) && !(x == 18 && y == 12) &&
+					!(x == 8 && y == 10) && !(x == 9 && y == 10) && !(x == 10 && y == 10)) {
+					
+					bool super = 0;
+					if ((x == 1 && y == 2) || (x == 17 && y == 2) || 
+					 (x == 1 && y == 19) || (x == 17 && y == 19)) super = 1;
+					pellets.push_back(Pellet(Vector2f(x * sx + start.x + sx / 2, y * sy + start.y + sy / 2),super));
+				}
+			}
 		}
 	}
 
@@ -102,11 +115,22 @@ void Pac_Man::draw(RenderWindow& window)
 
 void Pac_Man::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
 {
-	blinky.update(pacman.animation.getPosition());
+	//update the ghosts
+	blinky.update(pacman.animation.getPosition(), frightened);
 	pinky.update(pacman.animation.getPosition(), pacman.animation.getRotation(),
-		blinky.animation.animation.getPosition());
-	inky.update(pacman.animation.getPosition(), pacman.animation.getRotation(), blinky.pos);
-	clyde.update(pacman.animation.getPosition());
+		blinky.animation.animation.getPosition(), frightened);
+	inky.update(pacman.animation.getPosition(), pacman.animation.getRotation(), blinky.pos, frightened);
+	clyde.update(pacman.animation.getPosition(), frightened);
+
+	//frightened mode update
+	if (frightened) {
+		ftimer = fclock.getElapsedTime().asSeconds();
+		ftime += ftimer;
+		fclock.restart();
+		
+		if (ftime > fdelay) frightened = 0;
+	}
+	else fclock.restart();
 
 	//normalize the position
 	Vector2f pos = pacman.animation.getPosition();
@@ -157,12 +181,19 @@ void Pac_Man::update(Mouse& mouse, RenderWindow& window, state& gameState, Event
 
 	//collision with ghosts
 	if (pacman.animation.getGlobalBounds().intersects(
-		blinky.animation.animation.getGlobalBounds())) blinky.alive = 0;
+		blinky.animation.animation.getGlobalBounds()) && frightened) blinky.alive = 0;
 	if (pacman.animation.getGlobalBounds().intersects(
-		pinky.animation.animation.getGlobalBounds())) pinky.alive = 0;
+		pinky.animation.animation.getGlobalBounds()) && frightened) pinky.alive = 0;
 	if (pacman.animation.getGlobalBounds().intersects(
-		inky.animation.animation.getGlobalBounds())) inky.alive = 0;
+		inky.animation.animation.getGlobalBounds()) && frightened) inky.alive = 0;
 	if (pacman.animation.getGlobalBounds().intersects(
-		clyde.animation.animation.getGlobalBounds())) clyde.alive = 0;
+		clyde.animation.animation.getGlobalBounds()) && frightened) clyde.alive = 0;
 
+	//collision with pellets
+	for (int i = 0; i < pellets.size(); i++) {
+		if (pacman.animation.getGlobalBounds().intersects(pellets[i].pellet.getGlobalBounds())) {
+			if (pellets[i].super == 1) frightened = 1;
+			pellets.erase(pellets.begin() + i);
+		}
+	}
 }

@@ -255,21 +255,21 @@ bool Ghost::move(bool fright)
 	case 0:
 		//right
 		if (fright) animation.setup("res/pacman/gh.png", size, Vector2f(0, size.y * 4));
-		else if (!alive) animation.setup("res/pacman/gh.png", dSize, Vector2f(dSize.x * 3, size.y * 5));
+		else if (!alive) animation.setup("res/pacman/gh.png", dSize, Vector2f(dSize.x * 6, size.y * 5));
 		else animation.setup("res/pacman/gh.png", size, Vector2f(size.x * 6, type * size.y));
 		pos.x += speed;
 		break;
 	case 1:
 		//left
 		if (fright) animation.setup("res/pacman/gh.png", size, Vector2f(0, size.y * 4));
-		else if (!alive) animation.setup("res/pacman/gh.png", dSize, Vector2f(dSize.x * 2, size.y * 5));
+		else if (!alive) animation.setup("res/pacman/gh.png", dSize, Vector2f(dSize.x * 4, size.y * 5));
 		else animation.setup("res/pacman/gh.png", size, Vector2f(size.x * 4, type * size.y));
 		pos.x -= speed;
 		break;
 	case 2:
 		//down
 		if (fright) animation.setup("res/pacman/gh.png", size, Vector2f(0, size.y * 4));
-		else if (!alive) animation.setup("res/pacman/gh.png", dSize, Vector2f(dSize.x, size.y * 5));
+		else if (!alive) animation.setup("res/pacman/gh.png", dSize, Vector2f(dSize.x * 2, size.y * 5));
 		else animation.setup("res/pacman/gh.png", size, Vector2f(size.x * 2, type * size.y));
 		pos.y += speed;
 		break;
