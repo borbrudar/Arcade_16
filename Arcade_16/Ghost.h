@@ -11,23 +11,27 @@ class Ghost {
 public:
 	void setup(int type, Vector2f pos, Vector2f size, Vector2f start, std::vector<std::vector<int>> field);
 	void draw(RenderWindow& window);
-	void findPath(Vector2i target, Vector2i curPos);
-	void random(Vector2i curPos);
-	bool move(bool fright = 0);
 	//blinky and clyde
 	void update(Vector2f player, bool fright = 0);
 	//pinky
-	void update(Vector2f player, int rot, bool fright = 0);
+	void update(Vector2f player, float rot, bool fright = 0);
 	//inky
-	void update(Vector2f player, int rot, Vector2f blinky, bool fright = 0);
+	void update(Vector2f player, float rot, Vector2f blinky, bool fright = 0);
 	
 	Vector2f pos;
-private:
-	std::vector<std::vector<int>> field;
-	int type = 0, instruction = 0;
 	Animation animation;
+	bool col = 0, ready = 0;
+private:
+	void findPath(Vector2i target, Vector2i curPos);
+	void random(Vector2i curPos);
+	bool move(bool fright = 0);
+
+	std::vector<int> beggining;
+	int st = 1;
+	std::vector<std::vector<int>> field;
+	int type = 0, instruction = -1;
 	float speed = 0.3f;
-	bool beg = 1;
+	bool beg = 1, alive = 1;
 
 	float distTraveled = 0.f;
 	Vector2i prevPos;

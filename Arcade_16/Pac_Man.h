@@ -43,5 +43,7 @@ private:
 	std::vector<Wall> walls;
 
 	//ghosts
-	Ghost blinky, inky;
+	Ghost blinky, pinky, inky, clyde;
+	Clock gc;
+	float gtime = 0, gtimer = 0, gdelay = 0.5f;
 };

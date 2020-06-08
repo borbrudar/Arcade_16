@@ -9,6 +9,19 @@ void Ghost::setup(int type, Vector2f pos, Vector2f size, Vector2f start, std::ve
 	animation.animation.setScale(scale);
 	this->pos = Vector2f(pos.x * size.x + start.x, pos.y * size.y + start.y);
 
+	if (type == 1) {
+		beggining.push_back(3);
+		beggining.push_back(3);
+	}
+	else if (type == 2) {
+		beggining.push_back(3);
+		beggining.push_back(3);
+		beggining.push_back(0);
+	}
+	else if (type == 3) {
+		beggining.push_back(3);
+		beggining.push_back(1);
+	}
 }
 
 void Ghost::draw(RenderWindow& window)
@@ -28,39 +41,48 @@ void Ghost::update(Vector2f player, bool fright)
 		if (move(fright)) random(pos);
 	}
 	else {
-		if (beg) {
+		if (beg && type == 0) {
 			findPath(tar, pos); beg = 0;
 		}
-		//blinky
-		if (type == 0) {
-			//if move done find next target
-			if (move()) { findPath(tar, pos); }
-		}//idiot clyde
+		else if (beg && type == 3) {
+			if (st != -1) instruction = beggining[st]; else { 
+				beg = 0;}
+			if (move()) st--;
+		}
 
-		else if (type == 3) {
-			float dist = std::sqrt(std::pow(pos.x - tar.x, 2) + std::pow(pos.y - tar.y, 2));
+		//normal movement
+		if(!beg) {
+			st = 1;
+			//blinky
+			if (type == 0) {
+				//if move done find next target
+				if (move()) { findPath(tar, pos); }
+			}//idiot clyde
+			else if (type == 3) {
+				float dist = std::sqrt(std::pow(pos.x - tar.x, 2) + std::pow(pos.y - tar.y, 2));
 
-			if (dist > 4) {
-				if (move(fright)) findPath(tar, pos);
-			}
-			else {
-				//else run to the nearest corner
-				std::vector<Vector2i> c{ {1,1},{ 18,1 },{ 1,21 },{ 18,21 } };
-				std::vector<float> dists;
-				dists.push_back(std::sqrt(std::pow(pos.x - c[0].x, 2) + std::pow(pos.y - c[0].y, 2)));
-				dists.push_back(std::sqrt(std::pow(pos.x - c[1].x, 2) + std::pow(pos.y - c[1].y, 2)));
-				dists.push_back(std::sqrt(std::pow(pos.x - c[2].x, 2) + std::pow(pos.y - c[2].y, 2)));
-				dists.push_back(std::sqrt(std::pow(pos.x - c[3].x, 2) + std::pow(pos.y - c[3].y, 2)));
-
-				float temp = 99999;
-				for (int i = 0; i < dists.size(); i++) {
-					if (dists[i] < temp) {
-						temp = dists[i];
-						tar = c[i];
-					}
+				if (dist > 4) {
+					if (move(fright)) findPath(tar, pos);
 				}
+				else {
+					//else run to the nearest corner
+					std::vector<Vector2i> c{ {1,1},{ 18,1 },{ 1,21 },{ 18,21 } };
+					std::vector<float> dists;
+					dists.push_back(std::sqrt(std::pow(pos.x - c[0].x, 2) + std::pow(pos.y - c[0].y, 2)));
+					dists.push_back(std::sqrt(std::pow(pos.x - c[1].x, 2) + std::pow(pos.y - c[1].y, 2)));
+					dists.push_back(std::sqrt(std::pow(pos.x - c[2].x, 2) + std::pow(pos.y - c[2].y, 2)));
+					dists.push_back(std::sqrt(std::pow(pos.x - c[3].x, 2) + std::pow(pos.y - c[3].y, 2)));
 
-				if (move(fright)) findPath(tar, pos);
+					float temp = 99999;
+					for (int i = 0; i < dists.size(); i++) {
+						if (dists[i] < temp) {
+							temp = dists[i];
+							tar = c[i];
+						}
+					}
+
+					if (move(fright)) findPath(tar, pos);
+				}
 			}
 		}
 	}
@@ -68,7 +90,7 @@ void Ghost::update(Vector2f player, bool fright)
 }
 
 //pinky
-void Ghost::update(Vector2f player, int rot, bool fright)
+void Ghost::update(Vector2f player, float rot, bool fright)
 {
 	//normalize coords to integers
 	Vector2i tar;
@@ -79,7 +101,7 @@ void Ghost::update(Vector2f player, int rot, bool fright)
 	}
 	else {
 
-		switch (rot) {
+		switch ((int)rot) {
 		case 0:
 			tar = Vector2i((std::round((player.x - start.x) / tSize.x)) + 2, (std::round((player.y - start.y) / tSize.y)));
 			break;
@@ -103,7 +125,7 @@ void Ghost::update(Vector2f player, int rot, bool fright)
 }
 
 //inky
-void Ghost::update(Vector2f player, int rot, Vector2f blinky, bool fright)
+void Ghost::update(Vector2f player, float rot, Vector2f blinky, bool fright)
 {
 	//normalize coords to integers
 	Vector2i tar, origin;
@@ -114,7 +136,7 @@ void Ghost::update(Vector2f player, int rot, Vector2f blinky, bool fright)
 		if (move(fright)) random(pos);
 	}
 	else {
-		switch (rot) {
+		switch ((int)rot) {
 		case 0:
 			origin = Vector2i((std::round((player.x - start.x) / tSize.x)) + 1, (std::round((player.y - start.y) / tSize.y)));
 			break;
@@ -148,7 +170,6 @@ void Ghost::findPath(Vector2i target, Vector2i curPos)
 	//this is mostly for inky so he doesnt crash the program chilling in the pipes
 	if (curPos == Vector2i(1, 10)) 	instruction = 0;
 	else if (curPos == Vector2i(18, 10)) instruction = 1;
-
 	//pathfinding
 	else {
 		//check all the neighbours
@@ -234,6 +255,9 @@ bool Ghost::move(bool fright)
 		else animation.setup("res/pacman/gh.png", size, Vector2f(0, type * size.y));
 		pos.y -= speed;
 		break;
+	default: 
+		animation.setup("res/pacman/gh.png", size, Vector2f(0, type * size.y));
+		break;
 	}
 
 
@@ -245,3 +269,4 @@ bool Ghost::move(bool fright)
 	}
 	return 0;
 }
+

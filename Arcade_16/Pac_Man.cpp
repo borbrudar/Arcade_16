@@ -60,19 +60,23 @@ Pac_Man::Pac_Man(Font& f)
 				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), cp, start));
 			if (lvl.getPixel(x, y) == Color(1, 1, 255, 255))
 				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), cp, start, 180));
-
+			
 			//im the invisible man
-			if (lvl.getPixel(x, y) == Color(1, 1, 1,1))
-				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx,sy), inv, start));
+			if (lvl.getPixel(x, y) == Color(1, 1, 1, 1))
+				walls.push_back(Wall(Vector2f(x * sx, y * sy), Vector2f(sx, sy), inv, start));
 
 			//field
 			if (walls.size() > size) field[x][y] = 1; else field[x][y] = 0;
+
+			
 		}
 	}
 
 	//ghosts
-	blinky.setup(0, Vector2f{ 11,8 }, Vector2f(sx, sy), start, field);
-	inky.setup(2, Vector2f{ 11,8 }, Vector2f(sx, sy), start, field);
+	//blinky.setup(0, Vector2f{ 9,8 }, Vector2f(sx, sy), start, field);
+	//pinky.setup(1, Vector2f{9,9 }, Vector2f(sx, sy), start, field);
+	//inky.setup(2, Vector2f{ 8,9 }, Vector2f(sx, sy), start, field);
+	clyde.setup(3, Vector2f{ 10,10 }, Vector2f(sx, sy), start, field);
 }
 
 void Pac_Man::draw(RenderWindow& window)
@@ -83,14 +87,20 @@ void Pac_Man::draw(RenderWindow& window)
 	for (int i = 0; i < walls.size(); i++) window.draw(walls[i].wall);
 
 	pacman.draw(window);
-	blinky.draw(window);
-	inky.draw(window);
+
+	//blinky.draw(window);
+	//pinky.draw(window);
+	//inky.draw(window);
+	clyde.draw(window);
 }
 
 void Pac_Man::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
 {
-	blinky.update(pacman.animation.getPosition(), pacman.animation.getRotation(), 1);
-	inky.update(pacman.animation.getPosition(), pacman.animation.getRotation(), blinky.pos, 1);
+	//blinky.update(pacman.animation.getPosition());
+	//pinky.update(pacman.animation.getPosition(), pacman.animation.getRotation(),
+	//	blinky.animation.animation.getPosition());
+	//inky.update(pacman.animation.getPosition(), pacman.animation.getRotation(), blinky.pos);
+	clyde.update(pacman.animation.getPosition());
 
 	//normalite the position
 	Vector2f pos = pacman.animation.getPosition();
@@ -138,4 +148,15 @@ void Pac_Man::update(Mouse& mouse, RenderWindow& window, state& gameState, Event
 			pacman.animation.setPosition(prevPos);
 		}
 	}
+
+	//collision with ghosts
+	if (pacman.animation.getGlobalBounds().intersects(
+		blinky.animation.animation.getGlobalBounds())) blinky.col = 1;
+	if (pacman.animation.getGlobalBounds().intersects(
+		pinky.animation.animation.getGlobalBounds())) pinky.col = 1;
+	if (pacman.animation.getGlobalBounds().intersects(
+		inky.animation.animation.getGlobalBounds())) inky.col = 1;
+	if (pacman.animation.getGlobalBounds().intersects(
+		clyde.animation.animation.getGlobalBounds())) clyde.col = 1;
+
 }
