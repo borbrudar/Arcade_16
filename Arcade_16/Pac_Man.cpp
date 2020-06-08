@@ -7,8 +7,6 @@ Pac_Man::Pac_Man(Font& f)
 	text1.assign("Back");
 	back.setup(f, text1, Color::Blue, Vector2f(50, 30), Vector2f(580, 20), 14);
 
-
-
 	//walls
 	pp.loadFromFile("res/pacman/pipe.png");
 	cp.loadFromFile("res/pacman/straight.png");
@@ -18,6 +16,7 @@ Pac_Man::Pac_Man(Font& f)
 
 	//size
 	float sx = pSize.x * 0.25, sy = pSize.y * 0.25;
+	tSize = Vector2i(sx, sy);
 
 	//pacman
 	pacman.setup("res/pacman/pacman.png", pSize);
@@ -93,26 +92,24 @@ void Pac_Man::update(Mouse& mouse, RenderWindow& window, state& gameState, Event
 	blinky.update(pacman.animation.getPosition(), pacman.animation.getRotation());
 	inky.update(pacman.animation.getPosition(), pacman.animation.getRotation(), blinky.pos);
 
+	//normalite the position
+	Vector2f pos = pacman.animation.getPosition();
+	Vector2i tPos = Vector2i(std::round((pos.x - start.x) / tSize.x), std::round((pos.y - start.y) / tSize.y));
+
 	while (window.pollEvent(e)) {
 		if (e.type == Event::Closed) window.close();
 		if (e.type == Event::KeyPressed) {
 			switch (e.key.code) {
-			case Keyboard::Up: up = 1; break;
-			case Keyboard::Down: down = 1; break;
-			case Keyboard::Left : left = 1; break;
-			case Keyboard::Right: right = 1; break;
-			}
-		}
-		if (e.type == Event::KeyReleased) {
-			switch (e.key.code) {
-			case Keyboard::Up: up = 0; break;
-			case Keyboard::Down: down = 0; break;
-			case Keyboard::Left: left = 0; break;
-			case Keyboard::Right: right = 0; break;
+			case Keyboard::Up: up = 1; down = 0; left = 0; right = 0; break;
+			case Keyboard::Down: down = 1; up = 0; left = 0; right = 0; break;
+			case Keyboard::Left: left = 1; up = 0; down = 0; right = 0; break;
+			case Keyboard::Right: right = 1; up = 0; down = 0; left = 0; break;
 			}
 		}
 	}
 	if (back.isClicked(mouse, window)) gameState = state::menu;
+	
+	
 	
 	//movement
 	prevPos = pacman.animation.getPosition();

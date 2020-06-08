@@ -128,8 +128,6 @@ void Ghost::update(Vector2f player, int rot, Vector2f blinky)
 	if (move()) { findPath(tar, pos); }
 }
 
-
-
 void Ghost::findPath(Vector2i target, Vector2i curPos)
 {
 	//this is mostly for inky so he doesnt crash the program chilling in the pipes
