@@ -255,24 +255,28 @@ bool Ghost::move(bool fright)
 	case 0:
 		//right
 		if (fright) animation.setup("res/pacman/gh.png", size, Vector2f(0, size.y * 4));
+		else if (!alive) animation.setup("res/pacman/gh.png", dSize, Vector2f(dSize.x * 3, size.y * 5));
 		else animation.setup("res/pacman/gh.png", size, Vector2f(size.x * 6, type * size.y));
 		pos.x += speed;
 		break;
 	case 1:
 		//left
 		if (fright) animation.setup("res/pacman/gh.png", size, Vector2f(0, size.y * 4));
+		else if (!alive) animation.setup("res/pacman/gh.png", dSize, Vector2f(dSize.x * 2, size.y * 5));
 		else animation.setup("res/pacman/gh.png", size, Vector2f(size.x * 4, type * size.y));
 		pos.x -= speed;
 		break;
 	case 2:
 		//down
 		if (fright) animation.setup("res/pacman/gh.png", size, Vector2f(0, size.y * 4));
+		else if (!alive) animation.setup("res/pacman/gh.png", dSize, Vector2f(dSize.x, size.y * 5));
 		else animation.setup("res/pacman/gh.png", size, Vector2f(size.x * 2, type * size.y));
 		pos.y += speed;
 		break;
 	case 3:
 		//up
 		if (fright) animation.setup("res/pacman/gh.png", size, Vector2f(0, size.y * 4));
+		else if (!alive) animation.setup("res/pacman/gh.png", dSize, Vector2f(0, size.y * 5));
 		else animation.setup("res/pacman/gh.png", size, Vector2f(0, type * size.y));
 		pos.y -= speed;
 		break;
@@ -287,17 +291,12 @@ bool Ghost::move(bool fright)
 void Ghost::die()
 {
 	Vector2i pos = Vector2i(std::round((this->pos.x - start.x) / tSize.x), std::round((this->pos.y - start.y) / tSize.y));
-	Vector2i tar;
-	
-	if (type == 0) tar = Vector2i{ 9,8 };
-	else if (type == 1) tar = Vector2i{ 9,10 };
-	else if (type == 2) tar = { 8,10 };
-	else tar = Vector2i{ 10,10 };
+	Vector2i tar = Vector2i{ 9,8 };
 	
 	if (move()) findPath(tar, pos);
 	
 	if (tar == pos) alive = 1; else alive = 0;
-				  
+	
 }
 
 

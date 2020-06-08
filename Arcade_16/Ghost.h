@@ -38,6 +38,6 @@ private:
 
 	float distTraveled = 0.f;
 	Vector2i prevPos;
-	Vector2f size{ 28,34 }, start{ 0,0 };
+	Vector2f size{ 28,34 }, start{ 0,0 }, dSize{ 24,34 };
 	Vector2f scale{ 0.714,0.588 }, sfield{ 19,22 }, tSize;
 };
