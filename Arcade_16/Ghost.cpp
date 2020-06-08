@@ -36,7 +36,8 @@ void Ghost::update(Vector2f player, bool fright)
 	Vector2i tar = Vector2i((std::round((player.x - start.x) / tSize.x)), (std::round((player.y - start.y) / tSize.y)));
 	Vector2i pos = Vector2i(std::round((this->pos.x - start.x) / tSize.x), std::round((this->pos.y - start.y)/ tSize.y));
 
-	if (fright) {
+	if (alive == 0) die();
+	else if (fright) {
 		if (move(fright)) random(pos);
 	}
 	else {
@@ -95,7 +96,8 @@ void Ghost::update(Vector2f player, float rot, bool fright)
 	Vector2i tar;
 	Vector2i pos = Vector2i(std::round((this->pos.x - start.x) / tSize.x), std::round((this->pos.y - start.y) / tSize.y));
 
-	if (fright) {
+	if (alive == 0) die();
+	else if (fright) {
 		if(move(fright)) random(pos);
 	}
 	else if(beg) {
@@ -137,7 +139,8 @@ void Ghost::update(Vector2f player, float rot, Vector2f blinky, bool fright)
 	Vector2i pos = Vector2i(std::round((this->pos.x - start.x) / tSize.x), std::round((this->pos.y - start.y) / tSize.y));
 	Vector2i bli = Vector2i(std::round((blinky.x - start.x) / tSize.x), std::round((blinky.y - start.y) / tSize.y));
 
-	if (fright) {
+	if (alive == 0) die();
+	else if (fright) {
 		if (move(fright)) random(pos);
 	}
 	else if (beg) {
@@ -280,4 +283,21 @@ bool Ghost::move(bool fright)
 
 	return 0;
 }
+
+void Ghost::die()
+{
+	Vector2i pos = Vector2i(std::round((this->pos.x - start.x) / tSize.x), std::round((this->pos.y - start.y) / tSize.y));
+	Vector2i tar;
+	
+	if (type == 0) tar = Vector2i{ 9,8 };
+	else if (type == 1) tar = Vector2i{ 9,10 };
+	else if (type == 2) tar = { 8,10 };
+	else tar = Vector2i{ 10,10 };
+	
+	if (move()) findPath(tar, pos);
+	
+	if (tar == pos) alive = 1; else alive = 0;
+				  
+}
+
 

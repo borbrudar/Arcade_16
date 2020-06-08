@@ -151,12 +151,12 @@ void Pac_Man::update(Mouse& mouse, RenderWindow& window, state& gameState, Event
 
 	//collision with ghosts
 	if (pacman.animation.getGlobalBounds().intersects(
-		blinky.animation.animation.getGlobalBounds())) blinky.col = 1;
+		blinky.animation.animation.getGlobalBounds())) blinky.alive = 0;
 	if (pacman.animation.getGlobalBounds().intersects(
-		pinky.animation.animation.getGlobalBounds())) pinky.col = 1;
+		pinky.animation.animation.getGlobalBounds())) pinky.alive = 0;
 	if (pacman.animation.getGlobalBounds().intersects(
-		inky.animation.animation.getGlobalBounds())) inky.col = 1;
+		inky.animation.animation.getGlobalBounds())) inky.alive = 0;
 	if (pacman.animation.getGlobalBounds().intersects(
-		clyde.animation.animation.getGlobalBounds())) clyde.col = 1;
+		clyde.animation.animation.getGlobalBounds())) clyde.alive = 0;
 
 }

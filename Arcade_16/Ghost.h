@@ -17,21 +17,24 @@ public:
 	void update(Vector2f player, float rot, bool fright = 0);
 	//inky
 	void update(Vector2f player, float rot, Vector2f blinky, bool fright = 0);
-	
+	//call when collision and other stuff
+	void die();
+
 	Vector2f pos;
 	Animation animation;
-	bool col = 0, ready = 0;
+	bool ready = 0, alive = 1;
 private:
 	void findPath(Vector2i target, Vector2i curPos);
 	void random(Vector2i curPos);
 	bool move(bool fright = 0);
+	
 
 	std::vector<int> beggining;
 	int st = 1;
 	std::vector<std::vector<int>> field;
 	int type = 0, instruction = -1;
 	float speed = 0.7f;
-	bool beg = 1, alive = 1;
+	bool beg = 1;
 
 	float distTraveled = 0.f;
 	Vector2i prevPos;
