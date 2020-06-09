@@ -27,6 +27,10 @@ Menu::Menu(Font& f)
 	text1.assign("6.Pac Man");
 	pacman.setup(f, text1, Color::Green, Vector2f(350, 40), Vector2f(70, 330), 22);
 
+	//simon
+	text1.assign("7.Simon");
+	simon.setup(f, text1, Color::Green, Vector2f(350, 40), Vector2f(70, 390), 22);
+
 }
 
 
@@ -38,6 +42,7 @@ void Menu::draw(RenderWindow &window)
 	pong.draw(window);
 	asteroids.draw(window);
 	pacman.draw(window);
+	simon.draw(window);
 }
 
 void Menu::update(Mouse &mouse, RenderWindow& window, state &gameState, Event &e)
@@ -53,4 +58,5 @@ void Menu::update(Mouse &mouse, RenderWindow& window, state &gameState, Event &e
 	if (pong.isClicked(mouse, window)) gameState = state::pong;
 	if (asteroids.isClicked(mouse, window)) gameState = state::asteroids;
 	if (pacman.isClicked(mouse, window)) gameState = state::pacman;
+	if (simon.isClicked(mouse, window)) gameState = state::simon;
 }

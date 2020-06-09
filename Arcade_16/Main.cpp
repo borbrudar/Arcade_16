@@ -8,6 +8,7 @@
 #include "Pong.h"
 #include "Asteroids.h"
 #include "Pac_Man.h"
+#include "Simon.h"
 
 using namespace sf;
 
@@ -53,6 +54,9 @@ int main() {
 				break;
 			case state::pacman:
 				state = std::make_unique<Pac_Man>(arial);
+				break;
+			case state::simon:
+				state = std::make_unique<Simon>(arial);
 				break;
 			}
 		}

@@ -37,6 +37,9 @@
     <Filter Include="Games\Pac_Man">
       <UniqueIdentifier>{4a0ba12b-87f9-4950-aed5-08fac92cf73b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Games\Simon">
+      <UniqueIdentifier>{d2379a33-9287-466b-a512-0bdc1653a3ee}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -77,6 +80,9 @@
     </ClCompile>
     <ClCompile Include="Ghost.cpp">
       <Filter>Games\Pac_Man</Filter>
+    </ClCompile>
+    <ClCompile Include="Simon.cpp">
+      <Filter>Games\Simon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -124,6 +130,9 @@
     </ClInclude>
     <ClInclude Include="Pellet.h">
       <Filter>Games\Pac_Man</Filter>
+    </ClInclude>
+    <ClInclude Include="Simon.h">
+      <Filter>Games\Simon</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

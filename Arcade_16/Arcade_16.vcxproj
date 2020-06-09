@@ -157,6 +157,7 @@
     <ClCompile Include="Pac_Man.cpp" />
     <ClCompile Include="Pong.cpp" />
     <ClCompile Include="Shield.cpp" />
+    <ClCompile Include="Simon.cpp" />
     <ClCompile Include="Space_Invaders.cpp" />
     <ClCompile Include="Tetris.cpp" />
   </ItemGroup>
@@ -172,6 +173,7 @@
     <ClInclude Include="Pellet.h" />
     <ClInclude Include="Pong.h" />
     <ClInclude Include="Shield.h" />
+    <ClInclude Include="Simon.h" />
     <ClInclude Include="Space_Invaders.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="stateEnum.h" />

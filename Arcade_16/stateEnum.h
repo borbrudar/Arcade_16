@@ -7,5 +7,6 @@ enum class state {
 	space_invaders,
 	pong,
 	asteroids, 
-	pacman
+	pacman, 
+	simon
 };
