@@ -3,6 +3,7 @@
 #include <vector>
 #include <iostream>
 #include <random>
+#include <fstream>
 
 struct Box {
 	void setup(Color col);
@@ -23,6 +24,10 @@ public:
 	void inst(bool reset = 0);
 private:
 	Button back;
+	int score = 0, highscore;
+	std::fstream hs;
+	Text scr;
+
 	bool won = 1;
 	Clock iclock;
 	float itime = 0, itimer = 0, idelay = 0.9f;

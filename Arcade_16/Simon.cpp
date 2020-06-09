@@ -2,6 +2,19 @@
 
 Simon::Simon(Font& f)
 {
+	//scores
+	scr.setPosition(20, 10);
+	scr.setCharacterSize(20);
+	scr.setFillColor(Color::White);
+	scr.setFont(f);
+
+	//read from file
+	std::string hsc;
+	hs.open("res/simon/hs.txt");
+	std::getline(hs, hsc);
+	highscore = std::stoi(hsc);
+	hs.close();
+
 	//setup back button
 	std::string text1;
 	text1.assign("Back");
@@ -27,11 +40,35 @@ void Simon::draw(RenderWindow& window)
 {
 	back.draw(window);
 
+	//boxes
 	for (int i = 0; i < boxes.size(); i++) window.draw(boxes[i].box);
+
+	//draw score and highscore
+	std::string text2;
+	text2.assign("Score: ");
+	text2 = text2 + std::to_string(score);
+	scr.setString(text2);
+	scr.setPosition(20, 10);
+	window.draw(scr);
+
+	text2.assign("Highscore: ");
+	text2 = text2 + std::to_string(highscore);
+	scr.setString(text2);
+	scr.setPosition(150, 10);
+	window.draw(scr);
 }
 
 void Simon::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
 {
+	if (score > highscore) {
+		highscore = score;
+		//write to file and close it
+		hs.open("res/simon/hs.txt", std::ios::out | std::ios::trunc);
+		hs << highscore;
+		hs.close();
+	}
+
+	//click click
 	while (window.pollEvent(e)) {
 		if (e.type == Event::Closed) window.close();
 		if (Mouse::isButtonPressed(Mouse::Button::Left)) {
@@ -46,14 +83,13 @@ void Simon::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& 
 						moves.push_back(i);
 						if (moves.size() == instructions.size() &&
 							moves.back() == instructions[moves.size() - 1]) {
-							std::cout << "WINNER" << std::endl;
-
+							score++;
 							inst();
 							moves.clear();
 							won = 1;
 						}
 						else if (!(moves.back() == instructions[moves.size() - 1])) {
-							std::cout << "Game Over" << std::endl;
+							score = 0;
 							won = 1;
 							inst(1);
 							moves.clear();
@@ -102,7 +138,6 @@ void Simon::inst(bool reset)
 	std::uniform_int_distribution<int> dist(0, 3);
 	instructions.push_back(dist(engine));
 
-	std::cout << instructions.back() << std::endl;
 }
 
 void Box::setup(Color col)
