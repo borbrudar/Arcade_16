@@ -4,8 +4,12 @@
 #include <iostream>
 
 struct Box {
+	void setup(Color col);
+	void update();
 
 	RectangleShape box;
+	float oldr, oldg, oldb;
+	float k = 0.7f;
 };
 
 class Simon : public State {
@@ -18,5 +22,5 @@ private:
 	Button back;
 
 	Vector2f bSize{ 200, 200 }, start{ 100,40 };
-	std::vector<RectangleShape> boxes;
+	std::vector<Box> boxes;
 };
