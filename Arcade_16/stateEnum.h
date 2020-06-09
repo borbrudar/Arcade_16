@@ -8,5 +8,6 @@ enum class state {
 	pong,
 	asteroids, 
 	pacman, 
-	simon
+	simon,
+	super_mario
 };

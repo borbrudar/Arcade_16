@@ -9,5 +9,6 @@ public:
 	void draw(RenderWindow &window);
 	void update(Mouse &mouse, RenderWindow& window, state &gameState, Event &e);
 
-	Button tetris, arkanoid, spaceinvaders, pong, asteroids, pacman, simon;
+	Text arcade;
+	Button tetris, arkanoid, spaceinvaders, pong, asteroids, pacman, simon, supermario;
 };

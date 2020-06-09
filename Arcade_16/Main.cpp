@@ -9,6 +9,7 @@
 #include "Asteroids.h"
 #include "Pac_Man.h"
 #include "Simon.h"
+#include "Super_Mario.h"
 
 using namespace sf;
 
@@ -22,9 +23,9 @@ int main() {
 	Font arial;
 	arial.loadFromFile("res/font/arial.ttf");
 
-	state gameState = state::simon;
+	state gameState = state::menu;
 	state prevState = gameState;
-	std::unique_ptr<State> state = std::make_unique<Simon>(arial); //FOR TEST YOU HAVE TO SWITCH THE TOP ONES TOO!!!
+	std::unique_ptr<State> state = std::make_unique<Menu>(arial); //FOR TEST YOU HAVE TO SWITCH THE TOP ONES TOO!!!
 
 
 	//game loop
@@ -57,6 +58,9 @@ int main() {
 				break;
 			case state::simon:
 				state = std::make_unique<Simon>(arial);
+				break;
+			case state::super_mario:
+				state = std::make_unique<Super_Mario>(arial);
 				break;
 			}
 		}

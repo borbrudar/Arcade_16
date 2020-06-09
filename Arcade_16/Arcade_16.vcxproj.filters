@@ -37,6 +37,9 @@
     <Filter Include="Games\Pac_Man">
       <UniqueIdentifier>{4a0ba12b-87f9-4950-aed5-08fac92cf73b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Games\Super_Mario">
+      <UniqueIdentifier>{6bf2050a-22f0-4ddc-aab4-62b88f53262e}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Games\Simon">
       <UniqueIdentifier>{d2379a33-9287-466b-a512-0bdc1653a3ee}</UniqueIdentifier>
     </Filter>
@@ -83,6 +86,9 @@
     </ClCompile>
     <ClCompile Include="Simon.cpp">
       <Filter>Games\Simon</Filter>
+    </ClCompile>
+    <ClCompile Include="Super_Mario.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -133,6 +139,9 @@
     </ClInclude>
     <ClInclude Include="Simon.h">
       <Filter>Games\Simon</Filter>
+    </ClInclude>
+    <ClInclude Include="Super_Mario.h">
+      <Filter>Games\Super_Mario</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
