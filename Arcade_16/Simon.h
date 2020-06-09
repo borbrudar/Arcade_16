@@ -1,6 +1,12 @@
 #pragma once
 #include "State.h"
 #include <vector>
+#include <iostream>
+
+struct Box {
+
+	RectangleShape box;
+};
 
 class Simon : public State {
 public:

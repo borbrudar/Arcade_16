@@ -18,6 +18,9 @@ Simon::Simon(Font& f)
 	boxes[1].setFillColor(Color::Green);
 	boxes[2].setFillColor(Color::Blue);
 	boxes[3].setFillColor(Color::Yellow);
+
+	for(int i = 0; i < boxes.size();i++) boxes[i].setFillColor(Color(boxes[i].getFillColor().r * 0.7,
+		boxes[i].getFillColor().g * 0.7, boxes[i].getFillColor().b * 0.7));
 }
 
 void Simon::draw(RenderWindow& window)
@@ -31,7 +34,26 @@ void Simon::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& 
 {
 	while (window.pollEvent(e)) {
 		if (e.type == Event::Closed) window.close();
+		if (Mouse::isButtonPressed(Mouse::Button::Left)) {
+			//check for touch
+			for (int i = 0; i < boxes.size(); i++) {
+				if (boxes[i].getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window)))) {
+					//set the colors straight
+					float r = 0, g = 0, b = 0;
+					if (boxes[i].getFillColor().r * 1.5 > 255) r = 255; else
+						r = boxes[i].getFillColor().r * 1.25;
+					if (boxes[i].getFillColor().g * 1.5 > 255) g = 255; else
+						g = boxes[i].getFillColor().g * 1.25;
+					if (boxes[i].getFillColor().b * 1.5 > 255) b = 255; else
+						b = boxes[i].getFillColor().b * 1.25;
+
+					boxes[i].setFillColor(Color(r,g,b));
+				}
+			}
+		}
 	}
 
 	if (back.isClicked(mouse, window)) gameState = state::menu;
+
+	
 }
