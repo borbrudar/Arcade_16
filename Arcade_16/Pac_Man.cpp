@@ -2,6 +2,19 @@
 
 Pac_Man::Pac_Man(Font& f)
 {
+	//scores
+	scr.setPosition(20, 10);
+	scr.setCharacterSize(20);
+	scr.setFillColor(Color::White);
+	scr.setFont(f);
+
+	//read from file
+	std::string hsc;
+	hs.open("res/pacman/hs.txt");
+	std::getline(hs, hsc);
+	highscore = std::stoi(hsc);
+	hs.close();
+
 	//setup back button
 	std::string text1;
 	text1.assign("Back");
@@ -111,10 +124,33 @@ void Pac_Man::draw(RenderWindow& window)
 	pinky.draw(window);
 	inky.draw(window);
 	clyde.draw(window);
+
+	//draw score and highscore
+	std::string text2;
+	text2.assign("Score: ");
+	text2 = text2 + std::to_string(score);
+	scr.setString(text2);
+	scr.setPosition(20, 30);
+	window.draw(scr);
+
+	text2.assign("Highscore: ");
+	text2 = text2 + std::to_string(highscore);
+	scr.setString(text2);
+	scr.setPosition(20, 100);
+	window.draw(scr);
 }
 
 void Pac_Man::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
 {
+	//highscore update
+	if (score > highscore) {
+		highscore = score;
+		//write to file and close it
+		hs.open("res/pacman/hs.txt", std::ios::out | std::ios::trunc);
+		hs << highscore;
+		hs.close();
+	}
+
 	//update the ghosts
 	blinky.update(pacman.animation.getPosition(), frightened);
 	pinky.update(pacman.animation.getPosition(), pacman.animation.getRotation(),
@@ -198,7 +234,9 @@ void Pac_Man::update(Mouse& mouse, RenderWindow& window, state& gameState, Event
 			if (pellets[i].super == 1) {
 				frightened = 1;
 				ftime = 0;
+				score += 40;
 			}
+			score += 10;
 			pellets.erase(pellets.begin() + i);
 		}
 	}

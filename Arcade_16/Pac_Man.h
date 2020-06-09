@@ -3,6 +3,7 @@
 #include "Animation.h"
 #include "Ghost.h"
 #include "Pellet.h"
+#include <fstream>
 
 class Wall {
 public:
@@ -28,8 +29,12 @@ public:
 
 private:
 	Button back;
-	Vector2f start{ 150, 20 };
+	Vector2f start{ 180, 20 };
 	std::vector<std::vector<int>> field;
+	//10 for normal, 50 for power pellets
+	int score = 0, highscore;
+	std::fstream hs;
+	Text scr;
 
 	//pacman
 	Animation pacman;

@@ -92,6 +92,8 @@ void Asteroids::update(Mouse& mouse, RenderWindow& window, state& gameState, Eve
 		hs.close();
 	}
 
+	if (back.isClicked(mouse, window)) gameState = state::menu;
+
 	if (!gameOver) {
 		//click click
 		while (window.pollEvent(e)) {
@@ -109,7 +111,6 @@ void Asteroids::update(Mouse& mouse, RenderWindow& window, state& gameState, Eve
 				if (e.key.code == Keyboard::Up) move = 0;
 			}
 		}
-		if (back.isClicked(mouse, window)) gameState = state::menu;
 
 		//ship rot
 		if (left) rot = -rots;
