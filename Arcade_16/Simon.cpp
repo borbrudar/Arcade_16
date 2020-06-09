@@ -38,11 +38,11 @@ void Simon::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& 
 			//check for touch
 			for (int i = 0; i < boxes.size(); i++) {
 				if (boxes[i].box.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window)))) {
-					//set the colors straight
-					boxes[i].bright();
-
 					//win/lose 
 					if (!won) {
+						//set the colors straight
+						boxes[i].bright();
+
 						moves.push_back(i);
 						if (moves.size() == instructions.size() &&
 							moves.back() == instructions[moves.size() - 1]) {
@@ -50,9 +50,11 @@ void Simon::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& 
 
 							inst();
 							moves.clear();
+							won = 1;
 						}
 						else if (!(moves.back() == instructions[moves.size() - 1])) {
 							std::cout << "Game Over" << std::endl;
+							won = 1;
 							inst(1);
 							moves.clear();
 						}
@@ -66,6 +68,30 @@ void Simon::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& 
 
 	//slowly subtract colors
 	for (int i = 0; i < boxes.size(); i++) boxes[i].update();
+
+	//demonstrate instructions
+	if (won) {
+		itimer = iclock.getElapsedTime().asSeconds();
+		itime += itimer;
+		iclock.restart();
+
+		if (itime > idelay) {
+			//demonstration
+			itime = 0;
+			boxes[instructions[ind]].bright();
+
+			if ((ind + 1)== instructions.size()) {
+				won = 0;
+				ind = 0;
+			}
+			else ind++;
+		}
+	}
+	else {
+		iclock.restart();
+		itime = 0.f;
+	}
+
 }
 
 void Simon::inst(bool reset)
@@ -91,12 +117,9 @@ void Box::setup(Color col)
 void Box::bright()
 {
 	float r = 0, g = 0, b = 0;
-	if (oldr * 1.5 > 255) r = 255; else
-		r = oldr * 1.5;
-	if (oldg * 1.5 > 255) g = 255; else
-		g = oldg * 1.5;
-	if (oldb * 1.5 > 255) b = 255; else
-		b = oldb * 1.5;
+	if (oldr * mult > 255) r = 255; else r = oldr * mult;
+	if (oldg * mult > 255) g = 255; else g = oldg * mult;
+	if (oldb * mult > 255) b = 255; else b = oldb * mult;
 
 	box.setFillColor(Color(r, g, b));
 }

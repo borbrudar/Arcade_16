@@ -12,7 +12,7 @@ struct Box {
 	RectangleShape box;
 private:
 	float oldr  = 0.f, oldg = 0.f, oldb = 0.f;
-	const float k = 0.7f, sub = 0.1f;
+	const float k = 0.7f, mult = 3.f, sub = 0.05f;
 };
 
 class Simon : public State {
@@ -23,7 +23,10 @@ public:
 	void inst(bool reset = 0);
 private:
 	Button back;
-	bool won = 0;
+	bool won = 1;
+	Clock iclock;
+	float itime = 0, itimer = 0, idelay = 0.9f;
+	int ind = 0;
 
 	std::vector<int> instructions;
 	std::vector<int> moves;
