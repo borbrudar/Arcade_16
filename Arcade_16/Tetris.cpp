@@ -11,8 +11,7 @@ Tetris::Tetris(Font& f)
 	highscore.close();
 
 	//setup theme song
-	buffer.loadFromFile("res/tetris/theme.wav");
-	theme.setBuffer(buffer);
+	theme.openFromFile("res/tetris/theme.wav");
 	theme.play();
 	theme.setLoop(true);
 	

@@ -20,6 +20,13 @@ Simon::Simon(Font& f)
 	text1.assign("Back");
 	back.setup(f, text1, Color::Blue, Vector2f(50, 30), Vector2f(580, 20), 14);
 
+	//sound
+	rb.loadFromFile("res/simon/red.wav"); red.setBuffer(rb);
+	gb.loadFromFile("res/simon/green.wav"); green.setBuffer(gb);
+	bb.loadFromFile("res/simon/blue.wav"); blue.setBuffer(bb);
+	yb.loadFromFile("res/simon/yellow.wav"); yellow.setBuffer(yb);
+	eb.loadFromFile("res/simon/end.wav"); end.setBuffer(eb);
+
 	//boxes
 	boxes.resize(4);
 	for (int i = 0; i < boxes.size(); i++) {
@@ -79,7 +86,7 @@ void Simon::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& 
 					if (!won) {
 						//set the colors straight
 						boxes[i].bright();
-
+						music(i);
 						moves.push_back(i);
 						if (moves.size() == instructions.size() &&
 							moves.back() == instructions[moves.size() - 1]) {
@@ -89,6 +96,8 @@ void Simon::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& 
 							won = 1;
 						}
 						else if (!(moves.back() == instructions[moves.size() - 1])) {
+							stop();
+							end.play();
 							score = 0;
 							won = 1;
 							inst(1);
@@ -115,6 +124,7 @@ void Simon::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& 
 			//demonstration
 			itime = 0;
 			boxes[instructions[ind]].bright();
+			music(instructions[ind]);
 
 			if ((ind + 1)== instructions.size()) {
 				won = 0;
@@ -138,6 +148,22 @@ void Simon::inst(bool reset)
 	std::uniform_int_distribution<int> dist(0, 3);
 	instructions.push_back(dist(engine));
 
+}
+
+void Simon::music(int type)
+{
+	if (type == 0) red.play();
+	else if (type == 1) green.play();
+	else if (type == 2) blue.play();
+	else if (type == 3) yellow.play();
+}
+
+void Simon::stop()
+{
+	red.stop();
+	green.stop();
+	blue.stop();
+	yellow.stop();
 }
 
 void Box::setup(Color col)

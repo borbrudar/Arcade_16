@@ -22,8 +22,7 @@ public:
 	Texture til, playfield, gamey;
 	Sprite tiles, fieldy, game;
 	Text points;
-	SoundBuffer buffer;
-	Sound theme;
+	Music theme;
 	std::fstream highscore;
 
 	struct point { int x = 0, y = 0; } a[4], b[4];

@@ -4,6 +4,7 @@
 #include <iostream>
 #include <random>
 #include <fstream>
+#include <SFML/Audio.hpp>
 
 struct Box {
 	void setup(Color col);
@@ -22,12 +23,16 @@ public:
 	void draw(RenderWindow& window);
 	void update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e);
 	void inst(bool reset = 0);
+	void music(int type);
+	void stop();
 private:
 	Button back;
 	int score = 0, highscore;
 	std::fstream hs;
 	Text scr;
 
+	SoundBuffer rb,gb,bb,yb,eb;
+	Sound red, green, blue, yellow, end;
 	bool won = 1;
 	Clock iclock;
 	float itime = 0, itimer = 0, idelay = 0.9f;
