@@ -22,9 +22,9 @@ int main() {
 	Font arial;
 	arial.loadFromFile("res/font/arial.ttf");
 
-	state gameState = state::menu;
+	state gameState = state::simon;
 	state prevState = gameState;
-	std::unique_ptr<State> state = std::make_unique<Menu>(arial); //FOR TEST YOU HAVE TO SWITCH THE TOP ONES TOO!!!
+	std::unique_ptr<State> state = std::make_unique<Simon>(arial); //FOR TEST YOU HAVE TO SWITCH THE TOP ONES TOO!!!
 
 
 	//game loop
