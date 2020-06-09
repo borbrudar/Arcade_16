@@ -243,9 +243,9 @@ void Pac_Man::update(Mouse& mouse, RenderWindow& window, state& gameState, Event
 		if (pacman.animation.getGlobalBounds().intersects(
 			pinky.animation.animation.getGlobalBounds()) && pinky.alive && !frightened) gameOver = 1;
 		if (pacman.animation.getGlobalBounds().intersects(
-			inky.animation.animation.getGlobalBounds()) && pinky.alive && !frightened) gameOver = 1;
+			inky.animation.animation.getGlobalBounds()) && inky.alive && !frightened) gameOver = 1;
 		if (pacman.animation.getGlobalBounds().intersects(
-			clyde.animation.animation.getGlobalBounds()) && pinky.alive && !frightened) gameOver = 1;
+			clyde.animation.animation.getGlobalBounds()) && clyde.alive && !frightened) gameOver = 1;
 
 
 		//collision with pellets

@@ -310,6 +310,6 @@ void Ghost::reset()
 
 	if (type == 1) 	st = 0;
 	else st = 1;
+
+	alive = 1;
 }
-
-
