@@ -18,6 +18,9 @@ Simon::Simon(Font& f)
 	boxes[1].setup(Color::Green);
 	boxes[2].setup(Color::Blue);
 	boxes[3].setup(Color::Yellow);
+
+	//first instruction
+	inst();
 }
 
 void Simon::draw(RenderWindow& window)
@@ -36,15 +39,24 @@ void Simon::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& 
 			for (int i = 0; i < boxes.size(); i++) {
 				if (boxes[i].box.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window)))) {
 					//set the colors straight
-					float r = 0, g = 0, b = 0;
-					if (boxes[i].oldr * 1.5 > 255) r = 255; else
-						r = boxes[i].oldr * 1.25;
-					if (boxes[i].oldg * 1.5 > 255) g = 255; else
-						g = boxes[i].oldg * 1.25;
-					if (boxes[i].oldb * 1.5 > 255) b = 255; else
-						b = boxes[i].oldb * 1.25;
+					boxes[i].bright();
 
-					boxes[i].box.setFillColor(Color(r,g,b));
+					//win/lose 
+					if (!won) {
+						moves.push_back(i);
+						if (moves.size() == instructions.size() &&
+							moves.back() == instructions[moves.size() - 1]) {
+							std::cout << "WINNER" << std::endl;
+
+							inst();
+							moves.clear();
+						}
+						else if (!(moves.back() == instructions[moves.size() - 1])) {
+							std::cout << "Game Over" << std::endl;
+							inst(1);
+							moves.clear();
+						}
+					}
 				}
 			}
 		}
@@ -56,6 +68,17 @@ void Simon::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& 
 	for (int i = 0; i < boxes.size(); i++) boxes[i].update();
 }
 
+void Simon::inst(bool reset)
+{
+	if (reset) instructions.clear();
+	std::random_device rd;
+	std::default_random_engine engine(rd());
+	std::uniform_int_distribution<int> dist(0, 3);
+	instructions.push_back(dist(engine));
+
+	std::cout << instructions.back() << std::endl;
+}
+
 void Box::setup(Color col)
 {
 	oldr = col.r * k;
@@ -65,15 +88,28 @@ void Box::setup(Color col)
 	box.setFillColor(Color(oldr, oldg, oldb));
 }
 
+void Box::bright()
+{
+	float r = 0, g = 0, b = 0;
+	if (oldr * 1.5 > 255) r = 255; else
+		r = oldr * 1.5;
+	if (oldg * 1.5 > 255) g = 255; else
+		g = oldg * 1.5;
+	if (oldb * 1.5 > 255) b = 255; else
+		b = oldb * 1.5;
+
+	box.setFillColor(Color(r, g, b));
+}
+
 void Box::update()
 {
 	//slowly subtract colors
-	if (box.getFillColor().r > oldr) box.setFillColor(Color(box.getFillColor().r - 1,
+	if (box.getFillColor().r > oldr) box.setFillColor(Color(box.getFillColor().r - sub,
 		box.getFillColor().g, box.getFillColor().b));
 
 	if (box.getFillColor().g > oldg) box.setFillColor(Color(box.getFillColor().r,
-		box.getFillColor().g - 1, box.getFillColor().b));
+		box.getFillColor().g - sub, box.getFillColor().b));
 	
 	if (box.getFillColor().b > oldb) box.setFillColor(Color(box.getFillColor().r,
-		box.getFillColor().g, box.getFillColor().b - 1));
+		box.getFillColor().g, box.getFillColor().b - sub));
 }
