@@ -24,6 +24,7 @@ public:
 class Pac_Man : public State {
 public:
 	Pac_Man(Font& f);
+	void setup();
 	void draw(RenderWindow& window);
 	void update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e);
 
@@ -31,6 +32,7 @@ private:
 	Button back;
 	Vector2f start{ 180, 20 };
 	std::vector<std::vector<int>> field;
+	bool gameOver = 0;
 	//10 for normal, 50 for power pellets
 	int score = 0, highscore;
 	std::fstream hs;

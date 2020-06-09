@@ -303,4 +303,13 @@ void Ghost::die()
 	
 }
 
+void Ghost::reset()
+{
+	distTraveled = 0.f;
+	beg = 1;
+
+	if (type == 1) 	st = 0;
+	else st = 1;
+}
+
 

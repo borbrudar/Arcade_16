@@ -20,9 +20,11 @@ public:
 	//call when collision and other stuff
 	void die();
 
+	void reset();
+
 	Vector2f pos;
 	Animation animation;
-	bool ready = 0, alive = 1;
+	bool alive = 1;
 private:
 	void findPath(Vector2i target, Vector2i curPos);
 	void random(Vector2i curPos);
@@ -34,7 +36,7 @@ private:
 	std::vector<std::vector<int>> field;
 	int type = 0, instruction = -1;
 	float speed = 1.3f;
-	bool beg = 1;
+	bool  beg = 1;
 
 	float distTraveled = 0.f;
 	Vector2i prevPos;
