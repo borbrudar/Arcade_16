@@ -246,6 +246,10 @@ void Ghost::random(Vector2i curPos)
 bool Ghost::move(bool fright)
 {
 	if (distTraveled > tSize.x) {
+		if(instruction == 0) pos.x -= speed;
+		if (instruction == 1) pos.x += speed;
+		if (instruction == 2) pos.y -= speed;
+		if (instruction == 3) pos.y += speed;
 		distTraveled = 0.f;
 		return 1;
 	}

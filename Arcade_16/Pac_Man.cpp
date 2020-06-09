@@ -130,7 +130,10 @@ void Pac_Man::update(Mouse& mouse, RenderWindow& window, state& gameState, Event
 		
 		if (ftime > fdelay) frightened = 0;
 	}
-	else fclock.restart();
+	else {
+		fclock.restart();
+		ftime = 0;
+	}
 
 	//normalize the position
 	Vector2f pos = pacman.animation.getPosition();
@@ -192,7 +195,10 @@ void Pac_Man::update(Mouse& mouse, RenderWindow& window, state& gameState, Event
 	//collision with pellets
 	for (int i = 0; i < pellets.size(); i++) {
 		if (pacman.animation.getGlobalBounds().intersects(pellets[i].pellet.getGlobalBounds())) {
-			if (pellets[i].super == 1) frightened = 1;
+			if (pellets[i].super == 1) {
+				frightened = 1;
+				ftime = 0;
+			}
 			pellets.erase(pellets.begin() + i);
 		}
 	}
