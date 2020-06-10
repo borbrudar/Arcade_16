@@ -31,6 +31,13 @@ Super_Mario::Super_Mario(Font& f)
 		}
 	}
 
+	mariobox.push_back(RectangleShape(Vector2f(mario.box.getSize().x, 1)));
+	mariobox.push_back(RectangleShape(Vector2f(mario.box.getSize().x, 1)));
+	mariobox.push_back(RectangleShape(Vector2f(1, mario.box.getSize().y - 2)));
+	mariobox.push_back(RectangleShape(Vector2f(1, mario.box.getSize().y - 2)));
+
+
+	for (int i = 0; i < mariobox.size(); i++) mariobox[i].setFillColor(Color::Red);
 }
 
 void Super_Mario::draw(RenderWindow& window)
@@ -44,6 +51,8 @@ void Super_Mario::draw(RenderWindow& window)
 
 	//mario
 	mario.draw(window);
+	for (int i = 0; i < mariobox.size(); i++) window.draw(mariobox[i]);
+	
 }
 
 void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
@@ -71,18 +80,30 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 
 	}
 
+	//mario box update
+	mariobox[0].setPosition(mario.box.getPosition());
+	mariobox[1].setPosition(mario.box.getPosition().x, mario.box.getPosition().y + mario.box.getSize().y);
+	mariobox[2].setPosition(mario.box.getPosition().x, mario.box.getPosition().y + 1);
+	mariobox[3].setPosition(mario.box.getPosition().x + mario.box.getSize().x, mario.box.getPosition().y + 1);
+
 	//boxes collision
 	bool col = 0;
+	int type = 0;
 	for (int i = 0; i < boxes.size(); i++) {
-		if (boxes[i].box.getGlobalBounds().intersects(mario.box.getGlobalBounds())) {
-			col = 1; 
-			break;
+		for (int j = 0; j < mariobox.size(); j++) {
+			if (boxes[i].box.getGlobalBounds().intersects(mariobox[j].getGlobalBounds())) {
+				col = 1;
+				type = j;
+				break;
+			}
 		}
 	}
 
 	//offset everything if necessary
-	if (mario.update(left, right, up, col) == 1) {
+	if (mario.update(left, right, up, col, type) == 1) {
 		for (int i = 0; i < boxes.size(); i++) 	boxes[i].box.move(-mario.mariosp, 0);
 		for(int i = 0; i < blocks.size();i++) blocks[i].box.move(-mario.mariosp, 0);
 	}
+
+
 }

@@ -15,13 +15,13 @@ void Mario::draw(RenderWindow& window)
 	window.draw(box);
 }
 
-bool Mario::update(bool left, bool right, bool up, bool col)
+bool Mario::update(bool left, bool right, bool up, bool col, int type)
 {
 	prevPos = pos;
-
 	if (col) {
+		if (type == 1) groundTouch = 1; else groundTouch = 0;
+		if (type == 0) jumping = 0;
 		pos = prevPos;
-		groundTouch = 1;
 	}
 	else groundTouch = 0;
 
@@ -36,24 +36,25 @@ bool Mario::update(bool left, bool right, bool up, bool col)
 	if (pos.x < 0) pos.x = 0;
 
 	//fall
-	if (!groundTouch) pos.y += gravity;
+	if (!jumping && !groundTouch) pos.y += gravity;
 	//hop hop
 	if (up && groundTouch) 	jumping = 1;
+
 	if (jumping) {
 		gtimer = gclock.getElapsedTime().asSeconds();
 		gtime += gtimer;
 		gclock.restart();
+		groundTouch = 0;
 
 		if (gtime > gdelay) {
-			groundTouch = 0;
 			jumping = 0;
 			gtime = 0;
 		}
-		else pos.y -= jump;
+		else  pos.y -= jump;
+		
 	}
 	else gclock.restart();
 
 	box.setPosition(pos);
-
 	return ret;
 }
