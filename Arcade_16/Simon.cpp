@@ -166,7 +166,7 @@ void Simon::stop()
 	yellow.stop();
 }
 
-void Box::setup(Color col)
+void BoxS::setup(Color col)
 {
 	oldr = col.r * k;
 	oldg = col.g * k;
@@ -175,7 +175,7 @@ void Box::setup(Color col)
 	box.setFillColor(Color(oldr, oldg, oldb));
 }
 
-void Box::bright()
+void BoxS::bright()
 {
 	float r = 0, g = 0, b = 0;
 	if (oldr * mult > 255) r = 255; else r = oldr * mult;
@@ -185,7 +185,7 @@ void Box::bright()
 	box.setFillColor(Color(r, g, b));
 }
 
-void Box::update()
+void BoxS::update()
 {
 	//slowly subtract colors
 	if (box.getFillColor().r > oldr) box.setFillColor(Color(box.getFillColor().r - sub,

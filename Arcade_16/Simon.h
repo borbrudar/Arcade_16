@@ -6,7 +6,7 @@
 #include <fstream>
 #include <SFML/Audio.hpp>
 
-struct Box {
+struct BoxS {
 	void setup(Color col);
 	void bright();
 	void update();
@@ -41,5 +41,5 @@ private:
 	std::vector<int> instructions;
 	std::vector<int> moves;
 	Vector2f bSize{ 200, 200 }, start{ 100,40 };
-	std::vector<Box> boxes;
+	std::vector<BoxS> boxes;
 };

@@ -7,9 +7,8 @@ Super_Mario::Super_Mario(Font& f)
 	text1.assign("Back");
 	back.setup(f, text1, Color::Blue, Vector2f(50, 30), Vector2f(580, 20), 14);
 
-	//ground
+	//boxes
 	gr.loadFromFile("res/mario/ground.png");
-
 
 	//mario
 	mr.loadFromFile("res/mario/mario.png");
@@ -20,8 +19,13 @@ Super_Mario::Super_Mario(Font& f)
 
 	for (int x = 0; x < lvl.getSize().x; x++) {
 		for (int y = 0; y < lvl.getSize().y; y++) {
+			//both grounds
 			if (lvl.getPixel(x, y) == Color(0, 0, 0, 255))
-				ground.push_back(Ground(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx,sy), gr));
+				boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx,sy), gr));
+			if (lvl.getPixel(x, y) == Color(0, 0, 0, 254))
+				blocks.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr));
+
+			//mario
 			if (lvl.getPixel(x, y) == Color(255, 0, 0, 255))
 				mario.setup(Vector2f(x * sx + off.x, y * sy + off.y - 100), Vector2f(sx, sy), mr);
 		}
@@ -34,8 +38,11 @@ void Super_Mario::draw(RenderWindow& window)
 	window.clear(Color(92, 148, 252));
 	back.draw(window);
 
-	for (int i = 0; i < ground.size(); i++) ground[i].draw(window);
+	//boxes and blocks
+	for (int i = 0; i < boxes.size(); i++) boxes[i].draw(window);
+	for (int i = 0; i < blocks.size(); i++) blocks[i].draw(window);
 
+	//mario
 	mario.draw(window);
 }
 
@@ -64,10 +71,10 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 
 	}
 
-	//ground collision
+	//boxes collision
 	bool col = 0;
-	for (int i = 0; i < ground.size(); i++) {
-		if (ground[i].box.getGlobalBounds().intersects(mario.box.getGlobalBounds())) {
+	for (int i = 0; i < boxes.size(); i++) {
+		if (boxes[i].box.getGlobalBounds().intersects(mario.box.getGlobalBounds())) {
 			col = 1; 
 			break;
 		}
@@ -75,8 +82,7 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 
 	//offset everything if necessary
 	if (mario.update(left, right, up, col) == 1) {
-		for (int i = 0; i < ground.size(); i++) {
-			ground[i].box.move(-mario.mariosp, 0);
-		}
+		for (int i = 0; i < boxes.size(); i++) 	boxes[i].box.move(-mario.mariosp, 0);
+		for(int i = 0; i < blocks.size();i++) blocks[i].box.move(-mario.mariosp, 0);
 	}
 }

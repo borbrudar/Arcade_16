@@ -178,6 +178,7 @@
     <ClInclude Include="Shield.h" />
     <ClInclude Include="Simon.h" />
     <ClInclude Include="Space_Invaders.h" />
+    <ClInclude Include="Box.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="stateEnum.h" />
     <ClInclude Include="Super_Mario.h" />

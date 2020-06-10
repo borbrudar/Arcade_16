@@ -1,19 +1,7 @@
 #pragma once
 #include "State.h"
 #include "Mario.h"
-
-class Ground {
-public:
-	Ground(Vector2f pos, Vector2f size, Texture& t) {
-		box.setPosition(pos);
-		box.setTexture(&t);
-		box.setSize(size);
-	};
-	void draw(RenderWindow& window) {
-		window.draw(box);
-	}
-	RectangleShape box;
-};
+#include "Box.h"
 
 class Super_Mario : public State {
 public:
@@ -23,10 +11,11 @@ public:
 
 	Button back;
 
-	//ground
+	//level
 	Image lvl;
 	Texture gr, mr;
-	std::vector<Ground> ground;
+	std::vector<Box> boxes;
+	std::vector<Box> blocks;
 	Vector2f off{ 0,20 };
 	float offX = 0.f;
 

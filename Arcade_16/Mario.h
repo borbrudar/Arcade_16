@@ -18,5 +18,5 @@ private:
 	bool groundTouch = 0, jumping = 0;
 
 	Clock gclock;
-	float gtime = 0.f, gtimer = 0.f, gdelay = 0.4f;
+	float gtime = 0.f, gtimer = 0.f, gdelay = 0.25f;
 };

@@ -149,5 +149,8 @@
     <ClInclude Include="Mario.h">
       <Filter>Games\Super_Mario</Filter>
     </ClInclude>
+    <ClInclude Include="Box.h">
+      <Filter>Games\Super_Mario</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
