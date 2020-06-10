@@ -23,7 +23,7 @@ Super_Mario::Super_Mario(Font& f)
 			if (lvl.getPixel(x, y) == Color(0, 0, 0, 255))
 				ground.push_back(Ground(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx,sy), gr));
 			if (lvl.getPixel(x, y) == Color(255, 0, 0, 255))
-				mario.setup(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), mr);
+				mario.setup(Vector2f(x * sx + off.x, y * sy + off.y - 100), Vector2f(sx, sy), mr);
 		}
 	}
 
@@ -41,24 +41,37 @@ void Super_Mario::draw(RenderWindow& window)
 
 void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
 {
+
+	if (back.isClicked(mouse, window)) gameState = state::menu;
+
+	//input
 	while (window.pollEvent(e)) {
 		if (e.type == Event::Closed) window.close();
 		if (e.type == Event::KeyPressed) {
 			switch (e.key.code) {
 			case Keyboard::Left: left = 1; break;
 			case Keyboard::Right: right = 1; break;
+			case Keyboard::Up: up = 1; break;
 			}
 		}
 		if (e.type == Event::KeyReleased) {
 			switch (e.key.code) {
 			case Keyboard::Left: left = 0; break;
 			case Keyboard::Right: right = 0; break;
+			case Keyboard::Up: up = 0; break;
 			}
 		}
 
 	}
 
-	if (back.isClicked(mouse, window)) gameState = state::menu;
+	//ground collision
+	bool col = 0;
+	for (int i = 0; i < ground.size(); i++) {
+		if (ground[i].box.getGlobalBounds().intersects(mario.box.getGlobalBounds())) {
+			col = 1; 
+			break;
+		}
+	}
 
-	mario.update(left, right);
+	mario.update(left, right, up, col);
 }
