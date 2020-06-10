@@ -13,6 +13,8 @@ Super_Mario::Super_Mario(Font& f)
 	//mario
 	mr.loadFromFile("res/mario/mario.png");
 
+	//enemy
+	en.loadFromFile("res/mario/en1.png");
 	//level
 	lvl.loadFromFile("res/mario/lvl.png");
 	float sy = scrHeight / lvl.getSize().y, sx = sy;
@@ -28,6 +30,13 @@ Super_Mario::Super_Mario(Font& f)
 			//mario
 			if (lvl.getPixel(x, y) == Color(255, 0, 0, 255))
 				mario.setup(Vector2f(x * sx + off.x, y * sy + off.y - 100), Vector2f(sx, sy), mr);
+
+			//enemies
+			if (lvl.getPixel(x, y) == Color(0, 255, 0, 255)) {
+				enemies.push_back(Enemy());
+				enemies.back().setup(Vector2f(x * sx + off.x, y * sy + off.y),
+					eSize, Vector2f(sx, sy), en);
+			}
 		}
 	}
 
@@ -36,8 +45,6 @@ Super_Mario::Super_Mario(Font& f)
 	mariobox.push_back(RectangleShape(Vector2f(1, mario.box.getSize().y - 2)));
 	mariobox.push_back(RectangleShape(Vector2f(1, mario.box.getSize().y - 2)));
 
-
-	for (int i = 0; i < mariobox.size(); i++) mariobox[i].setFillColor(Color::Red);
 }
 
 void Super_Mario::draw(RenderWindow& window)
@@ -51,8 +58,9 @@ void Super_Mario::draw(RenderWindow& window)
 
 	//mario
 	mario.draw(window);
-	for (int i = 0; i < mariobox.size(); i++) window.draw(mariobox[i]);
-	
+
+	//enemies
+	for (int i = 0; i < enemies.size(); i++) enemies[i].draw(window);
 }
 
 void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
@@ -85,6 +93,21 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 	mariobox[1].setPosition(mario.box.getPosition().x, mario.box.getPosition().y + mario.box.getSize().y);
 	mariobox[2].setPosition(mario.box.getPosition().x, mario.box.getPosition().y + 1);
 	mariobox[3].setPosition(mario.box.getPosition().x + mario.box.getSize().x, mario.box.getPosition().y + 1);
+
+	//enemies
+	bool ecol = 0;
+	for (int j = 0; j < enemies.size(); j++) {
+		ecol = 0;
+		for (int i = 0; i < boxes.size(); i++) {
+			if (boxes[i].box.getGlobalBounds().intersects(enemies[j].anim.animation.getGlobalBounds())) {
+				ecol = 1;
+				break;
+			}
+		}
+		enemies[j].update(ecol);
+	}
+	
+	
 
 	//boxes collision
 	bool col = 0;

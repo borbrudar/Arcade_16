@@ -93,6 +93,12 @@
     <ClCompile Include="Mario.cpp">
       <Filter>Games\Super_Mario</Filter>
     </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Games\Super_Mario</Filter>
+    </ClCompile>
+    <ClCompile Include="Manimation.cpp">
+      <Filter>Games\Super_Mario</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stateEnum.h">
@@ -150,6 +156,12 @@
       <Filter>Games\Super_Mario</Filter>
     </ClInclude>
     <ClInclude Include="Box.h">
+      <Filter>Games\Super_Mario</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Games\Super_Mario</Filter>
+    </ClInclude>
+    <ClInclude Include="Manimation.h">
       <Filter>Games\Super_Mario</Filter>
     </ClInclude>
   </ItemGroup>

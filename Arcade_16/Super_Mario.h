@@ -2,6 +2,7 @@
 #include "State.h"
 #include "Mario.h"
 #include "Box.h"
+#include "Enemy.h"
 
 class Super_Mario : public State {
 public:
@@ -23,4 +24,9 @@ public:
 	Mario mario;
 	bool left = 0, right = 0, up = 0;
 	std::vector<RectangleShape> mariobox;
+
+	//enemies
+	std::vector<Enemy> enemies;
+	Vector2f eSize{ 16,16 };
+	Texture en;
 };
