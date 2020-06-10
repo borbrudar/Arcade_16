@@ -1,5 +1,6 @@
 #pragma once
 #include "State.h"
+#include "Mario.h"
 
 class Ground {
 public:
@@ -22,8 +23,13 @@ public:
 
 	Button back;
 
+	//ground
 	Image lvl;
-	Texture gr;
+	Texture gr, mr;
 	std::vector<Ground> ground;
 	Vector2f off{ 0,20 };
+
+	//mario
+	Mario mario;
+	bool left = 0, right = 0;
 };
