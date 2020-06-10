@@ -73,5 +73,10 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 		}
 	}
 
-	mario.update(left, right, up, col);
+	//offset everything if necessary
+	if (mario.update(left, right, up, col) == 1) {
+		for (int i = 0; i < ground.size(); i++) {
+			ground[i].box.move(-mario.mariosp, 0);
+		}
+	}
 }

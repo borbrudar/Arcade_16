@@ -15,17 +15,25 @@ void Mario::draw(RenderWindow& window)
 	window.draw(box);
 }
 
-void Mario::update(bool left, bool right, bool up, bool col)
+bool Mario::update(bool left, bool right, bool up, bool col)
 {
+	prevPos = pos;
+
 	if (col) {
 		pos = prevPos;
 		groundTouch = 1;
 	}
+	else groundTouch = 0;
 
 	//left/right movement
-	prevPos = pos;
-	if (left) pos.x -= speed;
-	else if (right) pos.x += speed;
+	bool ret = 0;
+	if (pos.x <= (scrWidth / 2) || left) {
+		if (left) pos.x -= mariosp;
+		else if (right) pos.x += mariosp;
+	}
+	else if (right) ret = 1;
+
+	if (pos.x < 0) pos.x = 0;
 
 	//fall
 	if (!groundTouch) pos.y += gravity;
@@ -46,4 +54,6 @@ void Mario::update(bool left, bool right, bool up, bool col)
 	else gclock.restart();
 
 	box.setPosition(pos);
+
+	return ret;
 }

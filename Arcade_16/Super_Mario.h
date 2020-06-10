@@ -28,6 +28,7 @@ public:
 	Texture gr, mr;
 	std::vector<Ground> ground;
 	Vector2f off{ 0,20 };
+	float offX = 0.f;
 
 	//mario
 	Mario mario;
