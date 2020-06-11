@@ -43,6 +43,12 @@
     <Filter Include="Games\Simon">
       <UniqueIdentifier>{d2379a33-9287-466b-a512-0bdc1653a3ee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Games\Super_Mario\Utility">
+      <UniqueIdentifier>{e977f89a-6efc-4e34-9c5f-9546af48283e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Games\Super_Mario\Stuff">
+      <UniqueIdentifier>{a33c647b-0326-446e-a9d7-510a6c957395}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -90,14 +96,20 @@
     <ClCompile Include="Super_Mario.cpp">
       <Filter>Games\Super_Mario</Filter>
     </ClCompile>
-    <ClCompile Include="Mario.cpp">
-      <Filter>Games\Super_Mario</Filter>
+    <ClCompile Include="Manimation.cpp">
+      <Filter>Games\Super_Mario\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Box.cpp">
+      <Filter>Games\Super_Mario\Stuff</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
-      <Filter>Games\Super_Mario</Filter>
+      <Filter>Games\Super_Mario\Stuff</Filter>
     </ClCompile>
-    <ClCompile Include="Manimation.cpp">
-      <Filter>Games\Super_Mario</Filter>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Games\Super_Mario\Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="Mario.cpp">
+      <Filter>Games\Super_Mario\Stuff</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -152,17 +164,20 @@
     <ClInclude Include="Super_Mario.h">
       <Filter>Games\Super_Mario</Filter>
     </ClInclude>
-    <ClInclude Include="Mario.h">
-      <Filter>Games\Super_Mario</Filter>
+    <ClInclude Include="Manimation.h">
+      <Filter>Games\Super_Mario\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Box.h">
-      <Filter>Games\Super_Mario</Filter>
+      <Filter>Games\Super_Mario\Stuff</Filter>
     </ClInclude>
     <ClInclude Include="Enemy.h">
-      <Filter>Games\Super_Mario</Filter>
+      <Filter>Games\Super_Mario\Stuff</Filter>
     </ClInclude>
-    <ClInclude Include="Manimation.h">
-      <Filter>Games\Super_Mario</Filter>
+    <ClInclude Include="Entity.h">
+      <Filter>Games\Super_Mario\Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="Mario.h">
+      <Filter>Games\Super_Mario\Stuff</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

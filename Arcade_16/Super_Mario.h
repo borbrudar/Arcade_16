@@ -3,6 +3,7 @@
 #include "Mario.h"
 #include "Box.h"
 #include "Enemy.h"
+#include "Entity.h"
 
 class Super_Mario : public State {
 public:
@@ -17,7 +18,7 @@ public:
 	Texture gr, mr;
 	std::vector<Box> boxes;
 	std::vector<Box> blocks;
-	Vector2f off{ 0,20 };
+	Vector2f off{ 0,20 }, tSize;
 	float offX = 0.f;
 
 	//mario
@@ -28,4 +29,9 @@ public:
 	std::vector<Enemy> enemies;
 	Vector2f eSize{ 16,16 };
 	Texture en;
+
+	//entity
+	std::vector<Entity> entities;
+	Texture tits;
+	Vector2f cSize{ 10,14 };
 };

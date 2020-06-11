@@ -15,9 +15,13 @@ Super_Mario::Super_Mario(Font& f)
 
 	//enemy
 	en.loadFromFile("res/mario/en1.png");
+
+	//entities
+	tits.loadFromFile("res/mario/entity.png");
 	//level
 	lvl.loadFromFile("res/mario/lvl.png");
 	float sy = scrHeight / lvl.getSize().y, sx = sy;
+	tSize = Vector2f(sx, sy);
 
 	for (int x = 0; x < lvl.getSize().x; x++) {
 		for (int y = 0; y < lvl.getSize().y; y++) {
@@ -55,6 +59,11 @@ void Super_Mario::draw(RenderWindow& window)
 
 	//enemies
 	for (int i = 0; i < enemies.size(); i++) enemies[i].draw(window);
+
+	//entities
+	for (int i = 0; i < entities.size(); i++) {
+		entities[i].draw(window);
+	}
 }
 
 void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
@@ -107,8 +116,11 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 		}
 	}
 	
-	mario.boxUpdate();
+	//entities
+	for (int i = 0; i < entities.size(); i++) entities[i].update(boxes[i].box.getSize());
 
+
+	mario.boxUpdate();
 	//boxes collision
 	bool col = 0;
 	int type = 0;
@@ -117,6 +129,11 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 			if (boxes[i].box.getGlobalBounds().intersects(mario.mariobox[j].getGlobalBounds())) {
 				col = 1;
 				type = j;
+				//if touching with head
+				if (j == 0 && boxes[i].entity == 1) {
+					entities.push_back(Entity(tits, cSize, 3, boxes[i].box.getPosition(), tSize, 1));
+					boxes[i].entity = 0;
+				}
 				break;
 			}
 		}
@@ -126,7 +143,7 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 	if (mario.update(left, right, up, col, type) == 1) {
 		for (int i = 0; i < boxes.size(); i++) 	boxes[i].box.move(-mario.mariosp, 0);
 		for(int i = 0; i < blocks.size();i++) blocks[i].box.move(-mario.mariosp, 0);
+		for (int i = 0; i < entities.size(); i++) entities[i].pos.x += -mario.mariosp;
 	}
-
 
 }

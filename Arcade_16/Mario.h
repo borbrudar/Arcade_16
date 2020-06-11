@@ -16,9 +16,9 @@ public:
 	float mariosp = 0.8f;
 private:
 	Vector2f pos, prevPos;
-	float gravity = 1.5f, jump = gravity;
+	float gravity = 1.6f, jump = gravity;
 	bool groundTouch = 0, jumping = 0, firstJump = 1;
 
 	Clock gclock;
-	float gtime = 0.f, gtimer = 0.f, gdelay = 0.25f;
+	float gtime = 0.f, gtimer = 0.f, gdelay = 0.3f;
 };
