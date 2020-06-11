@@ -6,7 +6,7 @@ class Manimation {
 public:
 	Manimation() = default;
 	Manimation(Texture& t1, Vector2f size);
-	void setup(Texture &t1, Vector2f size, Vector2f start = Vector2f(0, 0));
+	void setup(Texture &t1, Vector2f size, Vector2f start = Vector2f(0, 0), int maxSwap = 1);
 	void draw(RenderWindow& window);
 
 	Sprite animation;
@@ -16,5 +16,6 @@ private:
 	Clock clock;
 	float time = 0, timer = 0;
 	int swap = 0;
+	int maxSwap = 1;
 	Vector2f start;
 };

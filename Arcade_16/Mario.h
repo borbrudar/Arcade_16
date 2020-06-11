@@ -7,10 +7,12 @@ using namespace sf;
 class Mario {
 public:
 	void setup(Vector2f pos, Vector2f size, Texture& t);
+	void boxUpdate();
 	void draw(RenderWindow& window);
 	bool update(bool left, bool right, bool up, bool col, int type);
 
 	RectangleShape box;
+	std::vector<RectangleShape> mariobox;
 	float mariosp = 0.8f;
 private:
 	Vector2f pos, prevPos;

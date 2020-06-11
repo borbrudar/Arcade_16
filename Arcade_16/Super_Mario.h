@@ -23,7 +23,6 @@ public:
 	//mario
 	Mario mario;
 	bool left = 0, right = 0, up = 0;
-	std::vector<RectangleShape> mariobox;
 
 	//enemies
 	std::vector<Enemy> enemies;

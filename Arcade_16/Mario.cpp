@@ -8,6 +8,22 @@ void Mario::setup(Vector2f pos, Vector2f size, Texture &t)
 	box.setPosition(pos);
 	box.setSize(size);
 	box.setTexture(&t);
+
+	//mariobox
+	mariobox.push_back(RectangleShape(Vector2f(box.getSize().x, 1)));
+	mariobox.push_back(RectangleShape(Vector2f(box.getSize().x, 1)));
+	mariobox.push_back(RectangleShape(Vector2f(1, box.getSize().y - 2)));
+	mariobox.push_back(RectangleShape(Vector2f(1, box.getSize().y - 2)));
+}
+
+void Mario::boxUpdate()
+{
+	//mario box update
+	mariobox[0].setPosition(box.getPosition());
+	mariobox[1].setPosition(box.getPosition().x, box.getPosition().y + box.getSize().y);
+	mariobox[2].setPosition(box.getPosition().x, box.getPosition().y + 1);
+	mariobox[3].setPosition(box.getPosition().x + box.getSize().x, box.getPosition().y + 1);
+
 }
 
 void Mario::draw(RenderWindow& window)
@@ -17,6 +33,7 @@ void Mario::draw(RenderWindow& window)
 
 bool Mario::update(bool left, bool right, bool up, bool col, int type)
 {
+	//other stuff
 	prevPos = pos;
 	if (col) {
 		if (type == 1) groundTouch = 1; else groundTouch = 0;
