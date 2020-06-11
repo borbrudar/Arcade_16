@@ -93,7 +93,18 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 				break;
 			}
 		}
-		enemies[j].update(ecol);
+		for (int i = 0; i < mario.mariobox.size(); i++) {
+			if (mario.mariobox[i].getGlobalBounds().intersects(enemies[j].anim.animation.getGlobalBounds())) {
+				//if touching with bottom
+				if(i == 1) enemies[j].alive = 0;
+				break;
+			}
+		}
+
+		if (enemies[j].update(ecol)) {
+			enemies.erase(enemies.begin() + j);
+			break;
+		}
 	}
 	
 	mario.boxUpdate();

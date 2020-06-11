@@ -10,10 +10,15 @@ public:
 	Enemy(Vector2f pos, Vector2f size,Vector2f tSize, Texture &t1);
 	void setup(Vector2f pos, Vector2f size, Vector2f tSize, Texture &t1);
 	void draw(RenderWindow& window);
-	void update(bool col);
+	bool update(bool col);
 
-	bool onScreen = 1, groundTouch = 0;
+	bool onScreen = 1, groundTouch = 0, alive = 1;
 	float speed = 0.5f, gravity = 1.5f;
 	Manimation anim;
+	RectangleShape death;
 	Vector2f pos, prevPos;
+
+	//death
+	Clock dclock;
+	float dtime = 0, dtimer = 0, ddelay = 1.0f;
 };
