@@ -33,7 +33,7 @@ Super_Mario::Super_Mario(Font& f)
 
 			//mario
 			if (lvl.getPixel(x, y) == Color(255, 0, 0, 255))
-				mario.setup(Vector2f(x * sx + off.x, y * sy + off.y - 100), Vector2f(sx, sy), mr);
+				mario.setup(Vector2f(x * sx + off.x, y * sy + off.y - 100), mSize, mr, Vector2f(sx, sy));
 
 			//enemies
 			if (lvl.getPixel(x, y) == Color(0, 255, 0, 255)) {

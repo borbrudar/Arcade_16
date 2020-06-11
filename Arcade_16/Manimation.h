@@ -5,11 +5,11 @@ using namespace sf;
 class Manimation {
 public:
 	Manimation() = default;
-	Manimation(Texture& t1, Vector2f size);
-	void setup(Texture &t1, Vector2f size, Vector2f start = Vector2f(0, 0), int maxSwap = 1);
+	void setup(Texture &t1, Vector2f size, Vector2f tSize, int maxSwap = 1, Vector2f start = Vector2f(0, 0));
 	void draw(RenderWindow& window);
+	const void setMaxSwap(int set);
 
-	Sprite animation;
+	RectangleShape animation;
 	Vector2f size;
 	float delay = 0.2f;
 private:

@@ -1,77 +1,87 @@
 #include "Mario.h"
 
 
-void Mario::setup(Vector2f pos, Vector2f size, Texture &t)
+void Mario::setup(Vector2f pos, Vector2f size, Texture &t, Vector2f tSize)
 {
 	prevPos = pos;
 	this->pos = pos;
-	box.setPosition(pos);
-	box.setSize(size);
-	box.setTexture(&t);
 
+	box.setup(t, size, tSize,0);
+	box.delay = 0.125f;
 	//mariobox
-	mariobox.push_back(RectangleShape(Vector2f(box.getSize().x, 1)));
-	mariobox.push_back(RectangleShape(Vector2f(box.getSize().x, 1)));
-	mariobox.push_back(RectangleShape(Vector2f(1, box.getSize().y - 2)));
-	mariobox.push_back(RectangleShape(Vector2f(1, box.getSize().y - 2)));
+	mariobox.push_back(RectangleShape(Vector2f(box.animation.getSize().x, 1)));
+	mariobox.push_back(RectangleShape(Vector2f(box.animation.getSize().x, 1)));
+	mariobox.push_back(RectangleShape(Vector2f(1, box.animation.getSize().y - 2)));
+	mariobox.push_back(RectangleShape(Vector2f(1, box.animation.getSize().y - 2)));
 }
 
 void Mario::boxUpdate()
 {
 	//mario box update
-	mariobox[0].setPosition(box.getPosition());
-	mariobox[1].setPosition(box.getPosition().x, box.getPosition().y + box.getSize().y);
-	mariobox[2].setPosition(box.getPosition().x, box.getPosition().y + 1);
-	mariobox[3].setPosition(box.getPosition().x + box.getSize().x, box.getPosition().y + 1);
+	mariobox[0].setPosition(box.animation.getPosition());
+	mariobox[1].setPosition(box.animation.getPosition().x, box.animation.getPosition().y + box.animation.getSize().y);
+	mariobox[2].setPosition(box.animation.getPosition().x, box.animation.getPosition().y + 1);
+	mariobox[3].setPosition(box.animation.getPosition().x + box.animation.getSize().x, box.animation.getPosition().y + 1);
 
 }
 
 void Mario::draw(RenderWindow& window)
 {
-	window.draw(box);
+	box.draw(window);
 }
 
 bool Mario::update(bool left, bool right, bool up, bool col, int type)
 {
-	//other stuff
-	prevPos = pos;
-	if (col) {
-		if (type == 1) groundTouch = 1; else groundTouch = 0;
-		if (type == 0) jumping = 0;
-		pos = prevPos;
-	}
-	else groundTouch = 0;
-
-	//left/right movement
 	bool ret = 0;
-	if (pos.x <= (scrWidth / 2) || left) {
-		if (left) pos.x -= mariosp;
-		else if (right) pos.x += mariosp;
-	}
-	else if (right) ret = 1;
-
-	if (pos.x < 0) pos.x = 0;
-
-	//fall
-	if (!jumping && !groundTouch) pos.y += gravity;
-	//hop hop
-	if (up && groundTouch) 	jumping = 1;
-
-	if (jumping) {
-		gtimer = gclock.getElapsedTime().asSeconds();
-		gtime += gtimer;
-		gclock.restart();
-		groundTouch = 0;
-
-		if (gtime > gdelay) {
-			jumping = 0;
-			gtime = 0;
+	//physics and stuff (temp hidden)
+	{
+		//other stuff
+		prevPos = pos;
+		if (col) {
+			if (type == 1) groundTouch = 1; else groundTouch = 0;
+			if (type == 0) jumping = 0;
+			pos = prevPos;
 		}
-		else  pos.y -= jump;
-		
-	}
-	else gclock.restart();
+		else groundTouch = 0;
 
-	box.setPosition(pos);
+		//left/right movement
+		if (pos.x <= (scrWidth / 2) || left) {
+			if (left) pos.x -= mariosp;
+			else if (right) pos.x += mariosp;
+		}
+		else if (right) ret = 1;
+
+		if (pos.x < 0) pos.x = 0;
+
+		//fall
+		if (!jumping && !groundTouch) pos.y += gravity;
+		//hop hop
+		if (up && groundTouch) 	jumping = 1;
+
+		if (jumping) {
+			gtimer = gclock.getElapsedTime().asSeconds();
+			gtime += gtimer;
+			gclock.restart();
+			groundTouch = 0;
+
+			if (gtime > gdelay) {
+				jumping = 0;
+				gtime = 0;
+			}
+			else  pos.y -= jump;
+
+		}
+		else gclock.restart();
+
+		box.animation.setPosition(pos);
+	}
+
+	//update animation
+	if (right && !prevR) box.setMaxSwap(3);
+	else if (!right) box.setMaxSwap(0);
+
+	//update prevAnim
+	if (right) prevR = 1; else prevR = 0;
+
 	return ret;
 }

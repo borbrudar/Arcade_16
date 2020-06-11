@@ -24,6 +24,7 @@ public:
 	//mario
 	Mario mario;
 	bool left = 0, right = 0, up = 0;
+	Vector2f mSize{ 16,16 };
 
 	//enemies
 	std::vector<Enemy> enemies;

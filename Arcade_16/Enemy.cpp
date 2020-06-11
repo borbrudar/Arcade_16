@@ -8,14 +8,12 @@ Enemy::Enemy(Vector2f pos, Vector2f size, Vector2f tSize, Texture &t1)
 void Enemy::setup(Vector2f pos, Vector2f size, Vector2f tSize, Texture &t1)
 {
 	this->pos = pos;
-	anim.setup(t1, size);
+	anim.setup(t1, size, tSize);
 
 	death.setTexture(&t1);
 	death.setSize(tSize);
 	death.setTextureRect(IntRect(size.x * 2, 0, size.x, size.y));
 
-	//scale
-	anim.animation.setScale(tSize.x / size.x, tSize.y / size.y);
 }
 
 void Enemy::draw(RenderWindow& window)

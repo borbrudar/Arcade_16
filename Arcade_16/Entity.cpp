@@ -5,11 +5,9 @@ Entity::Entity(Texture& t, Vector2f size, int maxSwap, Vector2f pos, Vector2f tS
 	pos(pos), 
 	orgPos(pos)
 {
-	anim.setup(t, size, Vector2f(0, 0), maxSwap);
+	anim.setup(t, size, tSize, maxSwap);
 	anim.animation.setPosition(pos);
 	anim.delay = 0.1f;
-	//scale
-	anim.animation.setScale(tSize.x / size.x, tSize.y / size.y);
 }
 
 void Entity::draw(RenderWindow& window)

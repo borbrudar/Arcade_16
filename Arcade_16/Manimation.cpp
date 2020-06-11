@@ -1,20 +1,17 @@
 #include "Manimation.h"
 
-Manimation::Manimation(Texture &t1, Vector2f size)
-{
-	setup(t1, size);
-}
-
-void Manimation::setup(Texture& t1, Vector2f size, Vector2f start, int maxSwap)
+void Manimation::setup(Texture& t1, Vector2f size, Vector2f tSize, int maxSwap, Vector2f start)
 {
 	this->size = size;
 	this->start = start;
 	this->maxSwap = maxSwap;
-	animation.setTexture(t1);
+	animation.setTexture(&t1);
 	animation.setTextureRect(IntRect(start.x, start.y, size.x, size.y));
 	swap = 0;
-}
 
+	//scale
+	animation.setSize(Vector2f(tSize.x, tSize.y));
+}
 
 void Manimation::draw(RenderWindow& window)
 {
@@ -32,5 +29,11 @@ void Manimation::draw(RenderWindow& window)
 	}
 
 	window.draw(animation);
+}
+
+const void Manimation::setMaxSwap(int set)
+{
+	swap = 0;
+	maxSwap = set;
 }
 
