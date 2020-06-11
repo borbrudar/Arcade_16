@@ -15,11 +15,13 @@ public:
 
 	//level
 	Image lvl;
-	Texture gr, mr;
+	Texture gr, mr, br;
+
 	std::vector<Box> boxes;
 	std::vector<Box> blocks;
-	Vector2f off{ 0,20 }, tSize;
+	Vector2f off{ 0,20 }, tSize, bSize{ 16,16 };
 	float offX = 0.f;
+	int coins = 0;
 
 	//mario
 	Mario mario;

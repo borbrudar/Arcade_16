@@ -9,6 +9,7 @@ Super_Mario::Super_Mario(Font& f)
 
 	//boxes
 	gr.loadFromFile("res/mario/ground.png");
+	br.loadFromFile("res/mario/ground.png");
 
 	//mario
 	mr.loadFromFile("res/mario/mario.png");
@@ -27,10 +28,12 @@ Super_Mario::Super_Mario(Font& f)
 		for (int y = 0; y < lvl.getSize().y; y++) {
 			//both grounds
 			if (lvl.getPixel(x, y) == Color(0, 0, 0, 255))
-				boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx,sy), gr));
+				boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx,sy), gr, bSize, Vector2f(0,0)));
 			if (lvl.getPixel(x, y) == Color(0, 0, 0, 254))
-				blocks.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr));
-
+				blocks.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, Vector2f(0, 0)));
+			//bricks
+			if (lvl.getPixel(x, y) == Color(0, 0, 255, 255))
+				boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, Vector2f(bSize.x, 0)));
 			//mario
 			if (lvl.getPixel(x, y) == Color(255, 0, 0, 255))
 				mario.setup(Vector2f(x * sx + off.x, y * sy + off.y - 100), mSize, mr, Vector2f(sx, sy));
@@ -136,6 +139,17 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 				}
 				break;
 			}
+		}
+	}
+
+	//collision with entities
+	for (int i = 0; i < entities.size(); i++) {
+		if (entities[i].anim.animation.getGlobalBounds().intersects(mario.box.animation.getGlobalBounds())
+			&& entities[i].out == 1)
+		{
+			coins += 1;
+			entities.erase(entities.begin() + i);
+			break;
 		}
 	}
 

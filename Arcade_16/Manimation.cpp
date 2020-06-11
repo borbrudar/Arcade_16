@@ -43,3 +43,8 @@ const void Manimation::setRow(int row)
 	this->row = row;
 }
 
+const void Manimation::setSwap(int s)
+{
+	swap = s;
+}
+

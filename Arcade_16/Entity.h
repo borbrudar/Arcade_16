@@ -13,4 +13,5 @@ public:
 	Manimation anim;
 	Vector2f pos, orgPos;
 	int type = 1;
+	bool out = 0;
 };

@@ -9,6 +9,7 @@ public:
 	void draw(RenderWindow& window);
 	const void setMaxSwap(int set);
 	const void setRow(int row);
+	const void setSwap(int s);
 
 	RectangleShape animation;
 	Vector2f size;

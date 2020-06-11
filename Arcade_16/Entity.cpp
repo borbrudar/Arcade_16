@@ -17,7 +17,7 @@ void Entity::draw(RenderWindow& window)
 
 void Entity::update(Vector2f until)
 {
-	if (std::abs(pos.y - orgPos.y) < until.y) pos.y -= 1;
+	if (std::abs(pos.y - orgPos.y) < until.y) pos.y -= 1; else out = 1;
 	anim.animation.setPosition(pos);
 }
 
