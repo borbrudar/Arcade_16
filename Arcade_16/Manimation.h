@@ -8,6 +8,7 @@ public:
 	void setup(Texture &t1, Vector2f size, Vector2f tSize, int maxSwap = 1, Vector2f start = Vector2f(0, 0));
 	void draw(RenderWindow& window);
 	const void setMaxSwap(int set);
+	const void setRow(int row);
 
 	RectangleShape animation;
 	Vector2f size;
@@ -16,6 +17,6 @@ private:
 	Clock clock;
 	float time = 0, timer = 0;
 	int swap = 0;
-	int maxSwap = 1;
+	int maxSwap = 1, row = 0;
 	Vector2f start;
 };

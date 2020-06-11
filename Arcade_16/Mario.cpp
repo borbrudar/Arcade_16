@@ -77,11 +77,31 @@ bool Mario::update(bool left, bool right, bool up, bool col, int type)
 	}
 
 	//update animation
-	if (right && !prevR) box.setMaxSwap(3);
-	else if (!right) box.setMaxSwap(0);
+	if (right && !prevR) {
+		box.setMaxSwap(3);
+		box.setRow(0);
+	}
+	//left
+	else if (left && !prevL) {
+		box.setMaxSwap(3);
+		box.setRow(1);
+	}
+	//rest according to last state
+	else if (!left && !right && !up) {
+		if (prevR) {
+			box.setMaxSwap(0);
+			box.setRow(0);
+		}
+		else if (prevL) {
+			box.setMaxSwap(0);
+			box.setRow(1);
+		}
+	}
+	
 
 	//update prevAnim
 	if (right) prevR = 1; else prevR = 0;
+	if (left) prevL = 1; else prevL = 0;
 
 	return ret;
 }

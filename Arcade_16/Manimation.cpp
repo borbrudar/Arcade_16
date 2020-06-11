@@ -22,7 +22,7 @@ void Manimation::draw(RenderWindow& window)
 	if (timer > delay) {
 		
 		if (swap > maxSwap) swap = 0;
-		animation.setTextureRect(IntRect(swap * size.x, start.y, size.x, size.y));
+		animation.setTextureRect(IntRect(swap * size.x, row * size.y, size.x, size.y));
 		swap += 1;
 
 		timer = 0;
@@ -35,5 +35,11 @@ const void Manimation::setMaxSwap(int set)
 {
 	swap = 0;
 	maxSwap = set;
+}
+
+const void Manimation::setRow(int row)
+{
+	swap = 0;
+	this->row = row;
 }
 
