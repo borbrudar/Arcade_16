@@ -59,12 +59,12 @@ bool Mario::update(bool left, bool right, bool up, bool col, int type)
 		if (up && groundTouch) 	jumping = 1;
 
 		if (jumping) {
-			gtimer = gclock.getElapsedTime().asSeconds();
-			gtime += gtimer;
+			gtime = gclock.getElapsedTime().asSeconds();
+			gtimer += gtime;
 			gclock.restart();
 			groundTouch = 0;
 
-			if (gtime > gdelay) {
+			if (gtimer > gdelay) {
 				jumping = 0;
 				gtime = 0;
 			}

@@ -20,10 +20,11 @@ void Manimation::draw(RenderWindow& window)
 	clock.restart();
 
 	if (timer > delay) {
+		if (swap > maxSwap && cycle) swap = 0;
+
+		animation.setTextureRect(IntRect(swap * size.x + start.x, row * size.y + start.y, size.x, size.y));
 		
-		if (swap > maxSwap) swap = 0;
-		animation.setTextureRect(IntRect(swap * size.x, row * size.y, size.x, size.y));
-		swap += 1;
+		if(cycle) swap += 1;
 
 		timer = 0;
 	}
@@ -44,5 +45,10 @@ const void Manimation::setRow(int row)
 const void Manimation::setSwap(int s)
 {
 	swap = s;
+}
+
+const void Manimation::setCycle(bool c)
+{
+	cycle = c;
 }
 

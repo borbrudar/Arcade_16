@@ -10,6 +10,7 @@ public:
 	const void setMaxSwap(int set);
 	const void setRow(int row);
 	const void setSwap(int s);
+	const void setCycle(bool c);
 
 	RectangleShape animation;
 	Vector2f size;
@@ -20,4 +21,5 @@ private:
 	int swap = 0;
 	int maxSwap = 1, row = 0;
 	Vector2f start;
+	bool cycle = 1;
 };

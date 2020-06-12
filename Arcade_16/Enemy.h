@@ -17,7 +17,7 @@ public:
 	Manimation anim;
 	RectangleShape death;
 	Vector2f pos, prevPos;
-
+private:
 	//death
 	Clock dclock;
 	float dtime = 0, dtimer = 0, ddelay = 1.0f;

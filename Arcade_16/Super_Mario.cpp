@@ -28,12 +28,15 @@ Super_Mario::Super_Mario(Font& f)
 		for (int y = 0; y < lvl.getSize().y; y++) {
 			//both grounds
 			if (lvl.getPixel(x, y) == Color(0, 0, 0, 255))
-				boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx,sy), gr, bSize, Vector2f(0,0)));
+				boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx,sy), gr, bSize, block_type::ground));
 			if (lvl.getPixel(x, y) == Color(0, 0, 0, 254))
-				blocks.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, Vector2f(0, 0)));
+				blocks.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, block_type::ground));
 			//bricks
 			if (lvl.getPixel(x, y) == Color(0, 0, 255, 255))
-				boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, Vector2f(bSize.x, 0)));
+				boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, block_type::brick));
+			//coins
+			if (lvl.getPixel(x, y) == Color(75, 0, 255, 255))
+				boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, block_type::coin));
 			//mario
 			if (lvl.getPixel(x, y) == Color(255, 0, 0, 255))
 				mario.setup(Vector2f(x * sx + off.x, y * sy + off.y - 100), mSize, mr, Vector2f(sx, sy));
@@ -102,7 +105,7 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 		bool onsc = 0;
 		//enemies with boxes
 		for (int i = 0; i < boxes.size(); i++) {
-			if (boxes[i].box.getGlobalBounds().intersects(enemies[j].anim.animation.getGlobalBounds())) {
+			if (boxes[i].box.animation.getGlobalBounds().intersects(enemies[j].anim.animation.getGlobalBounds())) {
 				ecol = 1;
 				break;
 			}
@@ -126,27 +129,34 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 	}
 	
 	//entities
-	for (int i = 0; i < entities.size(); i++) entities[i].update(boxes[i].box.getSize());
+	for (int i = 0; i < entities.size(); i++) entities[i].update(boxes[i].box.animation.getSize());
 
 
 	mario.boxUpdate();
-	//boxes collision
+	//mario-boxes collision
 	bool col = 0;
 	int type = 0;
 	for (int i = 0; i < boxes.size(); i++) {
 		for (int j = 0; j < mario.mariobox.size(); j++) {
-			if (boxes[i].box.getGlobalBounds().intersects(mario.mariobox[j].getGlobalBounds())) {
+			if (boxes[i].box.animation.getGlobalBounds().intersects(mario.mariobox[j].getGlobalBounds())) {
 				col = 1;
 				type = j;
-				//if touching with head
+				//wiggle and stop jumping
+				if (j == 0) {
+					boxes[i].update(1);
+				}
+				//if touching with head and has a coin
 				if (j == 0 && boxes[i].entity == 1) {
-					entities.push_back(Entity(tits, cSize, 3, boxes[i].box.getPosition(), tSize, 1));
+					entities.push_back(Entity(tits, cSize, 3, boxes[i].box.animation.getPosition(), tSize, 1));
 					boxes[i].entity = 0;
 				}
 				break;
 			}
 		}
 	}
+
+	//update box up-down movement
+	for(int i = 0; i < boxes.size(); i++) boxes[i].update();
 
 	//collision with entities
 	for (int i = 0; i < entities.size(); i++) {
@@ -162,8 +172,8 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 	//offset everything if necessary
 	if (mario.update(left, right, up, col, type) == 1) {
 		offX -= mario.mariosp;
-		for (int i = 0; i < boxes.size(); i++) 	boxes[i].box.move(-mario.mariosp, 0);
-		for(int i = 0; i < blocks.size();i++) blocks[i].box.move(-mario.mariosp, 0);
+		for (int i = 0; i < boxes.size(); i++) 	boxes[i].box.animation.move(-mario.mariosp, 0);
+		for(int i = 0; i < blocks.size();i++) blocks[i].box.animation.move(-mario.mariosp, 0);
 		for (int i = 0; i < entities.size(); i++) entities[i].pos.x += -mario.mariosp;
 		for (int i = 0; i < enemies.size(); i++) enemies[i].pos.x += -mario.mariosp;
 	}

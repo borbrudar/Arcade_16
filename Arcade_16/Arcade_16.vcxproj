@@ -172,6 +172,7 @@
     <ClInclude Include="Arkanoid.h" />
     <ClInclude Include="Asteroids.h" />
     <ClInclude Include="Astro.h" />
+    <ClInclude Include="BoxEnum.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Entity.h" />

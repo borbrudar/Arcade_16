@@ -4,6 +4,7 @@
 #include "Box.h"
 #include "Enemy.h"
 #include "Entity.h"
+#include "BoxEnum.h"
 
 class Super_Mario : public State {
 public:
