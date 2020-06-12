@@ -98,13 +98,16 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 	//enemies
 	bool ecol = 0;
 	for (int j = 0; j < enemies.size(); j++) {
-		ecol = 0;
+		ecol = 0; 
+		bool onsc = 0;
+		//enemies with boxes
 		for (int i = 0; i < boxes.size(); i++) {
 			if (boxes[i].box.getGlobalBounds().intersects(enemies[j].anim.animation.getGlobalBounds())) {
 				ecol = 1;
 				break;
 			}
 		}
+		//with mario
 		for (int i = 0; i < mario.mariobox.size(); i++) {
 			if (mario.mariobox[i].getGlobalBounds().intersects(enemies[j].anim.animation.getGlobalBounds())) {
 				//if touching with bottom
@@ -113,7 +116,10 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 			}
 		}
 
-		if (enemies[j].update(ecol)) {
+		//is on screen
+		if (enemies[j].anim.animation.getPosition().x < scrWidth) onsc = 1;
+		//update
+		if (enemies[j].update(ecol, onsc)) {
 			enemies.erase(enemies.begin() + j);
 			break;
 		}
@@ -155,9 +161,11 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 
 	//offset everything if necessary
 	if (mario.update(left, right, up, col, type) == 1) {
+		offX -= mario.mariosp;
 		for (int i = 0; i < boxes.size(); i++) 	boxes[i].box.move(-mario.mariosp, 0);
 		for(int i = 0; i < blocks.size();i++) blocks[i].box.move(-mario.mariosp, 0);
 		for (int i = 0; i < entities.size(); i++) entities[i].pos.x += -mario.mariosp;
+		for (int i = 0; i < enemies.size(); i++) enemies[i].pos.x += -mario.mariosp;
 	}
 
 }

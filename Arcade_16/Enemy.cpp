@@ -22,8 +22,9 @@ void Enemy::draw(RenderWindow& window)
 	else window.draw(death);
 }
 
-bool Enemy::update(bool col)
+bool Enemy::update(bool col, bool onScr)
 {
+	onScreen = onScr;
 	prevPos = pos;
 	
 	if (col) {
