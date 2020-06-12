@@ -34,7 +34,7 @@ bool Mario::update(bool left, bool right, bool up, bool col, int type)
 {
 	bool ret = 0;
 	//physics and stuff (temp hidden)
-	
+	{
 		//other stuff
 		if (col) {
 			if (type == 1) groundTouch = 1; else groundTouch = 0;
@@ -53,11 +53,35 @@ bool Mario::update(bool left, bool right, bool up, bool col, int type)
 		if (pos.x < 0) pos.x = 0;
 
 		//fall
-		if (!jumping && !groundTouch) pos.y += gravity;
+		if (!jumping && !groundTouch) 
+			//update pos
+			pos.y += gravity;
+
+		//add delay to repeated jumping
+		if(!jumping){
+			jdtime = jdclock.getElapsedTime().asSeconds();
+			jdtimer += jdtime;
+			jdclock.restart();
+
+			if (jdtimer > jddelay) {
+				noDelay = 1; jdtimer = 0; jdclock.restart();
+			}
+			else noDelay = 0;
+		}
+		else {
+			jdtimer = 0;
+			jdclock.restart();
+		}
+			
+
 		//hop hop
-		if (up && groundTouch) jumping = 1;
+		if (up && groundTouch && noDelay) jumping = 1;
 
 		if (jumping) {
+			if (!up && (gtimer > minDelay)) {
+				jumping = 0;
+				gtimer = 0;
+			}
 			gtime = gclock.getElapsedTime().asSeconds();
 			gtimer += gtime;
 			gclock.restart();
@@ -73,7 +97,8 @@ bool Mario::update(bool left, bool right, bool up, bool col, int type)
 		else gclock.restart();
 		prevPos = pos;
 		box.animation.setPosition(pos);
-	
+	}
+
 	//update animation
 	if (right && !prevR) {
 		box.setMaxSwap(3);
@@ -85,7 +110,7 @@ bool Mario::update(bool left, bool right, bool up, bool col, int type)
 		box.setRow(1);
 	}
 	//rest according to last state
-	else if (!left && !right && !up) {
+	else if (!left && !right) {
 		if (prevR) {
 			box.setMaxSwap(0);
 			box.setRow(0);

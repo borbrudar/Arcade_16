@@ -47,6 +47,7 @@ void Box::update(bool wiggle)
 			wiggling = 2;
 
 		if (oldPos.y < box.animation.getPosition().y) {
+			box.animation.setPosition(oldPos);
 			wiggling = 0;
 			if (hadEntity && !entity) {
 				box.setMaxSwap(0);

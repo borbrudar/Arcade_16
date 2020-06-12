@@ -20,13 +20,16 @@ public:
 private:
 	//physics
 	Vector2f pos, prevPos;
-	float gravity = 1.6f, jump = gravity;
+	float gravity = 2.f, jump = gravity;
 	bool groundTouch = 0, jumping = 0;
 
-	//clock
-	Clock gclock;
-	float gtime = 0.f, gtimer = 0.f, gdelay = 0.3f;
+	//jumping clock
+	Clock gclock, jdclock;
+	float gtime = 0.f, gtimer = 0.f, gdelay = 0.3f, minDelay = 0.1f;
+	float jdtime = 0.f, jdtimer = 0.f, jddelay = 0.2f;
+	bool noDelay = 1;
 
 	//animation
 	bool prevR = 0, prevL = 0, prevU = 0;
+
 };
