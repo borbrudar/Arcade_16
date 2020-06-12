@@ -12,7 +12,6 @@ public:
 	void boxUpdate();
 	void draw(RenderWindow& window);
 	bool update(bool left, bool right, bool up, bool col, int type);
-	const void resetJump();
 
 	Manimation box;
 	std::vector<RectangleShape> mariobox;
@@ -21,7 +20,7 @@ private:
 	//physics
 	Vector2f pos, prevPos;
 	float gravity = 2.f, jump = gravity;
-	bool groundTouch = 0, jumping = 0;
+	bool groundTouch = 0, jumping = 0, canLeft = 1, canRight = 1;
 
 	//jumping clock
 	Clock gclock, jdclock;
@@ -30,6 +29,6 @@ private:
 	bool noDelay = 1;
 
 	//animation
-	bool prevR = 0, prevL = 0, prevU = 0;
+	bool prevR = 0, prevL = 0;
 
 };

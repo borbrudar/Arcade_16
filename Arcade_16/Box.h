@@ -7,7 +7,7 @@ using namespace sf;
 
 class Box {
 public:
-	Box(Vector2f pos, Vector2f size, Texture& t, Vector2f bSize, block_type type);
+	Box(Vector2f pos, Vector2f size, Texture& t, Vector2f bSize, block_type type, int entity = 0);
 	void draw(RenderWindow& window);
 	void update(bool wiggle = 0);
 

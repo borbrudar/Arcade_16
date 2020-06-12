@@ -1,9 +1,9 @@
 #include "Box.h"
 
-Box::Box(Vector2f pos, Vector2f size, Texture& t, Vector2f bSize, block_type type):
-	canWiggle(canWiggle),
+Box::Box(Vector2f pos, Vector2f size, Texture& t, Vector2f bSize, block_type type, int entity):
 	entity(entity),
-	type(type)
+	type(type),
+	hadEntity(entity)
 {
 	Vector2f bStart;
 	box.setMaxSwap(0);
@@ -16,11 +16,16 @@ Box::Box(Vector2f pos, Vector2f size, Texture& t, Vector2f bSize, block_type typ
 	case block_type::brick:
 		bStart = Vector2f(bSize.x, 0);
 		box.setup(t, bSize, size, 0, bStart);
+		canWiggle = 1;
 		break;
-	case block_type::coin:
+	case block_type::mystery:
 		bStart = Vector2f(bSize.x * 2, 0);
 		box.setup(t, bSize, size, 2, bStart);
-		entity = 1; hadEntity = 1;
+		canWiggle = 1;
+		break;
+	case block_type::shine:
+		bStart = Vector2f(bSize.x * 6, 0);
+		box.setup(t, bSize, size, 0, bStart);
 		break;
 	}
 

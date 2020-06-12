@@ -34,10 +34,13 @@ Super_Mario::Super_Mario(Font& f)
 			//bricks
 			if (lvl.getPixel(x, y) == Color(0, 0, 255, 255))
 				boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, block_type::brick));
-			//coins
+			//mystery (with coins only for now)
 			if (lvl.getPixel(x, y) == Color(75, 0, 255, 255))
-				boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, block_type::coin));
-			
+				boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, block_type::mystery, 1));
+			//shiny blocks
+			if (lvl.getPixel(x, y) == Color(128, 128, 128, 255))
+				boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, block_type::shine));
+
 			//mario
 			if (lvl.getPixel(x, y) == Color(255, 0, 0, 255))
 				mario.setup(Vector2f(x * sx + off.x, y * sy + off.y - 100), mSize, mr, Vector2f(sx, sy));
