@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "State.h"
 #include "Manimation.h"
+#include <iostream>
 
 using namespace sf;
 
@@ -11,6 +12,7 @@ public:
 	void boxUpdate();
 	void draw(RenderWindow& window);
 	bool update(bool left, bool right, bool up, bool col, int type);
+	const void resetJump();
 
 	Manimation box;
 	std::vector<RectangleShape> mariobox;
@@ -19,7 +21,7 @@ private:
 	//physics
 	Vector2f pos, prevPos;
 	float gravity = 1.6f, jump = gravity;
-	bool groundTouch = 0, jumping = 0, firstJump = 1;
+	bool groundTouch = 0, jumping = 0;
 
 	//clock
 	Clock gclock;

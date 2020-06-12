@@ -34,9 +34,8 @@ bool Mario::update(bool left, bool right, bool up, bool col, int type)
 {
 	bool ret = 0;
 	//physics and stuff (temp hidden)
-	{
+	
 		//other stuff
-		prevPos = pos;
 		if (col) {
 			if (type == 1) groundTouch = 1; else groundTouch = 0;
 			if (type == 0) jumping = 0;
@@ -56,7 +55,7 @@ bool Mario::update(bool left, bool right, bool up, bool col, int type)
 		//fall
 		if (!jumping && !groundTouch) pos.y += gravity;
 		//hop hop
-		if (up && groundTouch) 	jumping = 1;
+		if (up && groundTouch) jumping = 1;
 
 		if (jumping) {
 			gtime = gclock.getElapsedTime().asSeconds();
@@ -66,16 +65,15 @@ bool Mario::update(bool left, bool right, bool up, bool col, int type)
 
 			if (gtimer > gdelay) {
 				jumping = 0;
-				gtime = 0;
+				gtimer = 0;
 			}
 			else  pos.y -= jump;
 
 		}
 		else gclock.restart();
-
+		prevPos = pos;
 		box.animation.setPosition(pos);
-	}
-
+	
 	//update animation
 	if (right && !prevR) {
 		box.setMaxSwap(3);
@@ -117,4 +115,10 @@ bool Mario::update(bool left, bool right, bool up, bool col, int type)
 	}
 	
 	return ret;
+}
+
+const void Mario::resetJump()
+{
+	jumping = 0;
+	gtimer = 0;
 }

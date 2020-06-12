@@ -38,7 +38,7 @@ void Box::update(bool wiggle)
 {
 	if (wiggle) wiggling = 1;
 
-	if (wiggling && canWiggle) {
+	if (wiggling != 0 && canWiggle) {
 		//move
 		if (wiggling == 1) box.animation.move(0, -speed);
 		else  box.animation.move(0, speed);
@@ -46,7 +46,7 @@ void Box::update(bool wiggle)
 		if (wiggling == 1 && (oldPos.y - box.animation.getPosition().y) > (box.animation.getSize().y / 3))
 			wiggling = 2;
 
-		if (oldPos == box.animation.getPosition()) {
+		if (oldPos.y < box.animation.getPosition().y) {
 			wiggling = 0;
 			if (hadEntity && !entity) {
 				box.setMaxSwap(0);

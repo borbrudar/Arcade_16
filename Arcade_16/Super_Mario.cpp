@@ -37,6 +37,7 @@ Super_Mario::Super_Mario(Font& f)
 			//coins
 			if (lvl.getPixel(x, y) == Color(75, 0, 255, 255))
 				boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, block_type::coin));
+			
 			//mario
 			if (lvl.getPixel(x, y) == Color(255, 0, 0, 255))
 				mario.setup(Vector2f(x * sx + off.x, y * sy + off.y - 100), mSize, mr, Vector2f(sx, sy));
@@ -142,9 +143,8 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 				col = 1;
 				type = j;
 				//wiggle and stop jumping
-				if (j == 0) {
-					boxes[i].update(1);
-				}
+				if (j == 0) boxes[i].update(1);
+				
 				//if touching with head and has a coin
 				if (j == 0 && boxes[i].entity == 1) {
 					entities.push_back(Entity(tits, cSize, 3, boxes[i].box.animation.getPosition(), tSize, 1));
@@ -158,7 +158,7 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 	//update box up-down movement
 	for(int i = 0; i < boxes.size(); i++) boxes[i].update();
 
-	//collision with entities
+	//collision with coins
 	for (int i = 0; i < entities.size(); i++) {
 		if (entities[i].anim.animation.getGlobalBounds().intersects(mario.box.animation.getGlobalBounds())
 			&& entities[i].out == 1)
