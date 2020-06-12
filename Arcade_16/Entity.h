@@ -11,7 +11,8 @@ public:
 	void update(Vector2f until);
 
 	Manimation anim;
-	Vector2f pos, orgPos;
-	int type = 1;
+	Vector2f pos, oldPos;
+	int type = 1, wiggling = 1;
 	bool out = 0;
+	float speed = 2.f;
 };

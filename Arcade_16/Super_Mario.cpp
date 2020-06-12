@@ -158,10 +158,9 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 	//update box up-down movement
 	for(int i = 0; i < boxes.size(); i++) boxes[i].update();
 
-	//collision with coins
+	//coin collection
 	for (int i = 0; i < entities.size(); i++) {
-		if (entities[i].anim.animation.getGlobalBounds().intersects(mario.box.animation.getGlobalBounds())
-			&& entities[i].out == 1)
+		if (entities[i].out == 1)
 		{
 			coins += 1;
 			entities.erase(entities.begin() + i);
