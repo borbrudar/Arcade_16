@@ -33,13 +33,11 @@ void Manimation::draw(RenderWindow& window)
 
 const void Manimation::setMaxSwap(int set)
 {
-	swap = 0;
 	maxSwap = set;
 }
 
 const void Manimation::setRow(int row)
 {
-	swap = 0;
 	this->row = row;
 }
 
