@@ -140,7 +140,7 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 
 	//update box up-down movement
 	for(int i = 0; i < boxes.size(); i++) boxes[i].update();
-
+	
 	//coin collection
 	for (int i = 0; i < entities.size(); i++) {
 		if (entities[i].out == 1)
@@ -151,7 +151,7 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 		}
 	}
 
-	//also coin blocksfor (int i = 0; i < entities.size(); i++) {
+	//also coin blocks
 	for (int i = 0; i < coins_.size(); i++) {
 		if (mario.box.animation.getGlobalBounds().intersects(coins_[i].box.animation.getGlobalBounds()))
 		{
@@ -160,6 +160,9 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 			break;
 		}
 	}
+	//update coins and blocks[]
+	for (int i = 0; i < coins_.size(); i++) coins_[i].update();
+	for (int i = 0; i < blocks.size(); i++) blocks[i].update();
 
 	mario.boxUpdate();
 	//mario-boxes collision
@@ -186,12 +189,12 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 	if (mario.update(left, right, up, col, type) == 1) {
 		offX -= mario.mariosp;
 		//blocks
-		for (int i = 0; i < boxes.size(); i++) 	boxes[i].box.animation.move(-mario.mariosp, 0);
-		for(int i = 0; i < blocks.size();i++) blocks[i].box.animation.move(-mario.mariosp, 0);
-		for (int i = 0; i < coins_.size(); i++) coins_[i].box.animation.move(-mario.mariosp, 0);
+		for (int i = 0; i < boxes.size(); i++) 	boxes[i].off(offX);
+		for(int i = 0; i < blocks.size();i++) blocks[i].off(offX);
+		for (int i = 0; i < coins_.size(); i++) coins_[i].off(offX);
 		//other
-		for (int i = 0; i < entities.size(); i++) entities[i].pos.x += -mario.mariosp;
-		for (int i = 0; i < enemies.size(); i++) enemies[i].pos.x += -mario.mariosp;
+		for (int i = 0; i < entities.size(); i++) entities[i].off(offX);
+		for (int i = 0; i < enemies.size(); i++) enemies[i].off(offX);
 		
 	}
 

@@ -99,9 +99,6 @@
     <ClCompile Include="Manimation.cpp">
       <Filter>Games\Super_Mario\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="Box.cpp">
-      <Filter>Games\Super_Mario\Stuff</Filter>
-    </ClCompile>
     <ClCompile Include="Enemy.cpp">
       <Filter>Games\Super_Mario\Stuff</Filter>
     </ClCompile>
@@ -110,6 +107,9 @@
     </ClCompile>
     <ClCompile Include="Mario.cpp">
       <Filter>Games\Super_Mario\Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="Box.cpp">
+      <Filter>Games\Super_Mario\Utility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -167,9 +167,6 @@
     <ClInclude Include="Manimation.h">
       <Filter>Games\Super_Mario\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="Box.h">
-      <Filter>Games\Super_Mario\Stuff</Filter>
-    </ClInclude>
     <ClInclude Include="Enemy.h">
       <Filter>Games\Super_Mario\Stuff</Filter>
     </ClInclude>
@@ -180,7 +177,10 @@
       <Filter>Games\Super_Mario\Stuff</Filter>
     </ClInclude>
     <ClInclude Include="BoxEnum.h">
-      <Filter>Games\Super_Mario\Stuff</Filter>
+      <Filter>Games\Super_Mario\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Box.h">
+      <Filter>Games\Super_Mario\Utility</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

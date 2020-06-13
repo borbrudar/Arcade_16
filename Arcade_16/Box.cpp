@@ -37,7 +37,8 @@ Box::Box(Vector2f pos, Vector2f size, Texture& t, Vector2f bSize, block_type typ
 
 	box.animation.setPosition(pos);
 	box.animation.setTextureRect(IntRect(bStart.x, bStart.y, bSize.x, bSize.y));
-
+	oldPos = box.animation.getPosition();
+	this->pos = pos;
 }
 
 void Box::draw(RenderWindow& window)
@@ -47,18 +48,20 @@ void Box::draw(RenderWindow& window)
 
 void Box::update(bool wiggle)
 {
+	box.animation.setPosition(pos.x + offX, pos.y);
+
 	if (wiggle) wiggling = 1;
 
 	if (wiggling != 0 && canWiggle) {
 		//move
-		if (wiggling == 1) box.animation.move(0, -speed);
-		else  box.animation.move(0, speed);
+		if (wiggling == 1) pos.y -= speed;
+		else  pos.y += speed;
 
-		if (wiggling == 1 && (oldPos.y - box.animation.getPosition().y) > (box.animation.getSize().y / 3))
+		if (wiggling == 1 && (oldPos.y - pos.y) > (box.animation.getSize().y / 3))
 			wiggling = 2;
 
-		if (oldPos.y < box.animation.getPosition().y) {
-			box.animation.setPosition(oldPos);
+		if (oldPos.y < pos.y) {
+			pos.y = oldPos.y;
 			wiggling = 0;
 			//cant wiggle if its a mystery box
 			if (hadEntity && !entity) {
@@ -69,9 +72,9 @@ void Box::update(bool wiggle)
 			}
 		}
 	}
-	else {
-		oldPos = box.animation.getPosition();
-	}
+}
 
-	
+void Box::off(float offX)
+{
+	this->offX = offX;
 }

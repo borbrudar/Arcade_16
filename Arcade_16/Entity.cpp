@@ -18,6 +18,8 @@ void Entity::draw(RenderWindow& window)
 
 void Entity::update(Vector2f until)
 {
+	anim.animation.setPosition(pos.x + offX, pos.y);
+
 	if (wiggling == 1) pos.y -= speed;
 	else  pos.y += speed;
 
@@ -29,5 +31,10 @@ void Entity::update(Vector2f until)
 		out = 1;
 	}
 	anim.animation.setPosition(pos);
+}
+
+void Entity::off(float offX)
+{
+	this->offX = offX;
 }
 

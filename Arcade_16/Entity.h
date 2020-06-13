@@ -9,10 +9,11 @@ public:
 	Entity(Texture &t, Vector2f size, int maxSwap, Vector2f pos, Vector2f tSize, int type);
 	void draw(RenderWindow& window);
 	void update(Vector2f until);
+	void off(float offX);
 
 	Manimation anim;
 	Vector2f pos, oldPos;
 	int type = 1, wiggling = 1;
 	bool out = 0;
-	float speed = 2.f;
+	float speed = 2.f, offX = 0.f;
 };

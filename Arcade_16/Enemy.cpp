@@ -24,6 +24,7 @@ void Enemy::draw(RenderWindow& window)
 
 bool Enemy::update(bool col, bool onScr)
 {
+	anim.animation.setPosition(pos.x + offX, pos.y);
 	onScreen = onScr;
 	prevPos = pos;
 	
@@ -52,4 +53,9 @@ bool Enemy::update(bool col, bool onScr)
 	}
 
 	return 0;
+}
+
+void Enemy::off(float offX)
+{
+	this->offX = offX;
 }

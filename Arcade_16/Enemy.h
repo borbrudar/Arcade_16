@@ -11,9 +11,10 @@ public:
 	void setup(Vector2f pos, Vector2f size, Vector2f tSize, Texture &t1);
 	void draw(RenderWindow& window);
 	bool update(bool col, bool onScr = 0);
+	void off(float offX);
 
 	bool onScreen = 0, groundTouch = 0, alive = 1;
-	float speed = 0.5f, gravity = 1.5f;
+	float speed = 0.5f, gravity = 1.5f, offX = 0.f;
 	Manimation anim;
 	RectangleShape death;
 	Vector2f pos, prevPos;
