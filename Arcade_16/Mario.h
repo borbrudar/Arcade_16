@@ -30,6 +30,6 @@ private:
 	bool noDelay = 1;
 
 	//animation
-	bool prevR = 0, prevL = 0, prevU = 0; //don
+	bool prevR = 0, prevL = 0, prevU = 0; //dont be fooled, prevU is actually for standing after landing
 
 };

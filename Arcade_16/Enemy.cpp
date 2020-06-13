@@ -40,15 +40,31 @@ bool Enemy::update(bool col, bool onScr)
 		if (onScreen) pos.x -= speed;
 		dclock.restart();
 	}
-	else {
-		anim.setCycle(0);
-		anim.setSwap(2);
-
+	else if (type == 0) {
 		dtime = dclock.getElapsedTime().asSeconds();
 		dtimer += dtime;
 		dclock.restart();
 
 		if (dtimer > ddelay) return 1;
+	}
+
+	if (!alive && spin == 0) {
+		anim.setCycle(0);
+		anim.setSwap(2);
+	}
+
+	if (spinning) {
+		anim.setCycle(1);
+		anim.setSwap(0);
+		anim.setStart(3, 0);
+		anim.setMaxSwap(3);
+		anim.delay = 0.1f;
+		spinning = 0;
+	}
+	//spinny boi
+	if (spin != 0) {
+		if (spin == 1) pos.x += speed; else pos.x -= speed;
+		
 	}
 
 	return 0;

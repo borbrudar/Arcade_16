@@ -129,7 +129,14 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 		for (int i = 0; i < mario.mariobox.size(); i++) {
 			if (mario.mariobox[i].getGlobalBounds().intersects(enemies[j].anim.animation.getGlobalBounds())) {
 				//if touching with bottom
-				if(i == 1) enemies[j].alive = 0;
+				if(enemies[j].alive == 1 && i == 1) enemies[j].alive = 0;
+				//spinny guy
+				if (enemies[j].alive == 0 && enemies[j].type == 1) {
+					enemies[j].spinning = 1;
+					if (mario.mariobox[i].getPosition().x < enemies[j].anim.animation.getPosition().x)
+						enemies[j].spin = 1;
+					else enemies[j].spin = 2;
+				}
 				break;
 			}
 		}

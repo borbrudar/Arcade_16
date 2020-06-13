@@ -11,6 +11,8 @@ public:
 	const void setRow(int row);
 	const void setSwap(int s);
 	const void setCycle(bool c);
+	//size multiplier
+	const void setStart(int x = 0, int y = 0);
 
 	RectangleShape animation;
 	Vector2f size;

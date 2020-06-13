@@ -52,3 +52,8 @@ const void Manimation::setCycle(bool c)
 	cycle = c;
 }
 
+const void Manimation::setStart(int x, int y)
+{
+	start = Vector2f(size.x * x, size.y * y);
+}
+

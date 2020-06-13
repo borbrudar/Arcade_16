@@ -14,7 +14,8 @@ public:
 	void off(float offX);
 
 	int type = 0;
-	bool onScreen = 0, groundTouch = 0, alive = 1;
+	int spin = 0;
+	bool onScreen = 0, groundTouch = 0, alive = 1, spinning = 0;
 	float speed = 0.5f, gravity = 1.5f, offX = 0.f;
 	Manimation anim;
 	RectangleShape death;
