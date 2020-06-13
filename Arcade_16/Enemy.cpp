@@ -1,30 +1,31 @@
 #include "Enemy.h"
 
-Enemy::Enemy(Vector2f pos, Vector2f size, Vector2f tSize, Texture &t1)
+Enemy::Enemy(Vector2f pos, Vector2f size, Vector2f tSize, Texture &t1, int type)
 {
-	setup(pos, size, tSize, t1);
+	setup(pos, size, tSize, t1, type);
 }
 
-void Enemy::setup(Vector2f pos, Vector2f size, Vector2f tSize, Texture &t1)
+void Enemy::setup(Vector2f pos, Vector2f size, Vector2f tSize, Texture &t1, int type)
 {
 	this->pos = pos;
-	anim.setup(t1, size, tSize);
+	this->type = type;
 
-	death.setTexture(&t1);
-	death.setSize(tSize);
-	death.setTextureRect(IntRect(size.x * 2, 0, size.x, size.y));
-
+	//animation setup
+	if(type == 0) anim.setup(t1, size, tSize);
+	else if(type == 1) anim.setup(t1, size, Vector2f(tSize.x ,tSize.y * 1.5f));
+	pos.y -= tSize.y / 3;
 }
 
 void Enemy::draw(RenderWindow& window)
 {
-	if (alive) anim.draw(window);
-	else window.draw(death);
+	anim.draw(window);
 }
 
 bool Enemy::update(bool col, bool onScr)
 {
-	anim.animation.setPosition(pos.x + offX, pos.y);
+	if(type == 0) anim.animation.setPosition(pos.x + offX, pos.y);
+	else if(type == 1) anim.animation.setPosition(pos.x + offX, pos.y);
+
 	onScreen = onScr;
 	prevPos = pos;
 	
@@ -43,7 +44,8 @@ bool Enemy::update(bool col, bool onScr)
 		dclock.restart();
 	}
 	else {
-		death.setPosition(pos);
+		anim.setCycle(0);
+		anim.setSwap(2);
 
 		dtime = dclock.getElapsedTime().asSeconds();
 		dtimer += dtime;

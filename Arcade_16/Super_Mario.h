@@ -32,8 +32,8 @@ public:
 
 	//enemies
 	std::vector<Enemy> enemies;
-	Vector2f eSize{ 16,16 };
-	Texture en;
+	Vector2f e1Size{ 16,16 }, e2Size{ 16,24 };
+	Texture en, en2;
 
 	//entity
 	std::vector<Entity> entities;

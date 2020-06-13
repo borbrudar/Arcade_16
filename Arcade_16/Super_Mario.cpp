@@ -16,6 +16,7 @@ Super_Mario::Super_Mario(Font& f)
 
 	//enemy
 	en.loadFromFile("res/mario/en1.png");
+	en2.loadFromFile("res/mario/en2.png");
 
 	//entities
 	tits.loadFromFile("res/mario/entity.png");
@@ -48,10 +49,17 @@ Super_Mario::Super_Mario(Font& f)
 				mario.setup(Vector2f(x * sx + off.x, y * sy + off.y - 100), mSize, mr, Vector2f(sx, sy));
 
 			//enemies
+			//normal
 			if (lvl.getPixel(x, y) == Color(0, 255, 0, 255)) {
 				enemies.push_back(Enemy());
 				enemies.back().setup(Vector2f(x * sx + off.x, y * sy + off.y),
-					eSize, Vector2f(sx, sy), en);
+					e1Size, Vector2f(sx, sy), en);
+			}
+			//the other thingy
+			if (lvl.getPixel(x, y) == Color(0, 128, 0, 255)) {
+				enemies.push_back(Enemy());
+				enemies.back().setup(Vector2f(x * sx + off.x, y * sy + off.y),
+					e2Size, Vector2f(sx, sy), en2, 1);
 			}
 		}
 	}
@@ -195,7 +203,6 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 		//other
 		for (int i = 0; i < entities.size(); i++) entities[i].off(offX);
 		for (int i = 0; i < enemies.size(); i++) enemies[i].off(offX);
-		
 	}
 
 }

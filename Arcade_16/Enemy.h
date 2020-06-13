@@ -7,12 +7,13 @@ using namespace sf;
 class Enemy {
 public:
 	Enemy() = default;
-	Enemy(Vector2f pos, Vector2f size,Vector2f tSize, Texture &t1);
-	void setup(Vector2f pos, Vector2f size, Vector2f tSize, Texture &t1);
+	Enemy(Vector2f pos, Vector2f size,Vector2f tSize, Texture &t1, int type = 0);
+	void setup(Vector2f pos, Vector2f size, Vector2f tSize, Texture &t1, int type = 0);
 	void draw(RenderWindow& window);
 	bool update(bool col, bool onScr = 0);
 	void off(float offX);
 
+	int type = 0;
 	bool onScreen = 0, groundTouch = 0, alive = 1;
 	float speed = 0.5f, gravity = 1.5f, offX = 0.f;
 	Manimation anim;
