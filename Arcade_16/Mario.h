@@ -11,11 +11,12 @@ public:
 	void setup(Vector2f pos, Vector2f size, Texture& t, Vector2f tSize);
 	void boxUpdate();
 	void draw(RenderWindow& window);
-	bool update(bool left, bool right, bool up, bool col, int type);
+	bool update(bool left, bool right, bool up, bool col, std::vector<int> type);
 
 	Manimation box;
 	std::vector<RectangleShape> mariobox;
 	float mariosp = 0.8f;
+	bool showHitbox = 0;
 private:
 	//physics
 	Vector2f pos, prevPos;

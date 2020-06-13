@@ -31,26 +31,29 @@ void Mario::draw(RenderWindow& window)
 {
 	box.draw(window);
 
-	for (int i = 0; i < mariobox.size(); i++) window.draw(mariobox[i]);
+	if(showHitbox) for (int i = 0; i < mariobox.size(); i++) window.draw(mariobox[i]);
 }
 
-bool Mario::update(bool left, bool right, bool up, bool col, int type)
+bool Mario::update(bool left, bool right, bool up, bool col, std::vector<int> type)
 {
 	bool ret = 0;
 	//physics and stuff (temp hidden)
 	{
 		//other stuff
-		if (col) {
-			canLeft = 1, canRight = 1;
-			if(type == 0) jumping = 0;
-			if (type == 1) groundTouch = 1;
-			if (type == 2) canLeft = 0;
-			if (type == 3) canRight = 0;
+		canLeft = 1, canRight = 1;
+		for (int i = 0; i < type.size(); i++) {
+			if (col) {
+				if (type[i] == 0) {
+					jumping = 0; pos.y = prevPos.y;
+				}
+				if (type[i] == 1) { groundTouch = 1; pos.y = prevPos.y; }
+				if (type[i] == 2) { canLeft = 0; pos.x = prevPos.x; }
+				if (type[i] == 3) { canRight = 0; pos.x = prevPos.x; }
 
-			pos = prevPos;
+				pos = prevPos;
+			}
+			else groundTouch = 0;
 		}
-		else groundTouch = 0;
-
 		//left/right movement
 		if (pos.x <= (scrWidth / 2) || left) {
 			if (left && canLeft) pos.x -= mariosp;

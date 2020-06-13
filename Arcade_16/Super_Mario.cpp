@@ -135,29 +135,6 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 	//entities
 	for (int i = 0; i < entities.size(); i++) entities[i].update(boxes[i].box.animation.getSize());
 
-
-	mario.boxUpdate();
-	//mario-boxes collision
-	bool col = 0;
-	int type = 0;
-	for (int i = 0; i < boxes.size(); i++) {
-		for (int j = 0; j < mario.mariobox.size(); j++) {
-			if (boxes[i].box.animation.getGlobalBounds().intersects(mario.mariobox[j].getGlobalBounds())) {
-				col = 1;
-				type = j;
-				//wiggle and stop jumping
-				if (j == 0) boxes[i].update(1);
-				
-				//if touching with head and has a coin
-				if (j == 0 && boxes[i].entity == 1) {
-					entities.push_back(Entity(tits, cSize, 3, boxes[i].box.animation.getPosition(), tSize, 1));
-					boxes[i].entity = 0;
-				}
-				break;
-			}
-		}
-	}
-
 	//update box up-down movement
 	for(int i = 0; i < boxes.size(); i++) boxes[i].update();
 
@@ -171,6 +148,28 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 		}
 	}
 
+	mario.boxUpdate();
+	//mario-boxes collision
+	bool col = 0;
+	std::vector<int> type{ -1,-1,-1,-1 };
+	
+
+	for (int i = 0; i < boxes.size(); i++) {
+		for (int j = 0; j < mario.mariobox.size(); j++) {
+			if (boxes[i].box.animation.getGlobalBounds().intersects(mario.mariobox[j].getGlobalBounds())) {
+				col = 1;
+				type[j] = j;
+				//wiggle and stop jumping
+				if (j == 0) boxes[i].update(1);
+
+				//if touching with head and has a coin
+				if (j == 0 && boxes[i].entity == 1) {
+					entities.push_back(Entity(tits, cSize, 3, boxes[i].box.animation.getPosition(), tSize, 1));
+					boxes[i].entity = 0;
+				}
+			}
+		}
+	}
 	//offset everything if necessary
 	if (mario.update(left, right, up, col, type) == 1) {
 		offX -= mario.mariosp;
