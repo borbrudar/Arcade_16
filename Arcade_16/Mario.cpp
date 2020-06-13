@@ -114,33 +114,43 @@ bool Mario::update(bool left, bool right, bool up, bool col, std::vector<int> ty
 	//update animation
 	{
 		if (right && !prevR) {
+			box.setCycle(1);
 			box.setMaxSwap(3);
 			box.setRow(0);
 		}
 		//left
 		else if (left && !prevL) {
+			box.setCycle(1);
 			box.setMaxSwap(3);
 			box.setRow(1);
 		}
 		//rest according to last state
-		else if (!left && !right) {
-			if (prevR) {
-				box.setMaxSwap(0);
+		else if (!left && !right && !up) {
+			if (prevR || !prevU) {
+				box.setCycle(0);
 				box.setRow(0);
+				box.setSwap(0);
 			}
-			else if (prevL) {
-				box.setMaxSwap(0);
+			else if (prevL || prevU) {
+				box.setCycle(0);
 				box.setRow(1);
+				box.setSwap(0);
 			}
 		}
 
 		//jump
 		if (up) {
-			box.setMaxSwap(4);
+			box.setCycle(0);
 			box.setSwap(4);
-			if (prevR) 	box.setRow(0);
-			else 	box.setRow(1);
-		}
+			if (prevR) {
+				box.setRow(0);
+				prevU = 0;
+			}
+			else {
+				box.setRow(1);
+				prevU = 1;
+			}
+		} 
 
 		//update prevAnim
 		if (right) {
@@ -150,6 +160,9 @@ bool Mario::update(bool left, bool right, bool up, bool col, std::vector<int> ty
 		else if (left) {
 			prevL = 1;
 			prevR = 0;
+		}
+		else if (up) {
+
 		}
 		else {
 			prevL = 0;

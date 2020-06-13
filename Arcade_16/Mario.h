@@ -30,6 +30,6 @@ private:
 	bool noDelay = 1;
 
 	//animation
-	bool prevR = 0, prevL = 0;
+	bool prevR = 0, prevL = 0, prevU = 0; //don
 
 };

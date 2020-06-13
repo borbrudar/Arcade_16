@@ -13,7 +13,6 @@ void Enemy::setup(Vector2f pos, Vector2f size, Vector2f tSize, Texture &t1, int 
 	//animation setup
 	if(type == 0) anim.setup(t1, size, tSize);
 	else if(type == 1) anim.setup(t1, size, Vector2f(tSize.x ,tSize.y * 1.5f));
-	pos.y -= tSize.y / 3;
 }
 
 void Enemy::draw(RenderWindow& window)
@@ -24,7 +23,7 @@ void Enemy::draw(RenderWindow& window)
 bool Enemy::update(bool col, bool onScr)
 {
 	if(type == 0) anim.animation.setPosition(pos.x + offX, pos.y);
-	else if(type == 1) anim.animation.setPosition(pos.x + offX, pos.y);
+	else if(type == 1) anim.animation.setPosition(pos.x + offX, pos.y - (anim.animation.getSize().y * 0.33333f));
 
 	onScreen = onScr;
 	prevPos = pos;
@@ -39,8 +38,6 @@ bool Enemy::update(bool col, bool onScr)
 
 	if (alive) {
 		if (onScreen) pos.x -= speed;
-		anim.animation.setPosition(pos);
-
 		dclock.restart();
 	}
 	else {
