@@ -22,10 +22,16 @@ Box::Box(Vector2f pos, Vector2f size, Texture& t, Vector2f bSize, block_type typ
 		bStart = Vector2f(bSize.x * 2, 0);
 		box.setup(t, bSize, size, 2, bStart);
 		canWiggle = 1;
+		box.delay = 0.25f;
 		break;
 	case block_type::shine:
 		bStart = Vector2f(bSize.x * 6, 0);
 		box.setup(t, bSize, size, 0, bStart);
+		break;
+	case block_type::coin:
+		bStart = Vector2f(0, bSize.y);
+		box.setup(t, bSize, size, 2, bStart);
+		box.delay = 0.25f;
 		break;
 	}
 
@@ -54,6 +60,7 @@ void Box::update(bool wiggle)
 		if (oldPos.y < box.animation.getPosition().y) {
 			box.animation.setPosition(oldPos);
 			wiggling = 0;
+			//cant wiggle if its a mystery box
 			if (hadEntity && !entity) {
 				box.setMaxSwap(0);
 				box.setSwap(3);

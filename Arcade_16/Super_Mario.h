@@ -20,6 +20,7 @@ public:
 
 	std::vector<Box> boxes;
 	std::vector<Box> blocks;
+	std::vector<Box> coins_;
 	Vector2f off{ 0,20 }, tSize, bSize{ 16,16 };
 	float offX = 0.f;
 	int coins = 0;

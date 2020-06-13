@@ -40,7 +40,9 @@ Super_Mario::Super_Mario(Font& f)
 			//shiny blocks
 			if (lvl.getPixel(x, y) == Color(128, 128, 128, 255))
 				boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, block_type::shine));
-
+			//coin (as blocks)
+			if (lvl.getPixel(x, y) == Color(255, 255, 0, 255))
+				coins_.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, block_type::coin));
 			//mario
 			if (lvl.getPixel(x, y) == Color(255, 0, 0, 255))
 				mario.setup(Vector2f(x * sx + off.x, y * sy + off.y - 100), mSize, mr, Vector2f(sx, sy));
@@ -64,6 +66,7 @@ void Super_Mario::draw(RenderWindow& window)
 	for (int i = 0; i < boxes.size(); i++) boxes[i].draw(window);
 	for (int i = 0; i < blocks.size(); i++) blocks[i].draw(window);
 
+	for (int i = 0; i < coins_.size(); i++) coins_[i].draw(window);
 	//mario
 	mario.draw(window);
 
@@ -148,12 +151,20 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 		}
 	}
 
+	//also coin blocksfor (int i = 0; i < entities.size(); i++) {
+	for (int i = 0; i < coins_.size(); i++) {
+		if (mario.box.animation.getGlobalBounds().intersects(coins_[i].box.animation.getGlobalBounds()))
+		{
+			coins += 1;
+			coins_.erase(coins_.begin() + i);
+			break;
+		}
+	}
+
 	mario.boxUpdate();
 	//mario-boxes collision
 	bool col = 0;
 	std::vector<int> type{ -1,-1,-1,-1 };
-	
-
 	for (int i = 0; i < boxes.size(); i++) {
 		for (int j = 0; j < mario.mariobox.size(); j++) {
 			if (boxes[i].box.animation.getGlobalBounds().intersects(mario.mariobox[j].getGlobalBounds())) {
@@ -170,13 +181,18 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 			}
 		}
 	}
+
 	//offset everything if necessary
 	if (mario.update(left, right, up, col, type) == 1) {
 		offX -= mario.mariosp;
+		//blocks
 		for (int i = 0; i < boxes.size(); i++) 	boxes[i].box.animation.move(-mario.mariosp, 0);
 		for(int i = 0; i < blocks.size();i++) blocks[i].box.animation.move(-mario.mariosp, 0);
+		for (int i = 0; i < coins_.size(); i++) coins_[i].box.animation.move(-mario.mariosp, 0);
+		//other
 		for (int i = 0; i < entities.size(); i++) entities[i].pos.x += -mario.mariosp;
 		for (int i = 0; i < enemies.size(); i++) enemies[i].pos.x += -mario.mariosp;
+		
 	}
 
 }
