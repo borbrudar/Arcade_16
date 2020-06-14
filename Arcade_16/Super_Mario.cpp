@@ -20,6 +20,8 @@ Super_Mario::Super_Mario(Font& f)
 
 	//entities
 	tits.loadFromFile("res/mario/entity.png");
+	schrooms.loadFromFile("res/mario/schroom.png");
+
 	//level
 	lvl.loadFromFile("res/mario/lvl.png");
 	float sy = scrHeight / lvl.getSize().y, sx = sy;
@@ -35,9 +37,12 @@ Super_Mario::Super_Mario(Font& f)
 			//bricks
 			if (lvl.getPixel(x, y) == Color(0, 0, 255, 255))
 				boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, block_type::brick));
-			//mystery (with coins only for now)
+			//mystery (coins and muschrooms)
 			if (lvl.getPixel(x, y) == Color(75, 0, 255, 255))
 				boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, block_type::mystery, 1));
+			if (lvl.getPixel(x, y) == Color(80, 0, 255, 255))
+				boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, block_type::mystery, 2));
+			
 			//shiny blocks
 			if (lvl.getPixel(x, y) == Color(128, 128, 128, 255))
 				boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, block_type::shine));
@@ -82,6 +87,10 @@ void Super_Mario::draw(RenderWindow& window)
 	window.clear(Color(92, 148, 252));
 	back.draw(window);
 
+	//entities
+	for (int i = 0; i < entities.size(); i++) {
+		entities[i].draw(window);
+	}
 	//boxes and blocks
 	for (int i = 0; i < boxes.size(); i++) boxes[i].draw(window);
 	for (int i = 0; i < blocks.size(); i++) blocks[i].draw(window);
@@ -93,10 +102,6 @@ void Super_Mario::draw(RenderWindow& window)
 	//enemies
 	for (int i = 0; i < enemies.size(); i++) enemies[i].draw(window);
 
-	//entities
-	for (int i = 0; i < entities.size(); i++) {
-		entities[i].draw(window);
-	}
 }
 
 void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
@@ -179,14 +184,14 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 	}
 	
 	//entities
-	for (int i = 0; i < entities.size(); i++) entities[i].update(boxes[i].box.animation.getSize());
+	for (int i = 0; i < entities.size(); i++) entities[i].update(boxes[0].box.animation.getSize());
 
 	//update box up-down movement
 	for(int i = 0; i < boxes.size(); i++) boxes[i].update();
 	
 	//coin collection
 	for (int i = 0; i < entities.size(); i++) {
-		if (entities[i].out == 1)
+		if (entities[i].out == 1 && entities[i].type == 1)
 		{
 			coins += 1;
 			entities.erase(entities.begin() + i);
@@ -219,10 +224,17 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 				//wiggle and stop jumping
 				if (j == 0) boxes[i].update(1);
 
-				//if touching with head and has a coin
-				if (j == 0 && boxes[i].entity == 1) {
-					entities.push_back(Entity(tits, cSize, 3, boxes[i].box.animation.getPosition(), tSize, 1));
+				//if touching with head and has an entity
+				if (j == 0 && boxes[i].entity != 0) {
+					if(boxes[i].entity == 1) entities.push_back(Entity(tits, cSize,
+						3, boxes[i].box.animation.getPosition(), tSize, 1));
+					else entities.push_back(Entity(schrooms, sSize,
+						0, boxes[i].box.animation.getPosition(), tSize, 2));
+
 					boxes[i].entity = 0;
+					//correct offsets
+					entities.back().oddX = -offX;
+					entities.back().offX = offX;
 				}
 			}
 		}

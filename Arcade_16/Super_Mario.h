@@ -37,6 +37,6 @@ public:
 
 	//entity
 	std::vector<Entity> entities;
-	Texture tits;
-	Vector2f cSize{ 10,14 };
+	Texture tits, schrooms;
+	Vector2f cSize{ 10,14 }, sSize{ 16,16 };
 };

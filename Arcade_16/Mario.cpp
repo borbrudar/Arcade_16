@@ -7,10 +7,10 @@ void Mario::setup(Vector2f pos, Vector2f size, Texture &t, Vector2f tSize)
 	this->pos = pos;
 
 	box.setup(t, size, tSize,0);
-	box.delay = 0.125f;
+	box.delay = 0.1f;
 	//mariobox
-	mariobox.push_back(RectangleShape(Vector2f(box.animation.getSize().x, 1)));
-	mariobox.push_back(RectangleShape(Vector2f(box.animation.getSize().x, 1)));
+	mariobox.push_back(RectangleShape(Vector2f(box.animation.getSize().x - 2, 1)));
+	mariobox.push_back(RectangleShape(Vector2f(box.animation.getSize().x - 2, 1)));
 	mariobox.push_back(RectangleShape(Vector2f(1, box.animation.getSize().y - 2)));
 	mariobox.push_back(RectangleShape(Vector2f(1, box.animation.getSize().y - 2)));
 
@@ -20,8 +20,8 @@ void Mario::setup(Vector2f pos, Vector2f size, Texture &t, Vector2f tSize)
 void Mario::boxUpdate()
 {
 	//mario box update
-	mariobox[0].setPosition(box.animation.getPosition().x, box.animation.getPosition().y);
-	mariobox[1].setPosition(box.animation.getPosition().x, box.animation.getPosition().y + box.animation.getSize().y);
+	mariobox[0].setPosition(box.animation.getPosition().x + 1, box.animation.getPosition().y);
+	mariobox[1].setPosition(box.animation.getPosition().x + 1, box.animation.getPosition().y + box.animation.getSize().y);
 	mariobox[2].setPosition(box.animation.getPosition().x, box.animation.getPosition().y + 1);
 	mariobox[3].setPosition(box.animation.getPosition().x + box.animation.getSize().x, box.animation.getPosition().y + 1);
 
@@ -137,7 +137,7 @@ bool Mario::update(bool left, bool right, bool up, bool col, std::vector<int> ty
 				box.setSwap(0);
 			}
 		}
-
+		else
 		//jump
 		if (up) {
 			box.setCycle(0);

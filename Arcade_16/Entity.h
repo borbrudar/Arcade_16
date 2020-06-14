@@ -15,5 +15,5 @@ public:
 	Vector2f pos, oldPos;
 	int type = 1, wiggling = 1;
 	bool out = 0;
-	float speed = 2.f, offX = 0.f;
+	float speed = 2.f, offX = 0.f, oddX = 0.f;
 };

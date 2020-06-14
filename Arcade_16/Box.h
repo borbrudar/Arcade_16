@@ -15,8 +15,9 @@ public:
 	Manimation box;
 	int entity = 0;
 	float offX = 0;
+	bool hadEntity = 0;
 private:
-	bool canWiggle = 0, hadEntity = 0;
+	bool canWiggle = 0;
 	int wiggling = 0;
 	float speed = 1.f;
 	Vector2f pos,oldPos;

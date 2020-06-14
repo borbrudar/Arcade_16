@@ -18,19 +18,25 @@ void Entity::draw(RenderWindow& window)
 
 void Entity::update(Vector2f until)
 {
-	anim.animation.setPosition(pos.x + offX, pos.y);
+	anim.animation.setPosition(pos.x + offX + oddX, pos.y);
+	//coin
+	if (type == 1) {
+		if (wiggling == 1) pos.y -= speed;
+		else  pos.y += speed;
 
-	if (wiggling == 1) pos.y -= speed;
-	else  pos.y += speed;
+		if (wiggling == 1 && (oldPos.y - pos.y) > (until.y * 2.5))
+			wiggling = 2;
 
-	if (wiggling == 1 && (oldPos.y - pos.y) > (until.y * 2.5))
-		wiggling = 2;
-
-	if (oldPos.y < pos.y) {
-		wiggling = 0;
-		out = 1;
+		if (oldPos.y < pos.y) {
+			wiggling = 0;
+			out = 1;
+		}
 	}
-	anim.animation.setPosition(pos);
+	if (type == 2) {
+		if((oldPos.y - pos.y) < until.y) pos.y -= speed;
+	}
+
+	
 }
 
 void Entity::off(float offX)
