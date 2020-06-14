@@ -59,7 +59,7 @@ Super_Mario::Super_Mario(Font& f)
 			if (lvl.getPixel(x, y) == Color(0, 128, 0, 255)) {
 				enemies.push_back(Enemy());
 				enemies.back().setup(Vector2f(x * sx + off.x, y * sy + off.y),
-					e2Size, Vector2f(sx, sy), en2, 1);
+					e2Size, Vector2f(sx, sy * 1.5f), en2, 1);
 			}
 		}
 	}
@@ -114,17 +114,21 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 
 
 	//enemies
-	bool ecol = 0;
 	for (int j = 0; j < enemies.size(); j++) {
-		ecol = 0; 
 		bool onsc = 0;
+		std::vector<int> etype{ -1,-1,-1,-1 };
 		//enemies with boxes
-		for (int i = 0; i < boxes.size(); i++) {
-			if (boxes[i].box.animation.getGlobalBounds().intersects(enemies[j].anim.animation.getGlobalBounds())) {
-				ecol = 1;
-				break;
+		for (int k = 0; k < enemies[j].enemybox.size(); k++) {
+			for (int i = 0; i < boxes.size(); i++) {
+				if (enemies[j].enemybox[k].getGlobalBounds().intersects(
+					boxes[i].box.animation.getGlobalBounds())) {
+					etype[k] = 1;
+					break;
+				}
 			}
+			
 		}
+		
 		//with mario
 		for (int i = 0; i < mario.mariobox.size(); i++) {
 			if (mario.mariobox[i].getGlobalBounds().intersects(enemies[j].anim.animation.getGlobalBounds())) {
@@ -140,14 +144,26 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 				break;
 			}
 		}
+		//with other enemies
+		for (int i = 0; i < enemies.size(); i++) {
+			//skip if its the same
+			if (i == j) continue;
+			//check collision
+			if (enemies[j].anim.animation.getGlobalBounds().intersects(
+				enemies[i].anim.animation.getGlobalBounds()) && enemies[i].spin != 0) {
+				enemies[j].alive = 0;
+			}
+
+		}
 
 		//is on screen
 		if (enemies[j].anim.animation.getPosition().x < scrWidth) onsc = 1;
 		//update
-		if (enemies[j].update(ecol, onsc)) {
+		if (enemies[j].update(etype, onsc)) {
 			enemies.erase(enemies.begin() + j);
 			break;
 		}
+		enemies[j].boxUpdate();
 	}
 	
 	//entities

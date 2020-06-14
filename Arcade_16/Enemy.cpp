@@ -11,31 +11,46 @@ void Enemy::setup(Vector2f pos, Vector2f size, Vector2f tSize, Texture &t1, int 
 	this->type = type;
 
 	//animation setup
-	if(type == 0) anim.setup(t1, size, tSize);
-	else if(type == 1) anim.setup(t1, size, Vector2f(tSize.x ,tSize.y * 1.5f));
+	anim.setup(t1, size, tSize);
+
+	//enemybox
+	enemybox.push_back(RectangleShape(Vector2f(anim.animation.getSize().x - 5, 1)));
+	enemybox.push_back(RectangleShape(Vector2f(anim.animation.getSize().x - 5, 1)));
+	enemybox.push_back(RectangleShape(Vector2f(1, anim.animation.getSize().y - 5)));
+	enemybox.push_back(RectangleShape(Vector2f(1, anim.animation.getSize().y - 5)));
+
+	for (int i = 0; i < enemybox.size(); i++) enemybox[i].setFillColor(Color::Red);
+}
+
+void Enemy::boxUpdate()
+{
+	//mario box update
+	enemybox[0].setPosition(anim.animation.getPosition().x + 1, anim.animation.getPosition().y);
+	enemybox[1].setPosition(anim.animation.getPosition().x + 1, anim.animation.getPosition().y + anim.animation.getSize().y);
+	enemybox[2].setPosition(anim.animation.getPosition().x, anim.animation.getPosition().y + 1);
+	enemybox[3].setPosition(anim.animation.getPosition().x + anim.animation.getSize().x, anim.animation.getPosition().y + 1);
+
 }
 
 void Enemy::draw(RenderWindow& window)
 {
 	anim.draw(window);
+
+	if(showHitbox) for (int i = 0; i < enemybox.size(); i++) window.draw(enemybox[i]);
 }
 
-bool Enemy::update(bool col, bool onScr)
+bool Enemy::update(std::vector<int> etype, bool onScr)
 {
-	if(type == 0) anim.animation.setPosition(pos.x + offX, pos.y);
-	else if(type == 1) anim.animation.setPosition(pos.x + offX, pos.y - (anim.animation.getSize().y * 0.33333f));
-
 	onScreen = onScr;
-	prevPos = pos;
-	
-	if (col) {
-		groundTouch = 1;
-		pos = prevPos;
-	}
+
+	//collision detection
+	if (etype[1] == 1) { groundTouch = 1; pos.y = prevPos.y; }
+	if (etype[2] == 1) { speed = -speed; pos.x = prevPos.x; }
+	else if (etype[3] == 1) { speed = -speed; pos.x = prevPos.x; };
 	//fall
 	if (!groundTouch) pos.y += gravity;
 
-
+	//hybrid
 	if (alive) {
 		if (onScreen) pos.x -= speed;
 		dclock.restart();
@@ -48,6 +63,16 @@ bool Enemy::update(bool col, bool onScr)
 		if (dtimer > ddelay) return 1;
 	}
 
+	//animation setup
+	else if (type == 1 && !deathSet) {
+		anim.animation.setSize(Vector2f(anim.animation.getSize().x, anim.animation.getSize().y / 3 * 2));
+
+		enemybox[0].setSize(Vector2f(anim.animation.getSize().x, 1));
+		enemybox[1].setSize(Vector2f(anim.animation.getSize().x, 1));
+		enemybox[2].setSize(Vector2f(1, anim.animation.getSize().y - 5));
+		enemybox[3].setSize(Vector2f(1, anim.animation.getSize().y - 5));
+		deathSet = 1;
+	}
 	if (!alive && spin == 0) {
 		anim.setCycle(0);
 		anim.setSwap(2);
@@ -61,11 +86,17 @@ bool Enemy::update(bool col, bool onScr)
 		anim.delay = 0.1f;
 		spinning = 0;
 	}
+
+
 	//spinny boi
 	if (spin != 0) {
-		if (spin == 1) pos.x += speed; else pos.x -= speed;
+		if (spin == 1) pos.x += 3 * speed; else pos.x -= 3 * speed;
 		
 	}
+
+	prevPos = pos;
+	if (type == 1 && alive) anim.animation.setPosition(pos.x + offX, pos.y - (anim.animation.getSize().y / 3));
+	else anim.animation.setPosition(pos.x + offX, pos.y);
 
 	return 0;
 }
