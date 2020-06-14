@@ -8,12 +8,15 @@ class Entity {
 public:
 	Entity(Texture &t, Vector2f size, int maxSwap, Vector2f pos, Vector2f tSize, int type);
 	void draw(RenderWindow& window);
-	void update(Vector2f until);
+	void update(Vector2f until, std::vector<int> etype);
 	void off(float offX);
+	void boxUpdate();
+
+	std::vector<RectangleShape> entitybox;
 
 	Manimation anim;
-	Vector2f pos, oldPos;
+	Vector2f pos, oldPos, prevPos;
 	int type = 1, wiggling = 1;
-	bool out = 0;
-	float speed = 2.f, offX = 0.f, oddX = 0.f;
+	bool out = 0, showHitbox = 0, groundTouch = 1;
+	float speed = 1.5f, offX = 0.f, oddX = 0.f, gravity = 1.5f;
 };

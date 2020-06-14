@@ -184,8 +184,23 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 	}
 	
 	//entities
-	for (int i = 0; i < entities.size(); i++) entities[i].update(boxes[0].box.animation.getSize());
+	for (int i = 0; i < entities.size(); i++) entities[i].boxUpdate();
+	for (int i = 0; i < entities.size(); i++) {
+		std::vector<int> etype{ -1,-1,-1,-1 };
+		//enemies with boxes
+		for (int k = 0; k < entities[i].entitybox.size(); k++) {
+			for (int j = 0; j < boxes.size(); j++) {
+				if (entities[i].entitybox[k].getGlobalBounds().intersects(
+					boxes[j].box.animation.getGlobalBounds())) {
+					etype[k] = 1;
+					break;
+				}
+			}
+		}
 
+		entities[i].update(boxes[0].box.animation.getSize(), etype);
+	}
+	
 	//update box up-down movement
 	for(int i = 0; i < boxes.size(); i++) boxes[i].update();
 	

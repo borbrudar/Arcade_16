@@ -113,13 +113,13 @@ bool Mario::update(bool left, bool right, bool up, bool col, std::vector<int> ty
 
 	//update animation
 	{
-		if (right && !prevR) {
+		if (right && (!prevR || !prevU)) {
 			box.setCycle(1);
 			box.setMaxSwap(3);
 			box.setRow(0);
 		}
 		//left
-		else if (left && !prevL) {
+		else if (left && (!prevL || prevU)) {
 			box.setCycle(1);
 			box.setMaxSwap(3);
 			box.setRow(1);
