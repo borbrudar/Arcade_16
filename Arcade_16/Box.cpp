@@ -33,6 +33,23 @@ Box::Box(Vector2f pos, Vector2f size, Texture& t, Vector2f bSize, block_type typ
 		box.setup(t, bSize, size, 2, bStart);
 		box.delay = 0.25f;
 		break;
+	//pipes
+	case block_type::ptl:
+		bStart = Vector2f(bSize.x * 3, bSize.y);
+		box.setup(t, bSize, size, 0, bStart);
+		break;
+	case block_type::ptr:
+		bStart = Vector2f(bSize.x * 4, bSize.y);
+		box.setup(t, bSize, size, 0, bStart);
+		break;
+	case block_type::pl:
+		bStart = Vector2f(bSize.x * 5, bSize.y);
+		box.setup(t, bSize, size, 0, bStart);
+		break;
+	case block_type::pr:
+		bStart = Vector2f(bSize.x * 6, bSize.y);
+		box.setup(t, bSize, size, 0, bStart);
+		break;
 	}
 
 	box.animation.setPosition(pos);

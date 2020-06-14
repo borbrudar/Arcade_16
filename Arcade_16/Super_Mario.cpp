@@ -48,6 +48,18 @@ Super_Mario::Super_Mario(Font& f)
 			if (lvl.getPixel(x, y) == Color(255, 0, 0, 255))
 				mario.setup(Vector2f(x * sx + off.x, y * sy + off.y - 100), mSize, mr, Vector2f(sx, sy));
 
+			//pipes
+			//top left
+			if (lvl.getPixel(x, y) == Color(0, 255, 255, 255))
+				boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, block_type::ptl));
+			if (lvl.getPixel(x, y) == Color(0, 254, 255, 255))
+				boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, block_type::ptr));
+			if (lvl.getPixel(x, y) == Color(0, 255, 254, 255))
+				boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, block_type::pl));
+			if (lvl.getPixel(x, y) == Color(0, 254, 254, 255))
+				boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, block_type::pr));
+
+
 			//enemies
 			//normal
 			if (lvl.getPixel(x, y) == Color(0, 255, 0, 255)) {

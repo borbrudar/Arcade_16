@@ -6,5 +6,9 @@ enum class block_type {
 	brick,
 	shine,
 	mystery,
-	coin
+	coin,
+	ptl, //pipe top left
+	ptr, //pipe top right
+	pl,	//pipe left
+	pr //pipe right
 };
