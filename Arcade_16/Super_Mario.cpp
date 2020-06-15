@@ -30,6 +30,10 @@ Super_Mario::Super_Mario(Font& f)
 	float sy = scrHeight / lvl.getSize().y, sx = sy;
 	tSize = Vector2f(sx, sy);
 
+	//projectiles
+	proj.loadFromFile("res/mario/proj.png");
+	mp.setup(Vector2f(100, 100), proj, mpSize, Vector2f(tSize.x / 2, tSize.y / 2));
+
 	for (int x = 0; x < lvl.getSize().x; x++) {
 		for (int y = 0; y < lvl.getSize().y; y++) {
 			//both grounds
@@ -105,6 +109,8 @@ void Super_Mario::draw(RenderWindow& window)
 	//enemies
 	for (int i = 0; i < enemies.size(); i++) enemies[i].draw(window);
 
+	//projectiles
+	mp.draw(window);
 }
 
 void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
@@ -134,6 +140,18 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 
 	}
 
+	{
+		std::vector<int> ptype{ -1,-1,-1,-1 };
+		for (int j = 0; j < mp.projbox.size(); j++) {
+			for (int k = 0; k < boxes.size(); k++) {
+				if (boxes[k].box.animation.getGlobalBounds().intersects(mp.projbox[j].getGlobalBounds())) {
+					ptype[j] = 1;
+
+				}
+			}
+		}
+		mp.update(ptype);
+	}
 
 	//enemies
 	for (int j = 0; j < enemies.size(); j++) {
@@ -157,7 +175,7 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 				//if touching with bottom
 				if(enemies[j].alive == 1 && i == 1) enemies[j].alive = 0;
 				//make big mario smol
-				else if (mario.big == 1) {
+				else if (enemies[j].alive == 1 && mario.big == 1) {
 					mario.big = 0;
 					mario.shiny = 0;
 				}

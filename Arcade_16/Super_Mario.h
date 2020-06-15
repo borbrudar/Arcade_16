@@ -5,6 +5,7 @@
 #include "Enemy.h"
 #include "Entity.h"
 #include "BoxEnum.h"
+#include "MP.h"
 
 class Super_Mario : public State {
 public:
@@ -30,6 +31,12 @@ public:
 	bool left = 0, right = 0, up = 0, sprint = 0;
 	std::vector<Vector2f> mSize{ {17,16}, {16,32} };
 	std::vector<Texture> mr;
+
+	//his projectiles
+	Texture proj;
+	MP mp;
+	Vector2f mpSize{ 8,8 };
+
 
 	//enemies
 	std::vector<Enemy> enemies;

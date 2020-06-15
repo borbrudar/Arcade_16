@@ -16,7 +16,7 @@ public:
 	Manimation box;
 	std::vector<RectangleShape> mariobox;
 	float mariosp = 0.8f, sprintsp = 1.5f;
-	bool showHitbox = 0, big = 0, shiny = 0;
+	bool showHitbox = 0, big = 1, shiny = 1;
 private:
 	//physics
 	Vector2f pos, prevPos;

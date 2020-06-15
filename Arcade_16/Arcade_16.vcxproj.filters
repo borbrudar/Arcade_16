@@ -111,6 +111,9 @@
     <ClCompile Include="Box.cpp">
       <Filter>Games\Super_Mario\Utility</Filter>
     </ClCompile>
+    <ClCompile Include="MP.cpp">
+      <Filter>Games\Super_Mario\Stuff</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stateEnum.h">
@@ -181,6 +184,9 @@
     </ClInclude>
     <ClInclude Include="Box.h">
       <Filter>Games\Super_Mario\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="MP.h">
+      <Filter>Games\Super_Mario\Stuff</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
