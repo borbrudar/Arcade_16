@@ -12,9 +12,10 @@ Super_Mario::Super_Mario(Font& f)
 	br.loadFromFile("res/mario/ground.png");
 
 	//mario
-	mr.resize(2);
+	mr.resize(3);
 	mr[0].loadFromFile("res/mario/mario.png");
 	mr[1].loadFromFile("res/mario/bigmario.png");
+	mr[2].loadFromFile("res/mario/shinymario.png");
 
 	//enemy
 	en.loadFromFile("res/mario/en1.png");
@@ -156,8 +157,10 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 				//if touching with bottom
 				if(enemies[j].alive == 1 && i == 1) enemies[j].alive = 0;
 				//make big mario smol
-				else if (mario.big == 1) mario.big = 0;
-					
+				else if (mario.big == 1) {
+					mario.big = 0;
+					mario.shiny = 0;
+				}
 
 				//spinny guy
 				if (enemies[j].alive == 0 && enemies[j].type == 1) {
@@ -210,11 +213,18 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 		entities[i].update(boxes[0].box.animation.getSize(), etype);
 	}
 
-	//coin and schroom collection
+	//coin and schroom and flower collection
 	for (int i = 0; i < entities.size(); i++) {
 		if (entities[i].out == 1 && entities[i].type == 1)
 		{
 			coins += 1;
+			entities.erase(entities.begin() + i);
+			break;
+		}
+		else if (entities[i].type == 2 &&
+			mario.box.animation.getGlobalBounds().intersects(entities[i].anim.animation.getGlobalBounds()) && 
+			mario.big == 1) {
+			mario.shiny = 1;
 			entities.erase(entities.begin() + i);
 			break;
 		}

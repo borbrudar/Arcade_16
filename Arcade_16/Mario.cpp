@@ -40,11 +40,16 @@ void Mario::draw(RenderWindow& window)
 bool Mario::update(bool left, bool right, bool up, bool col, std::vector<int> type, bool sprint)
 {
 	//check if big
+	if (big && shiny && !checkShiny) {
+		checkShiny = 1;
+		box.setup(tex[2], mSize[1], tSize, 0);
+		box.animation.setSize(Vector2f(tSize.x, tSize.y * 2));
+	}
 	if (big && !checkBig) {
 		checkBig = 1;
+		checkShiny = 0;
 		box.setup(tex[1], mSize[1], tSize, 0);
 		box.animation.setSize(Vector2f(tSize.x, tSize.y * 2));
-		pos.y -= tSize.y;
 
 		mariobox[0].setSize(Vector2f(box.animation.getSize().x - 2, 1));
 		mariobox[1].setSize(Vector2f(box.animation.getSize().x - 2, 1));
@@ -54,9 +59,9 @@ bool Mario::update(bool left, bool right, bool up, bool col, std::vector<int> ty
 	//check if smol
 	if (!big && checkBig) {
 		checkBig = 0;
+		checkShiny = 0;
 		box.setup(tex[0], mSize[0], tSize, 0);
 		box.animation.setSize(Vector2f(tSize.x, tSize.y));
-		pos.y += tSize.y;
 
 		mariobox[0].setSize(Vector2f(box.animation.getSize().x - 2, 1));
 		mariobox[1].setSize(Vector2f(box.animation.getSize().x - 2, 1));

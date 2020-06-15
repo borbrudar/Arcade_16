@@ -16,12 +16,12 @@ public:
 	Manimation box;
 	std::vector<RectangleShape> mariobox;
 	float mariosp = 0.8f, sprintsp = 1.5f;
-	bool showHitbox = 0, big = 0;
+	bool showHitbox = 0, big = 0, shiny = 0;
 private:
 	//physics
 	Vector2f pos, prevPos;
 	float gravity = 2.f, jump = gravity;
-	bool groundTouch = 0, jumping = 0, canLeft = 1, canRight = 1, checkBig = 0;
+	bool groundTouch = 0, jumping = 0, canLeft = 1, canRight = 1, checkBig = 0, checkShiny = 0;
 
 	//jumping clock
 	Clock gclock, jdclock;
