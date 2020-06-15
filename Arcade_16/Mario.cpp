@@ -44,6 +44,19 @@ bool Mario::update(bool left, bool right, bool up, bool col, std::vector<int> ty
 		checkBig = 1;
 		box.setup(tex[1], mSize[1], tSize, 0);
 		box.animation.setSize(Vector2f(tSize.x, tSize.y * 2));
+		pos.y -= tSize.y;
+
+		mariobox[0].setSize(Vector2f(box.animation.getSize().x - 2, 1));
+		mariobox[1].setSize(Vector2f(box.animation.getSize().x - 2, 1));
+		mariobox[2].setSize(Vector2f(1, box.animation.getSize().y - 2));
+		mariobox[3].setSize(Vector2f(1, box.animation.getSize().y - 2));
+	}
+	//check if smol
+	if (!big && checkBig) {
+		checkBig = 0;
+		box.setup(tex[0], mSize[0], tSize, 0);
+		box.animation.setSize(Vector2f(tSize.x, tSize.y));
+		pos.y += tSize.y;
 
 		mariobox[0].setSize(Vector2f(box.animation.getSize().x - 2, 1));
 		mariobox[1].setSize(Vector2f(box.animation.getSize().x - 2, 1));

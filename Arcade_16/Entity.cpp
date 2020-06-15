@@ -1,14 +1,21 @@
 #include "Entity.h"
 
-Entity::Entity(Texture& t, Vector2f size, int maxSwap, Vector2f pos, Vector2f tSize, int type):
+Entity::Entity(Texture& t, Vector2f size, int maxSwap, Vector2f pos, Vector2f tSize, int type, bool bigMario):
 	type(type),
 	pos(pos), 
-	oldPos(pos)
+	oldPos(pos),
+	bigMario(bigMario)
 {
 	anim.setup(t, size, tSize, maxSwap);
 	anim.animation.setPosition(pos);
 	oldPos = anim.animation.getPosition();
 	anim.delay = 0.1f;
+
+	if (bigMario) {
+		anim.setCycle(1);
+		anim.setMaxSwap(3);
+		anim.setStart(1, 0);
+	}
 
 	//entity box
 	entitybox.push_back(RectangleShape(Vector2f(anim.animation.getSize().x - 5, 1)));
@@ -46,7 +53,7 @@ void Entity::update(Vector2f until, std::vector<int> etype)
 		if ((oldPos.y - pos.y) < until.y && !out) pos.y -= speed / 3; else out = 1;
 
 		//other movement
-		if (out) {
+		if (out && !bigMario) {
 			//collision detection
 			groundTouch = 0;
 			if (etype[1] == 1) { groundTouch = 1; pos.y = prevPos.y; }

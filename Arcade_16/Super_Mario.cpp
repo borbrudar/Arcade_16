@@ -155,6 +155,10 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 			if (mario.mariobox[i].getGlobalBounds().intersects(enemies[j].anim.animation.getGlobalBounds())) {
 				//if touching with bottom
 				if(enemies[j].alive == 1 && i == 1) enemies[j].alive = 0;
+				//make big mario smol
+				else if (mario.big == 1) mario.big = 0;
+					
+
 				//spinny guy
 				if (enemies[j].alive == 0 && enemies[j].type == 1) {
 					enemies[j].spinning = 1;
@@ -162,9 +166,11 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 						enemies[j].spin = 1;
 					else enemies[j].spin = 2;
 				}
+
 				break;
 			}
 		}
+
 		//with other enemies
 		for (int i = 0; i < enemies.size(); i++) {
 			//skip if its the same
@@ -191,7 +197,7 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 	for (int i = 0; i < entities.size(); i++) entities[i].boxUpdate();
 	for (int i = 0; i < entities.size(); i++) {
 		std::vector<int> etype{ -1,-1,-1,-1 };
-		//enemies with boxes
+		//entities with boxes
 		for (int k = 0; k < entities[i].entitybox.size(); k++) {
 			for (int j = 0; j < boxes.size(); j++) {
 				if (entities[i].entitybox[k].getGlobalBounds().intersects(
@@ -201,18 +207,20 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 				}
 			}
 		}
-
 		entities[i].update(boxes[0].box.animation.getSize(), etype);
 	}
-	
-	//update box up-down movement
-	for(int i = 0; i < boxes.size(); i++) boxes[i].update();
-	
-	//coin collection
+
+	//coin and schroom collection
 	for (int i = 0; i < entities.size(); i++) {
 		if (entities[i].out == 1 && entities[i].type == 1)
 		{
 			coins += 1;
+			entities.erase(entities.begin() + i);
+			break;
+		}
+		else if (entities[i].type == 2 && 
+			mario.box.animation.getGlobalBounds().intersects(entities[i].anim.animation.getGlobalBounds())) {
+			mario.big = 1;
 			entities.erase(entities.begin() + i);
 			break;
 		}
@@ -231,6 +239,9 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 	for (int i = 0; i < coins_.size(); i++) coins_[i].update();
 	for (int i = 0; i < blocks.size(); i++) blocks[i].update();
 
+	//update box up-down movement
+	for(int i = 0; i < boxes.size(); i++) boxes[i].update();
+
 	mario.boxUpdate();
 	//mario-boxes collision
 	bool col = 0;
@@ -248,7 +259,7 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 					if(boxes[i].entity == 1) entities.push_back(Entity(tits, cSize,
 						3, boxes[i].box.animation.getPosition(), tSize, 1));
 					else entities.push_back(Entity(schrooms, sSize,
-						0, boxes[i].box.animation.getPosition(), tSize, 2));
+						0, boxes[i].box.animation.getPosition(), tSize, 2, mario.big));
 
 					boxes[i].entity = 0;
 					//correct offsets
