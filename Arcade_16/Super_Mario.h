@@ -16,7 +16,7 @@ public:
 
 	//level
 	Image lvl;
-	Texture gr, mr, br;
+	Texture gr, br;
 
 	std::vector<Box> boxes;
 	std::vector<Box> blocks;
@@ -27,8 +27,9 @@ public:
 
 	//mario
 	Mario mario;
-	bool left = 0, right = 0, up = 0;
-	Vector2f mSize{ 17,16 };
+	bool left = 0, right = 0, up = 0, sprint = 0;
+	std::vector<Vector2f> mSize{ {17,16}, {16,32} };
+	std::vector<Texture> mr;
 
 	//enemies
 	std::vector<Enemy> enemies;

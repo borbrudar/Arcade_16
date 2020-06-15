@@ -1,12 +1,15 @@
 #include "Mario.h"
 
 
-void Mario::setup(Vector2f pos, Vector2f size, Texture &t, Vector2f tSize)
+void Mario::setup(Vector2f pos, std::vector<Vector2f> msize, std::vector<Texture> &t, Vector2f tSize)
 {
 	prevPos = pos;
 	this->pos = pos;
+	tex = t;
+	mSize = msize;
+	this->tSize = tSize;
 
-	box.setup(t, size, tSize,0);
+	box.setup(t[0], msize[0], tSize,0);
 	box.delay = 0.1f;
 	//mariobox
 	mariobox.push_back(RectangleShape(Vector2f(box.animation.getSize().x - 2, 1)));
@@ -34,8 +37,20 @@ void Mario::draw(RenderWindow& window)
 	if(showHitbox) for (int i = 0; i < mariobox.size(); i++) window.draw(mariobox[i]);
 }
 
-bool Mario::update(bool left, bool right, bool up, bool col, std::vector<int> type)
+bool Mario::update(bool left, bool right, bool up, bool col, std::vector<int> type, bool sprint)
 {
+	//check if big
+	if (big && !checkBig) {
+		checkBig = 1;
+		box.setup(tex[1], mSize[1], tSize, 0);
+		box.animation.setSize(Vector2f(tSize.x, tSize.y * 2));
+
+		mariobox[0].setSize(Vector2f(box.animation.getSize().x - 2, 1));
+		mariobox[1].setSize(Vector2f(box.animation.getSize().x - 2, 1));
+		mariobox[2].setSize(Vector2f(1, box.animation.getSize().y - 2));
+		mariobox[3].setSize(Vector2f(1, box.animation.getSize().y - 2));
+	}
+
 	bool ret = 0;
 	//physics and stuff (temp hidden)
 	{
@@ -54,10 +69,15 @@ bool Mario::update(bool left, bool right, bool up, bool col, std::vector<int> ty
 			}
 			else groundTouch = 0;
 		}
+
 		//left/right movement
 		if (pos.x <= (scrWidth / 2) || left) {
-			if (left && canLeft) pos.x -= mariosp;
-			else if (right && canRight) pos.x += mariosp;
+			if (left && canLeft) {
+				if (sprint)  pos.x -= mariosp * sprintsp; else pos.x -= mariosp;
+			}
+			else if (right && canRight) {
+				if (sprint)  pos.x += mariosp * sprintsp; else pos.x += mariosp;
+			}
 		}
 		else if (right && canRight) ret = 1;
 

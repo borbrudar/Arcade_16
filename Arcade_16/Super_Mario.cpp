@@ -12,7 +12,9 @@ Super_Mario::Super_Mario(Font& f)
 	br.loadFromFile("res/mario/ground.png");
 
 	//mario
-	mr.loadFromFile("res/mario/mario.png");
+	mr.resize(2);
+	mr[0].loadFromFile("res/mario/mario.png");
+	mr[1].loadFromFile("res/mario/bigmario.png");
 
 	//enemy
 	en.loadFromFile("res/mario/en1.png");
@@ -117,6 +119,7 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 			case Keyboard::Left: left = 1; break;
 			case Keyboard::Right: right = 1; break;
 			case Keyboard::Up: up = 1; break;
+			case Keyboard::LShift: sprint = 1; break;
 			}
 		}
 		if (e.type == Event::KeyReleased) {
@@ -124,6 +127,7 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 			case Keyboard::Left: left = 0; break;
 			case Keyboard::Right: right = 0; break;
 			case Keyboard::Up: up = 0; break;
+			case Keyboard::LShift: sprint = 0; break;
 			}
 		}
 
@@ -256,8 +260,8 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 	}
 
 	//offset everything if necessary
-	if (mario.update(left, right, up, col, type) == 1) {
-		offX -= mario.mariosp;
+	if (mario.update(left, right, up, col, type, sprint) == 1) {
+		if (sprint) offX -= mario.mariosp * mario.sprintsp;  else offX -= mario.mariosp;
 		//blocks
 		for (int i = 0; i < boxes.size(); i++) 	boxes[i].off(offX);
 		for(int i = 0; i < blocks.size();i++) blocks[i].off(offX);
