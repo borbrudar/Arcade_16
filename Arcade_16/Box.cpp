@@ -59,6 +59,16 @@ Box::Box(Vector2f pos, Vector2f size, Texture& t, Vector2f bSize, block_type typ
 		box.setCycle(0);
 		box.setSwap(1);
 		break;
+	case block_type::cloud2:
+		box.setRow(1);
+		box.setup(t, bSize, size, 0);
+		break;
+	case block_type::grass2:
+		box.setRow(1);
+		box.setup(t, bSize, size, 0);
+		box.setCycle(0);
+		box.setSwap(1);
+		break;
 	}
 
 	box.animation.setPosition(pos);

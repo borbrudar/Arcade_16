@@ -44,7 +44,7 @@ public:
 	Texture gr, br, cl;
 
 	//visual
-	Vector2f c1{ 32,24 };
+	Vector2f c1{ 32,24 }, c2{ 48,24 };
 
 	//phyiscs
 	std::vector<Box> boxes;

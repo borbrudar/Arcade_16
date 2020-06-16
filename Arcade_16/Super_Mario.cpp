@@ -90,11 +90,16 @@ Super_Mario::Super_Mario(Font& f)
 			}
 
 
-			//visuals
+			//visuals //1
 			if (lvl.getPixel(x, y) == Color(255, 0, 255, 255))
 				blocks.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx * 2, sy * 1.5f), cl, c1,block_type::cloud1));
 			if (lvl.getPixel(x, y) == Color(128, 0, 255, 255))
 				blocks.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx * 2, sy * 1.5f), cl, c1, block_type::grass1));
+			//2
+			if (lvl.getPixel(x, y) == Color(200, 0, 200, 255))
+				blocks.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx * 3, sy * 1.5f), cl, c2, block_type::cloud2));
+			if (lvl.getPixel(x, y) == Color(100, 0, 230, 255))
+				blocks.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx * 3, sy * 1.5f), cl, c2, block_type::grass2));
 
 		}
 	}
