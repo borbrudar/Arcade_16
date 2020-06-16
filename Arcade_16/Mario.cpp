@@ -30,6 +30,14 @@ void Mario::boxUpdate()
 
 }
 
+const void Mario::boxResize()
+{
+	mariobox[0].setSize(Vector2f(box.animation.getSize().x - 2, 1));
+	mariobox[1].setSize(Vector2f(box.animation.getSize().x - 2, 1));
+	mariobox[2].setSize(Vector2f(1, box.animation.getSize().y - 2));
+	mariobox[3].setSize(Vector2f(1, box.animation.getSize().y - 2));
+}
+
 void Mario::draw(RenderWindow& window)
 {
 	box.draw(window);
@@ -39,34 +47,32 @@ void Mario::draw(RenderWindow& window)
 
 bool Mario::update(bool left, bool right, bool up, bool col, std::vector<int> type, bool sprint)
 {
-	//check if big
+	//check if shiny
 	if (big && shiny && !checkShiny) {
 		checkShiny = 1;
 		box.setup(tex[2], mSize[1], tSize, 0);
 		box.animation.setSize(Vector2f(tSize.x, tSize.y * 2));
+		prevPos = pos;
+		boxUpdate();
 	}
+	//check if big
 	if (big && !checkBig) {
-		checkBig = 1;
-		checkShiny = 0;
+		checkBig = 1; checkShiny = 0;
 		box.setup(tex[1], mSize[1], tSize, 0);
 		box.animation.setSize(Vector2f(tSize.x, tSize.y * 2));
+		boxResize();
 
-		mariobox[0].setSize(Vector2f(box.animation.getSize().x - 2, 1));
-		mariobox[1].setSize(Vector2f(box.animation.getSize().x - 2, 1));
-		mariobox[2].setSize(Vector2f(1, box.animation.getSize().y - 2));
-		mariobox[3].setSize(Vector2f(1, box.animation.getSize().y - 2));
+		pos.y -= tSize.y; prevPos = pos;
+		box.animation.setPosition(pos);
+		boxUpdate();
 	}
 	//check if smol
 	if (!big && checkBig) {
-		checkBig = 0;
-		checkShiny = 0;
+		checkBig = 0; checkShiny = 0;
 		box.setup(tex[0], mSize[0], tSize, 0);
 		box.animation.setSize(Vector2f(tSize.x, tSize.y));
 
-		mariobox[0].setSize(Vector2f(box.animation.getSize().x - 2, 1));
-		mariobox[1].setSize(Vector2f(box.animation.getSize().x - 2, 1));
-		mariobox[2].setSize(Vector2f(1, box.animation.getSize().y - 2));
-		mariobox[3].setSize(Vector2f(1, box.animation.getSize().y - 2));
+		boxResize();
 	}
 	
 	//shotting clock
@@ -158,7 +164,9 @@ bool Mario::update(bool left, bool right, bool up, bool col, std::vector<int> ty
 		else gclock.restart();
 
 		prevPos = pos;
+
 		box.animation.setPosition(pos);
+		boxUpdate();
 	}
 
 	//update animation

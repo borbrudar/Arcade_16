@@ -116,7 +116,6 @@ void Super_Mario::draw(RenderWindow& window)
 
 void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
 {
-	mario.shiny = 1; mario.big = 1;
 	if (back.isClicked(mouse, window)) gameState = state::menu;
 
 	//input
@@ -278,14 +277,15 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 			break;
 		}
 		else if (entities[i].type == 2 &&
-			mario.box.animation.getGlobalBounds().intersects(entities[i].anim.animation.getGlobalBounds()) && 
-			mario.big == 1) {
+			mario.box.animation.getGlobalBounds().intersects(entities[i].anim.animation.getGlobalBounds()) &&
+			mario.big == 1 && entities[i].out == 1) {
 			mario.shiny = 1;
 			entities.erase(entities.begin() + i);
 			break;
 		}
-		else if (entities[i].type == 2 && 
-			mario.box.animation.getGlobalBounds().intersects(entities[i].anim.animation.getGlobalBounds())) {
+		else if (entities[i].type == 2 &&
+			mario.box.animation.getGlobalBounds().intersects(entities[i].anim.animation.getGlobalBounds()) &&
+			entities[i].out == 1) {
 			mario.big = 1;
 			entities.erase(entities.begin() + i);
 			break;
@@ -308,7 +308,6 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 	//update box up-down movement
 	for(int i = 0; i < boxes.size(); i++) boxes[i].update();
 
-	mario.boxUpdate();
 	//mario-boxes collision
 	bool col = 0;
 	std::vector<int> type{ -1,-1,-1,-1 };
@@ -335,6 +334,7 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 			}
 		}
 	}
+	
 
 	//offset everything if necessary
 	if (mario.update(left, right, up, col, type, sprint) == 1) {

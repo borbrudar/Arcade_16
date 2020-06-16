@@ -10,13 +10,14 @@ class Mario {
 public:
 	void setup(Vector2f pos, std::vector<Vector2f> msize, std::vector<Texture>& t, Vector2f tSize);
 	void boxUpdate();
+	const void boxResize();
 	void draw(RenderWindow& window);
 	bool update(bool left, bool right, bool up, bool col, std::vector<int> type, bool sprint = 0);
 
 	Manimation box;
 	std::vector<RectangleShape> mariobox;
 	float mariosp = 0.8f, sprintsp = 1.5f;
-	bool showHitbox = 0, big = 1, shiny = 1, prevL = 0, canShoot = 0;
+	bool showHitbox = 0, big = 0, shiny = 0, prevL = 0, canShoot = 0;
 private:
 	//physics
 	Vector2f pos, prevPos;
