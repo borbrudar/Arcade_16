@@ -16,12 +16,16 @@ public:
 	Manimation box;
 	std::vector<RectangleShape> mariobox;
 	float mariosp = 0.8f, sprintsp = 1.5f;
-	bool showHitbox = 0, big = 1, shiny = 1;
+	bool showHitbox = 0, big = 1, shiny = 1, prevL = 0, canShoot = 0;
 private:
 	//physics
 	Vector2f pos, prevPos;
 	float gravity = 2.f, jump = gravity;
 	bool groundTouch = 0, jumping = 0, canLeft = 1, canRight = 1, checkBig = 0, checkShiny = 0;
+
+	//shooting clock
+	Clock sclock;
+	float stime = 0.f, stimer = 0.f, sdelay = 0.4f;
 
 	//jumping clock
 	Clock gclock, jdclock;
@@ -30,7 +34,7 @@ private:
 	bool noDelay = 1;
 
 	//animation
-	bool prevR = 0, prevL = 0, prevU = 0; //dont be fooled, prevU is actually for standing after landing
+	bool prevR = 0, prevU = 0; //dont be fooled, prevU is actually for standing after landing
 	std::vector<Texture> tex;
 	std::vector<Vector2f> mSize;
 	Vector2f tSize;

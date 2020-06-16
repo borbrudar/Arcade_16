@@ -2,6 +2,7 @@
 
 void MP::setup(Vector2f pos, Texture& t1, Vector2f pSize, Vector2f tSize)
 {
+	this->pos = pos;
 	box.setup(t1, pSize, tSize);
 	box.animation.setPosition(pos);
 
@@ -19,6 +20,9 @@ void MP::draw(RenderWindow& window)
 
 bool MP::update(std::vector<int> ptype)
 {
+	//border
+	if (pos.x < 0 || pos.x > scrWidth || pos.y < 0 || pos.y > scrHeight) return 1;
+	//other 
 	if (ptype[1] == 1) { pos.y = prevPos.y; speedy = -speedy; box.setRow(1); }
 	if (ptype[2] == 1 || ptype[3] == 1) return 1;
 

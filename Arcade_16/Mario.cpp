@@ -68,6 +68,18 @@ bool Mario::update(bool left, bool right, bool up, bool col, std::vector<int> ty
 		mariobox[2].setSize(Vector2f(1, box.animation.getSize().y - 2));
 		mariobox[3].setSize(Vector2f(1, box.animation.getSize().y - 2));
 	}
+	
+	//shotting clock
+	if (shiny) {
+		stime = sclock.getElapsedTime().asSeconds();
+		stimer += stime;
+		sclock.restart();
+
+		if (stimer > sdelay) {
+			canShoot = 1;
+			stimer = 0;
+		}	else canShoot = 0;
+	}
 
 	bool ret = 0;
 	//physics and stuff (temp hidden)

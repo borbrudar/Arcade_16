@@ -32,8 +32,6 @@ Super_Mario::Super_Mario(Font& f)
 
 	//projectiles
 	proj.loadFromFile("res/mario/proj.png");
-	mp.resize(1);
-	mp[0].setup(Vector2f(sx , sy * 12), proj, mpSize, Vector2f(tSize.x / 2, tSize.y / 2));
 	xp.loadFromFile("res/mario/exp.png");
 
 	for (int x = 0; x < lvl.getSize().x; x++) {
@@ -118,7 +116,7 @@ void Super_Mario::draw(RenderWindow& window)
 
 void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
 {
-
+	mario.shiny = 1; mario.big = 1;
 	if (back.isClicked(mouse, window)) gameState = state::menu;
 
 	//input
@@ -143,8 +141,22 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 
 	}
 
+	//projectiles
+	//shoot
+	if (sprint && mp.size() < 4 && mario.canShoot) {
+		Vector2f pos = mario.box.animation.getPosition(), size = mario.box.animation.getSize();
+		mp.push_back(MP(Vector2f(pos.x + size.x / 2, pos.y + size.y / 2),
+			proj, mpSize, Vector2f(tSize.x / 2, tSize.y / 2)));
+		mp.back().oddX = -offX;
+		mp.back().offX = offX;
+
+		if (mario.prevL == 1) mp.back().speedx = -mp.back().speedx;
+	}
+	//update & collision n shit
 	for(int i = 0; i < mp.size();i++) {
 		std::vector<int> ptype{ -1,-1,-1,-1 };
+		bool alive = 1;
+		//with boxes und stuff
 		for (int j = 0; j < mp[i].projbox.size(); j++) {
 			for (int k = 0; k < boxes.size(); k++) {
 				if (boxes[k].box.animation.getGlobalBounds().intersects(mp[i].projbox[j].getGlobalBounds())) {
@@ -152,20 +164,32 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 				}
 			}
 		}
-		if (mp[i].update(ptype)) {
+		//kill them enemies
+		for (int j = 0; j < enemies.size(); j++) {
+			if (enemies[j].alive && enemies[j].anim.animation.getGlobalBounds().intersects(
+				mp[i].box.animation.getGlobalBounds())) {
+				//for projectile
+				alive = 0;
+				//for enemy
+				enemies[j].alive = 0;
+			}
+		}
+
+		//update
+		if (mp[i].update(ptype) || !alive) {
 			xps.push_back(Explosion(mp[i].box.animation.getPosition(), xp, 
 				bSize, tSize));
-			xps[i].oddX = -offX;
+			xps.back().oddX = -offX;
+			xps.back().offX = offX;
+
 			mp.erase(mp.begin() + i);
 			break;
 		}
 	}
-
-	for (int i = 0; i < xps.size(); i++) {
-		if (xps[i].update()) xps.erase(xps.begin() + i); break;
+	//erase
+	for (int i = xps.size() - 1; i >= 0; i--) {
+		if (xps[i].update()) xps.erase(xps.begin() + i);
 	}
-
-
 
 	//enemies
 	for (int j = 0; j < enemies.size(); j++) {
@@ -322,6 +346,7 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 		//other
 		for (int i = 0; i < entities.size(); i++) entities[i].off(offX);
 		for (int i = 0; i < enemies.size(); i++) enemies[i].off(offX);
+
 		for (int i = 0; i < mp.size(); i++) mp[i].off(offX);
 		for (int i = 0; i < xps.size(); i++) xps[i].off(offX);
 	}
