@@ -17,7 +17,7 @@ public:
 	Manimation box;
 	std::vector<RectangleShape> mariobox;
 	float mariosp = 0.8f, sprintsp = 1.5f;
-	bool showHitbox = 0, big = 0, shiny = 0, prevL = 0, canShoot = 0;
+	bool showHitbox = 0, big = 0, shiny = 0, canShoot = 0, prevDir = 1;
 private:
 	//physics
 	Vector2f pos, prevPos;
@@ -35,7 +35,7 @@ private:
 	bool noDelay = 1;
 
 	//animation
-	bool prevR = 0, prevU = 0; //dont be fooled, prevU is actually for standing after landing
+	bool prevR = 0, prevU = 0, prevL = 0; //dont be fooled, prevU is actually for standing after landing
 	std::vector<Texture> tex;
 	std::vector<Vector2f> mSize;
 	Vector2f tSize;

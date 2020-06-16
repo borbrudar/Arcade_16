@@ -23,6 +23,6 @@ public:
 	float speedx = 1.6f, speedy = 1.5f;
 private:
 	Clock clock;
-	float time = 0.f, timer = 0.f, delay = 0.1f;
+	float time = 0.f, timer = 0.f, delay = 0.07f;
 	
 };

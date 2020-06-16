@@ -149,7 +149,7 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 		mp.back().oddX = -offX;
 		mp.back().offX = offX;
 
-		if (mario.prevL == 1) mp.back().speedx = -mp.back().speedx;
+		if (!mario.prevDir) mp.back().speedx = -mp.back().speedx;
 	}
 	//update & collision n shit
 	for(int i = 0; i < mp.size();i++) {

@@ -215,11 +215,13 @@ bool Mario::update(bool left, bool right, bool up, bool col, std::vector<int> ty
 			prevR = 1;
 			prevL = 0;
 			prevU = 0;
+			prevDir = 1;
 		}
 		else if (left) {
 			prevL = 1;
 			prevR = 0;
 			prevU = 1;
+			prevDir = 0;
 		}
 		else if(!up){
 			prevL = 0;
