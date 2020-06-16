@@ -312,6 +312,7 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 	bool col = 0;
 	std::vector<int> type{ -1,-1,-1,-1 };
 	for (int i = 0; i < boxes.size(); i++) {
+		bool b = 0;
 		for (int j = 0; j < mario.mariobox.size(); j++) {
 			if (boxes[i].box.animation.getGlobalBounds().intersects(mario.mariobox[j].getGlobalBounds())) {
 				col = 1;
@@ -331,8 +332,18 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 					entities.back().oddX = -offX;
 					entities.back().offX = offX;
 				}
+
+				//destroy the object if mario big and block is brick
+				if (mario.big && j == 0 && boxes[i].type == block_type::brick) {
+					boxes.erase(boxes.begin() + i);
+
+					b = 1;
+					break;
+				}
+
 			}
 		}
+		if (b) break;
 	}
 	
 
