@@ -41,8 +41,12 @@ public:
 
 	//level
 	Image lvl;
-	Texture gr, br;
+	Texture gr, br, cl;
 
+	//visual
+	Vector2f c1{ 32,24 };
+
+	//phyiscs
 	std::vector<Box> boxes;
 	std::vector<Box> blocks;
 	std::vector<Box> coins_;

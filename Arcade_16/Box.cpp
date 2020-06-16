@@ -50,6 +50,15 @@ Box::Box(Vector2f pos, Vector2f size, Texture& t, Vector2f bSize, block_type typ
 		bStart = Vector2f(bSize.x * 6, bSize.y);
 		box.setup(t, bSize, size, 0, bStart);
 		break;
+		//visual in a separate file
+	case block_type::cloud1:
+		box.setup(t, bSize, size, 0);
+		break;
+	case block_type::grass1:
+		box.setup(t, bSize, size, 0);
+		box.setCycle(0);
+		box.setSwap(1);
+		break;
 	}
 
 	box.animation.setPosition(pos);

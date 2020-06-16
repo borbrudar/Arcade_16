@@ -11,6 +11,9 @@ Super_Mario::Super_Mario(Font& f)
 	gr.loadFromFile("res/mario/ground.png");
 	br.loadFromFile("res/mario/ground.png");
 
+	//visuals
+	cl.loadFromFile("res/mario/cloud.png");
+
 	//mario
 	mr.resize(3);
 	mr[0].loadFromFile("res/mario/mario.png");
@@ -85,6 +88,14 @@ Super_Mario::Super_Mario(Font& f)
 				enemies.back().setup(Vector2f(x * sx + off.x, y * sy + off.y),
 					e2Size, Vector2f(sx, sy * 1.5f), en2, 1);
 			}
+
+
+			//visuals
+			if (lvl.getPixel(x, y) == Color(255, 0, 255, 255))
+				blocks.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx * 2, sy * 1.5f), cl, c1,block_type::cloud1));
+			if (lvl.getPixel(x, y) == Color(128, 0, 255, 255))
+				blocks.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx * 2, sy * 1.5f), cl, c1, block_type::grass1));
+
 		}
 	}
 }
@@ -94,13 +105,15 @@ void Super_Mario::draw(RenderWindow& window)
 	window.clear(Color(92, 148, 252));
 	back.draw(window);
 
+
+	for (int i = 0; i < blocks.size(); i++) blocks[i].draw(window);
+
 	//entities
 	for (int i = 0; i < entities.size(); i++) {
 		entities[i].draw(window);
 	}
 	//boxes and blocks
 	for (int i = 0; i < boxes.size(); i++) boxes[i].draw(window);
-	for (int i = 0; i < blocks.size(); i++) blocks[i].draw(window);
 
 	for (int i = 0; i < coins_.size(); i++) coins_[i].draw(window);
 	//mario

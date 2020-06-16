@@ -31,9 +31,6 @@
     <Filter Include="Games\Asteroids">
       <UniqueIdentifier>{44b78ba8-fa64-4ce9-ba97-be092a984021}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Games\Space_Invaders">
-      <UniqueIdentifier>{b3d61615-3911-4da3-b749-29a7a4a0ea49}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Games\Pac_Man">
       <UniqueIdentifier>{4a0ba12b-87f9-4950-aed5-08fac92cf73b}</UniqueIdentifier>
     </Filter>
@@ -48,6 +45,9 @@
     </Filter>
     <Filter Include="Games\Super_Mario\Stuff">
       <UniqueIdentifier>{a33c647b-0326-446e-a9d7-510a6c957395}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Games\Space_Invaders">
+      <UniqueIdentifier>{b3d61615-3911-4da3-b749-29a7a4a0ea49}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

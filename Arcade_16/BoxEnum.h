@@ -10,5 +10,7 @@ enum class block_type {
 	ptl, //pipe top left
 	ptr, //pipe top right
 	pl,	//pipe left
-	pr //pipe right
+	pr, //pipe right
+	cloud1,
+	grass1
 };
