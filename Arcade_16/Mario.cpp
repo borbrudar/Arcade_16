@@ -187,18 +187,18 @@ bool Mario::update(bool left, bool right, bool up, bool col, std::vector<int> ty
 				box.setSwap(0);
 			}
 		}
-		else
+
 		//jump
 		if (up) {
 			box.setCycle(0);
 			box.setSwap(4);
 			if (prevR) {
 				box.setRow(0);
-				prevU = 0;
-			}
-			else {
-				box.setRow(1);
 				prevU = 1;
+			}
+			else if(prevL) {
+				box.setRow(1);
+				prevU = 0;
 			}
 		} 
 
@@ -206,12 +206,14 @@ bool Mario::update(bool left, bool right, bool up, bool col, std::vector<int> ty
 		if (right) {
 			prevR = 1;
 			prevL = 0;
+			prevU = 0;
 		}
 		else if (left) {
 			prevL = 1;
 			prevR = 0;
+			prevU = 1;
 		}
-		else {
+		else if(!up){
 			prevL = 0;
 			prevR = 0;
 		}
