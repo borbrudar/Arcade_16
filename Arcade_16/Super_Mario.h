@@ -7,6 +7,30 @@
 #include "BoxEnum.h"
 #include "MP.h"
 
+struct Explosion {
+	Explosion(Vector2f pos, Texture& t1, Vector2f eSize, Vector2f tSize, int maxSwap = 2):
+	maxSwap(maxSwap), pos(pos) {
+		box.setup(t1, eSize, tSize, maxSwap);
+		box.animation.setPosition(pos);
+		box.delay = 0.25f;
+	}
+	void draw(RenderWindow& window) {
+		box.draw(window);
+	}
+	bool update() {
+		box.animation.setPosition(pos.x + offX + oddX, pos.y);
+		if (box.getSwap() == maxSwap) return 1;
+		return 0;
+	}
+	void off(int x) {
+		offX = x;
+	}
+
+	int maxSwap, offX = 0, oddX = 0;
+	Manimation box;
+	Vector2f pos;
+};
+
 class Super_Mario : public State {
 public:
 	Super_Mario(Font& f);
@@ -33,10 +57,10 @@ public:
 	std::vector<Texture> mr;
 
 	//his projectiles
-	Texture proj;
-	MP mp;
+	Texture proj, xp;
+	std::vector<MP> mp;
 	Vector2f mpSize{ 8,8 };
-
+	std::vector<Explosion> xps; //xps rely on bSize
 
 	//enemies
 	std::vector<Enemy> enemies;

@@ -17,10 +17,10 @@ void MP::draw(RenderWindow& window)
 	box.draw(window);
 }
 
-void MP::update(std::vector<int> ptype)
+bool MP::update(std::vector<int> ptype)
 {
 	if (ptype[1] == 1) { pos.y = prevPos.y; speedy = -speedy; box.setRow(1); }
-	if (ptype[2] == 1 || ptype[3] == 1) alive = 0;
+	if (ptype[2] == 1 || ptype[3] == 1) return 1;
 
 	pos.y += speedy;
 	pos.x += speedx;
@@ -40,8 +40,10 @@ void MP::update(std::vector<int> ptype)
 	else clock.restart();
 
 	prevPos = pos;
-	box.animation.setPosition(pos);
+	box.animation.setPosition(pos.x + offX + oddX, pos.y);
 	boxUpdate();
+
+	return 0;
 }
 
 void MP::boxUpdate()
@@ -52,4 +54,9 @@ void MP::boxUpdate()
 	projbox[2].setPosition(box.animation.getPosition().x, box.animation.getPosition().y + 1);
 	projbox[3].setPosition(box.animation.getPosition().x + box.animation.getSize().x, box.animation.getPosition().y + 1);
 
+}
+
+void MP::off(int x)
+{
+	offX = x;
 }

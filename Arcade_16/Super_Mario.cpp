@@ -32,7 +32,9 @@ Super_Mario::Super_Mario(Font& f)
 
 	//projectiles
 	proj.loadFromFile("res/mario/proj.png");
-	mp.setup(Vector2f(100, 100), proj, mpSize, Vector2f(tSize.x / 2, tSize.y / 2));
+	mp.resize(1);
+	mp[0].setup(Vector2f(sx , sy * 12), proj, mpSize, Vector2f(tSize.x / 2, tSize.y / 2));
+	xp.loadFromFile("res/mario/exp.png");
 
 	for (int x = 0; x < lvl.getSize().x; x++) {
 		for (int y = 0; y < lvl.getSize().y; y++) {
@@ -110,7 +112,8 @@ void Super_Mario::draw(RenderWindow& window)
 	for (int i = 0; i < enemies.size(); i++) enemies[i].draw(window);
 
 	//projectiles
-	mp.draw(window);
+	for(int i = 0; i < mp.size();i++) mp[i].draw(window);
+	for (int i = 0; i < xps.size(); i++) xps[i].draw(window);
 }
 
 void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
@@ -140,18 +143,29 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 
 	}
 
-	{
+	for(int i = 0; i < mp.size();i++) {
 		std::vector<int> ptype{ -1,-1,-1,-1 };
-		for (int j = 0; j < mp.projbox.size(); j++) {
+		for (int j = 0; j < mp[i].projbox.size(); j++) {
 			for (int k = 0; k < boxes.size(); k++) {
-				if (boxes[k].box.animation.getGlobalBounds().intersects(mp.projbox[j].getGlobalBounds())) {
+				if (boxes[k].box.animation.getGlobalBounds().intersects(mp[i].projbox[j].getGlobalBounds())) {
 					ptype[j] = 1;
-
 				}
 			}
 		}
-		mp.update(ptype);
+		if (mp[i].update(ptype)) {
+			xps.push_back(Explosion(mp[i].box.animation.getPosition(), xp, 
+				bSize, tSize));
+			xps[i].oddX = -offX;
+			mp.erase(mp.begin() + i);
+			break;
+		}
 	}
+
+	for (int i = 0; i < xps.size(); i++) {
+		if (xps[i].update()) xps.erase(xps.begin() + i); break;
+	}
+
+
 
 	//enemies
 	for (int j = 0; j < enemies.size(); j++) {
@@ -308,6 +322,8 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 		//other
 		for (int i = 0; i < entities.size(); i++) entities[i].off(offX);
 		for (int i = 0; i < enemies.size(); i++) enemies[i].off(offX);
+		for (int i = 0; i < mp.size(); i++) mp[i].off(offX);
+		for (int i = 0; i < xps.size(); i++) xps[i].off(offX);
 	}
 
 }
