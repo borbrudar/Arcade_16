@@ -41,10 +41,10 @@ public:
 
 	//level
 	Image lvl;
-	Texture gr, br, cl;
+	Texture gr, br, cl, h1;
 
 	//visual
-	Vector2f c1{ 32,24 }, c2{ 48,24 };
+	Vector2f c1{ 32,24 }, c2{ 48,24 }, c3{ 64,24 }, c4{ 80,35 };
 
 	//phyiscs
 	std::vector<Box> boxes;

@@ -63,11 +63,31 @@ Box::Box(Vector2f pos, Vector2f size, Texture& t, Vector2f bSize, block_type typ
 		box.setRow(1);
 		box.setup(t, bSize, size, 0);
 		break;
-	case block_type::grass2:
+	case block_type::hill1:
 		box.setRow(1);
 		box.setup(t, bSize, size, 0);
 		box.setCycle(0);
 		box.setSwap(1);
+		break;
+	case block_type::grass2:
+		box.setRow(1);
+		box.setup(t, bSize, size, 0);
+		box.setCycle(0);
+		box.setSwap(2);
+		break;
+	case block_type::cloud3:
+		box.setRow(2);
+		box.setup(t, bSize, size, 0);
+		box.setCycle(0);
+		break;
+	case block_type::grass3:
+		box.setRow(2);
+		box.setup(t, bSize, size, 0);
+		box.setCycle(0);
+		box.setSwap(1);
+		break;
+	case block_type::hill2:
+		box.setup(t, bSize, size, 0);
 		break;
 	}
 

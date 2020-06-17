@@ -13,6 +13,7 @@ Super_Mario::Super_Mario(Font& f)
 
 	//visuals
 	cl.loadFromFile("res/mario/cloud.png");
+	h1.loadFromFile("res/mario/hill.png");
 
 	//mario
 	mr.resize(3);
@@ -39,68 +40,84 @@ Super_Mario::Super_Mario(Font& f)
 
 	for (int x = 0; x < lvl.getSize().x; x++) {
 		for (int y = 0; y < lvl.getSize().y; y++) {
-			//both grounds
-			if (lvl.getPixel(x, y) == Color(0, 0, 0, 255))
-				boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx,sy), gr, bSize, block_type::ground));
-			if (lvl.getPixel(x, y) == Color(0, 0, 0, 254))
-				blocks.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, block_type::ground));
-			//bricks
-			if (lvl.getPixel(x, y) == Color(0, 0, 255, 255))
-				boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, block_type::brick));
-			//mystery (coins and muschrooms)
-			if (lvl.getPixel(x, y) == Color(75, 0, 255, 255))
-				boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, block_type::mystery, 1));
-			if (lvl.getPixel(x, y) == Color(80, 0, 255, 255))
-				boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, block_type::mystery, 2));
-			
-			//shiny blocks
-			if (lvl.getPixel(x, y) == Color(128, 128, 128, 255))
-				boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, block_type::shine));
-			//coin (as blocks)
-			if (lvl.getPixel(x, y) == Color(255, 255, 0, 255))
-				coins_.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, block_type::coin));
-			//mario
-			if (lvl.getPixel(x, y) == Color(255, 0, 0, 255))
-				mario.setup(Vector2f(x * sx + off.x, y * sy + off.y - 100), mSize, mr, Vector2f(sx, sy));
+			//boxes and mario n other stuff
+			{
+				//both grounds
+				if (lvl.getPixel(x, y) == Color(0, 0, 0, 255))
+					boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, block_type::ground));
+				if (lvl.getPixel(x, y) == Color(0, 0, 0, 254))
+					blocks.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, block_type::ground));
+				//bricks
+				if (lvl.getPixel(x, y) == Color(0, 0, 255, 255))
+					boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, block_type::brick));
+				//mystery (coins and muschrooms)
+				if (lvl.getPixel(x, y) == Color(75, 0, 255, 255))
+					boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, block_type::mystery, 1));
+				if (lvl.getPixel(x, y) == Color(80, 0, 255, 255))
+					boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, block_type::mystery, 2));
 
+				//shiny blocks
+				if (lvl.getPixel(x, y) == Color(128, 128, 128, 255))
+					boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, block_type::shine));
+				//coin (as blocks)
+				if (lvl.getPixel(x, y) == Color(255, 255, 0, 255))
+					coins_.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, block_type::coin));
+				//mario
+				if (lvl.getPixel(x, y) == Color(255, 0, 0, 255))
+					mario.setup(Vector2f(x * sx + off.x, y * sy + off.y - 100), mSize, mr, Vector2f(sx, sy));
+			}
 			//pipes
-			//top left
-			if (lvl.getPixel(x, y) == Color(0, 255, 255, 255))
-				boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, block_type::ptl));
-			if (lvl.getPixel(x, y) == Color(0, 254, 255, 255))
-				boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, block_type::ptr));
-			if (lvl.getPixel(x, y) == Color(0, 255, 254, 255))
-				boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, block_type::pl));
-			if (lvl.getPixel(x, y) == Color(0, 254, 254, 255))
-				boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, block_type::pr));
-
+			{
+				//top left
+				if (lvl.getPixel(x, y) == Color(0, 255, 255, 255))
+					boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, block_type::ptl));
+				if (lvl.getPixel(x, y) == Color(0, 254, 255, 255))
+					boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, block_type::ptr));
+				if (lvl.getPixel(x, y) == Color(0, 255, 254, 255))
+					boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, block_type::pl));
+				if (lvl.getPixel(x, y) == Color(0, 254, 254, 255))
+					boxes.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx, sy), gr, bSize, block_type::pr));
+			}
 
 			//enemies
-			//normal
-			if (lvl.getPixel(x, y) == Color(0, 255, 0, 255)) {
-				enemies.push_back(Enemy());
-				enemies.back().setup(Vector2f(x * sx + off.x, y * sy + off.y),
-					e1Size, Vector2f(sx, sy), en);
-			}
-			//the other thingy
-			if (lvl.getPixel(x, y) == Color(0, 128, 0, 255)) {
-				enemies.push_back(Enemy());
-				enemies.back().setup(Vector2f(x * sx + off.x, y * sy + off.y),
-					e2Size, Vector2f(sx, sy * 1.5f), en2, 1);
-			}
+			{
+				//normal
+				if (lvl.getPixel(x, y) == Color(0, 255, 0, 255)) {
+					enemies.push_back(Enemy());
+					enemies.back().setup(Vector2f(x * sx + off.x, y * sy + off.y),
+						e1Size, Vector2f(sx, sy), en);
+				}
+				//the other thingy
+				if (lvl.getPixel(x, y) == Color(0, 128, 0, 255)) {
+					enemies.push_back(Enemy());
+					enemies.back().setup(Vector2f(x * sx + off.x, y * sy + off.y),
+						e2Size, Vector2f(sx, sy * 1.5f), en2, 1);
+				}
 
+			}
 
 			//visuals //1
+			{
 			if (lvl.getPixel(x, y) == Color(255, 0, 255, 255))
-				blocks.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx * 2, sy * 1.5f), cl, c1,block_type::cloud1));
+				blocks.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx * 2, sy * 1.5f), cl, c1, block_type::cloud1));
 			if (lvl.getPixel(x, y) == Color(128, 0, 255, 255))
 				blocks.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx * 2, sy * 1.5f), cl, c1, block_type::grass1));
 			//2
 			if (lvl.getPixel(x, y) == Color(200, 0, 200, 255))
 				blocks.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx * 3, sy * 1.5f), cl, c2, block_type::cloud2));
 			if (lvl.getPixel(x, y) == Color(100, 0, 230, 255))
+				blocks.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx * 3, sy * 1.5f), cl, c2, block_type::hill1));
+			if (lvl.getPixel(x, y) == Color(130, 0, 200, 255))
 				blocks.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx * 3, sy * 1.5f), cl, c2, block_type::grass2));
-
+			//3 
+			if (lvl.getPixel(x, y) == Color(150, 0, 150, 255))
+				blocks.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx * 4, sy * 1.5f), cl, c3, block_type::cloud3));
+			if (lvl.getPixel(x, y) == Color(100, 0, 200, 255))
+				blocks.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y), Vector2f(sx * 4, sy * 1.5f), cl, c3, block_type::grass3));
+			//
+			if (lvl.getPixel(x, y) == Color(50, 0, 50, 255))
+				blocks.push_back(Box(Vector2f(x * sx + off.x, y * sy + off.y - 1.18 * sy), Vector2f(sx * 5, sy * 2.1875f), h1, c4, block_type::hill2));
+			}
 		}
 	}
 }
