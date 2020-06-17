@@ -14,8 +14,8 @@ void Mario::setup(Vector2f pos, std::vector<Vector2f> msize, std::vector<Texture
 	//mariobox
 	mariobox.push_back(RectangleShape(Vector2f(box.animation.getSize().x - 2, 1)));
 	mariobox.push_back(RectangleShape(Vector2f(box.animation.getSize().x - 2, 1)));
-	mariobox.push_back(RectangleShape(Vector2f(1, box.animation.getSize().y - 2)));
-	mariobox.push_back(RectangleShape(Vector2f(1, box.animation.getSize().y - 2)));
+	mariobox.push_back(RectangleShape(Vector2f(1, box.animation.getSize().y - 3)));
+	mariobox.push_back(RectangleShape(Vector2f(1, box.animation.getSize().y - 3)));
 
 	for (int i = 0; i < mariobox.size(); i++) mariobox[i].setFillColor(Color::Red);
 }
@@ -34,8 +34,8 @@ const void Mario::boxResize()
 {
 	mariobox[0].setSize(Vector2f(box.animation.getSize().x - 2, 1));
 	mariobox[1].setSize(Vector2f(box.animation.getSize().x - 2, 1));
-	mariobox[2].setSize(Vector2f(1, box.animation.getSize().y - 2));
-	mariobox[3].setSize(Vector2f(1, box.animation.getSize().y - 2));
+	mariobox[2].setSize(Vector2f(1, box.animation.getSize().y - 3));
+	mariobox[3].setSize(Vector2f(1, box.animation.getSize().y - 3));
 }
 
 void Mario::draw(RenderWindow& window)
