@@ -31,6 +31,36 @@ struct Explosion {
 	Vector2f pos;
 };
 
+struct Broken {
+	Broken(Texture &t, Vector2f tSize, Vector2f pos, bool minus = 0) :	pos(pos) {
+		temp.setup(t, Vector2f(16, 16), Vector2f(tSize.x / 4, tSize.y/4), 0);
+		temp.setCycle(0);
+		temp.setSwap(1);
+		if (minus) speedx = -speedx;
+		temp.animation.setRotation(45);
+		temp.animation.setPosition(pos);
+	}
+	void draw(RenderWindow& window) {
+		temp.draw(window);
+	}
+	bool update() {
+		pos.x += speedx;
+		pos.y += speedy;
+		temp.animation.setPosition(pos);
+		if (temp.animation.getPosition().x > scrWidth || temp.animation.getPosition().x < 0 ||
+			temp.animation.getPosition().y > scrHeight || temp.animation.getPosition().y < 0) return 1;
+		return 0;
+	}
+	void off(int x) {
+		offX = x;
+	}
+
+	Manimation temp;
+	Vector2f pos;
+	bool minus = 0;
+	float offX = 0.f, oddX = 0.f, speedy = 1.2f, speedx = .6f;
+};
+
 class Super_Mario : public State {
 public:
 	Super_Mario(Font& f);
@@ -38,13 +68,13 @@ public:
 	void update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e);
 
 	Button back;
-
 	//level
 	Image lvl;
 	Texture gr, br, cl, h1;
 
 	//visual
 	Vector2f c1{ 32,24 }, c2{ 48,24 }, c3{ 64,24 }, c4{ 80,35 };
+	std::vector<Broken> broken;
 
 	//phyiscs
 	std::vector<Box> boxes;

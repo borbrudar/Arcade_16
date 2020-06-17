@@ -147,6 +147,9 @@ void Super_Mario::draw(RenderWindow& window)
 	//projectiles
 	for(int i = 0; i < mp.size();i++) mp[i].draw(window);
 	for (int i = 0; i < xps.size(); i++) xps[i].draw(window);
+
+	//broklen
+	for (int i = 0; i < broken.size(); i++) broken[i].draw(window);
 }
 
 void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
@@ -343,6 +346,9 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 	//update box up-down movement
 	for(int i = 0; i < boxes.size(); i++) boxes[i].update();
 
+	//broken stuff
+	for (int i = broken.size() - 1; i >= 0; i--) if (broken[i].update()) broken.erase(broken.begin() + i);
+	
 	//mario-boxes collision
 	bool col = 0;
 	std::vector<int> type{ -1,-1,-1,-1 };
@@ -372,6 +378,14 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 				if (mario.big && j == 0 && boxes[i].type == block_type::brick) {
 					boxes.erase(boxes.begin() + i);
 
+					Vector2f mpos = mario.box.animation.getPosition(), msize = mario.box.animation.getSize();
+					//broken visuals
+					broken.push_back(Broken(gr, tSize, mpos, 1));
+					broken.push_back(Broken(gr, tSize, Vector2f(mpos.x, mpos.y + msize.y) , 1));
+
+					broken.push_back(Broken(gr, tSize, Vector2f(mpos.x + msize.x, mpos.y)));
+					broken.push_back(Broken(gr, tSize, Vector2f(mpos.x + msize.x, mpos.y + msize.y)));
+
 					b = 1;
 					break;
 				}
@@ -395,6 +409,8 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 
 		for (int i = 0; i < mp.size(); i++) mp[i].off(offX);
 		for (int i = 0; i < xps.size(); i++) xps[i].off(offX);
+
+		for (int i = 0; i < broken.size(); i++) broken[i].off(offX);
 	}
 
 }
