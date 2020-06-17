@@ -66,11 +66,15 @@ public:
 	Super_Mario(Font& f);
 	void draw(RenderWindow& window);
 	void update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e);
+	void loadWorld(int start, int end, bool plus = 1);
+	void deleteWorld();
 
 	Button back;
 	//level
 	Image lvl;
 	Texture gr, br, cl, h1;
+	float tx = 0.f;
+	int lastX = 0, firstX = -5;
 
 	//visual
 	Vector2f c1{ 32,24 }, c2{ 48,24 }, c3{ 64,24 }, c4{ 80,35 };
