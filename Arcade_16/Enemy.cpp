@@ -88,16 +88,16 @@ bool Enemy::update(std::vector<int> etype, bool onScr)
 		spinning = 0;
 	}
 
-
 	//spinny boi
 	if (spin != 0) {
-		if (spin == 1) pos.x += 3 * speed; else pos.x -= 3 * speed;
+		if (spin == 1) pos.x += 4 * speed; else pos.x -= 4 * speed;
 		
 	}
 
-	prevPos = pos;
+	
 	if (type == 1 && alive) anim.animation.setPosition(pos.x + offX, pos.y - (anim.animation.getSize().y / 3));
 	else anim.animation.setPosition(pos.x + offX, pos.y);
+	prevPos = pos;
 
 	return 0;
 }

@@ -18,5 +18,5 @@ public:
 	Vector2f pos, oldPos, prevPos;
 	int type = 1, wiggling = 1;
 	bool out = 0, showHitbox = 0, groundTouch = 1, bigMario = 0;
-	float speed = 1.5f, offX = 0.f, oddX = 0.f, gravity = 1.5f;
+	float speed = 1.0f, offX = 0.f, oddX = 0.f, gravity = 1.5f;
 };

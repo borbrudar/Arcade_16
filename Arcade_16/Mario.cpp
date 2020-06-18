@@ -92,19 +92,14 @@ bool Mario::update(bool left, bool right, bool up, bool col, std::vector<int> ty
 	{
 		//other stuff
 		canLeft = 1, canRight = 1;
-		for (int i = 0; i < type.size(); i++) {
-			if (col) {
-				if (type[i] == 0) {
-					jumping = 0; pos.y = prevPos.y;
-				}
-				if (type[i] == 1) { groundTouch = 1; pos.y = prevPos.y; }
-				if (type[i] == 2) { canLeft = 0; pos.x = prevPos.x; }
-				if (type[i] == 3) { canRight = 0; pos.x = prevPos.x; }
-
-				pos = prevPos;
-			}
-			else groundTouch = 0;
+		groundTouch = 0;
+		if (type[0] == 1) {
+			jumping = 0; pos.y = prevPos.y;
 		}
+		if (type[1] == 1) { groundTouch = 1; pos.y = prevPos.y; }
+		if (type[2] == 1) { canLeft = 0; pos.x = prevPos.x; }
+		if (type[3] == 1) { canRight = 0; pos.x = prevPos.x; }
+
 
 		//left/right movement
 		if (pos.x <= (scrWidth / 2) || left) {
@@ -120,9 +115,7 @@ bool Mario::update(bool left, bool right, bool up, bool col, std::vector<int> ty
 		if (pos.x < 0) pos.x = 0;
 
 		//fall
-		if (!jumping && !groundTouch) 
-			//update pos
-			pos.y += gravity;
+		if (!jumping && !groundTouch) pos.y += gravity;
 
 		//add delay to repeated jumping
 		if(!jumping){
@@ -140,7 +133,6 @@ bool Mario::update(bool left, bool right, bool up, bool col, std::vector<int> ty
 			jdclock.restart();
 		}
 			
-
 		//hop hop
 		if (up && groundTouch && noDelay) jumping = 1;
 
@@ -152,7 +144,6 @@ bool Mario::update(bool left, bool right, bool up, bool col, std::vector<int> ty
 			gtime = gclock.getElapsedTime().asSeconds();
 			gtimer += gtime;
 			gclock.restart();
-			groundTouch = 0;
 
 			if (gtimer > gdelay) {
 				jumping = 0;

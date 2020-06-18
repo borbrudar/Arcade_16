@@ -52,7 +52,7 @@ Super_Mario::Super_Mario(Font& f) : mfont(f)
 	proj.loadFromFile("res/mario/proj.png");
 	xp.loadFromFile("res/mario/exp.png");
 
-	lastX = (scrWidth / sx) + 4;
+	lastX = (scrWidth / sx) + 7;
 	loadWorld(0, lastX, 0);
 	lastX -= 1;
 }
@@ -334,7 +334,7 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 		for (int j = 0; j < mario.mariobox.size(); j++) {
 			if (boxes[i].box.animation.getGlobalBounds().intersects(mario.mariobox[j].getGlobalBounds())) {
 				col = 1;
-				type[j] = j;
+				type[j] = 1;
 				//wiggle and stop jumping
 				if (j == 0) boxes[i].update(1);
 
