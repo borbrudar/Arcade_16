@@ -44,6 +44,7 @@ bool Enemy::update(std::vector<int> etype, bool onScr)
 	onScreen = onScr;
 
 	//collision detection
+	groundTouch = 0;
 	if (etype[1] == 1) { groundTouch = 1; pos.y = prevPos.y; }
 	if (etype[2] == 1) { speed = -speed; pos.x = prevPos.x; }
 	else if (etype[3] == 1) { speed = -speed; pos.x = prevPos.x; };
