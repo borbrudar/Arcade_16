@@ -33,7 +33,7 @@ void Mario::boxUpdate()
 const void Mario::boxResize()
 {
 	mariobox[0].setSize(Vector2f(box.animation.getSize().x - 3, 1));
-	mariobox[1].setSize(Vector2f(box.animation.getSize().x - 20, 1));
+	mariobox[1].setSize(Vector2f(box.animation.getSize().x - 3, 1));
 	mariobox[2].setSize(Vector2f(1, box.animation.getSize().y - 3));
 	mariobox[3].setSize(Vector2f(1, box.animation.getSize().y - 3));
 }
@@ -75,6 +75,19 @@ bool Mario::update(bool left, bool right, bool up, bool col, std::vector<int> ty
 		boxResize();
 	}
 	
+	//update if op
+	if (op == 1) {
+		opt = opc.getElapsedTime().asSeconds(),
+		optr += opt;
+		opc.restart();
+
+		if (optr > opd) {
+			op = 0;
+			optr = 0;
+		}
+	}
+	else opc.restart();
+
 	//shotting clock
 	if (shiny) {
 		stime = sclock.getElapsedTime().asSeconds();

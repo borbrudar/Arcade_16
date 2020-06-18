@@ -231,6 +231,7 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 					}
 					//make big mario smol
 					else if (enemies[j].alive == 1 && mario.big == 1) {
+						mario.op = 1;
 						mario.big = 0;
 						mario.shiny = 0;
 					}
@@ -374,7 +375,8 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 			for (int i = 0; i < enemies.size(); i++) {
 				for (int k = 0; k < mario.mariobox.size(); k++) {
 					if (mario.mariobox[k].getGlobalBounds().intersects(enemies[i].anim.animation.getGlobalBounds())) {
-						if ((k == 2 || k == 3) && (enemies[i].alive || enemies[i].spin != 0)) {
+						if ((k == 2 || k == 3) && (enemies[i].alive || enemies[i].spin != 0) && !mario.op
+							&& !mario.big) {
 							mario.alive = 0;
 							break;
 						}
@@ -428,6 +430,7 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 		mario.big = 0; mario.shiny = 0; mario.alive = 1;
 		score = 0;
 		offX = 0;
+		time = 400;
 
 		lastX = (scrWidth / tSize.x) + 7;
 		loadWorld(0, lastX, 0);

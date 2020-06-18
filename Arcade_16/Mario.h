@@ -18,8 +18,11 @@ public:
 	Manimation box;
 	std::vector<RectangleShape> mariobox;
 	float mariosp = 1.f, sprintsp = 1.6f;
-	bool showHitbox = 0, big = 0, shiny = 0, canShoot = 0, prevDir = 1, alive = 1;
+	bool showHitbox = 0, big = 0, shiny = 0, canShoot = 0, prevDir = 1, alive = 1, op = 0;
 private:
+	//op clock
+	Clock opc;
+	float opt = 0.f, optr = 0.f, opd = 3.5f;
 	//physics
 	Vector2f pos, prevPos;
 	float gravity = 2.2f, jump = gravity;
