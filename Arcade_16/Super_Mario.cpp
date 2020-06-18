@@ -138,7 +138,7 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 
 	}
 
-	if (mario.alive == 1) {
+	if (mario.alive == 1 && !gameOver) {
 		//update time
 		time = clock.getElapsedTime().asSeconds();
 		timer += time;
@@ -385,6 +385,10 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 			}
 		}
 
+		if (std::abs(offX / tSize.x) > 180) {
+			gameOver = 1;
+		}
+
 		//offset everything if necessary
 		if (mario.update(left, right, up, col, type, sprint) == 1) {
 			if (sprint) offX -= mario.mariosp * mario.sprintsp;  else offX -= mario.mariosp;
@@ -416,6 +420,22 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 			for (int i = 0; i < broken.size(); i++) broken[i].off(offX);
 		}
 	}
+	else if (gameOver == 1) {
+	//start at the beggining
+	boxes.clear();	blocks.clear();
+	coins_.clear();	enemies.clear();
+	entities.clear();	xps.clear();
+	mp.clear();
+
+	mario.big = 0; mario.shiny = 0; mario.alive = 1;
+	offX = 0;
+	time = 400;
+
+	lastX = (scrWidth / tSize.x) + 7;
+	loadWorld(0, lastX, 0);
+	lastX -= 1;
+	gameOver = 0;
+	}
 	else {
 	if (mario.update()) {
 		//reset the world
@@ -430,7 +450,7 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 		mario.big = 0; mario.shiny = 0; mario.alive = 1;
 		score = 0;
 		offX = 0;
-		time = 400;
+		times = 400;
 
 		lastX = (scrWidth / tSize.x) + 7;
 		loadWorld(0, lastX, 0);

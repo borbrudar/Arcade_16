@@ -77,6 +77,7 @@ public:
 	Texture gr, br, cl, h1;
 	float tx = 0.f;
 	int lastX = 0, firstX = -7; // -7 to accomodate for 5 block long visuals, and 2 just for it to work
+	bool gameOver = 0;
 
 	//score stuff
 	int score = 0, highscore;
