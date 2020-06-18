@@ -20,8 +20,10 @@ int main() {
 	Event e;
 	Mouse mouse;
 
-	Font arial;
+	Font arial, mario;
 	arial.loadFromFile("res/font/arial.ttf");
+	mario.loadFromFile("res/font/mario.ttf");
+	
 
 	state gameState = state::super_mario;
 	state prevState = gameState;
@@ -60,7 +62,7 @@ int main() {
 				state = std::make_unique<Simon>(arial);
 				break;
 			case state::super_mario:
-				state = std::make_unique<Super_Mario>(arial);
+				state = std::make_unique<Super_Mario>(mario);
 				break;
 			}
 		}

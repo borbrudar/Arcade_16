@@ -6,6 +6,7 @@
 #include "Entity.h"
 #include "BoxEnum.h"
 #include "MP.h"
+#include <fstream>
 
 struct Explosion {
 	Explosion(Vector2f pos, Texture& t1, Vector2f eSize, Vector2f tSize, int maxSwap = 2):
@@ -68,6 +69,7 @@ public:
 	void update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e);
 	void loadWorld(int start, int end, bool plus = 1);
 	void deleteWorld();
+	void drawString(int x, int y, std::string string, RenderWindow &window);
 
 	Button back;
 	//level
@@ -75,6 +77,17 @@ public:
 	Texture gr, br, cl, h1;
 	float tx = 0.f;
 	int lastX = 0, firstX = -7; // -7 to accomodate for 5 block long visuals, and 2 just for it to work
+
+	//score stuff
+	int score = 0, highscore;
+	Text scr;
+	std::fstream high;
+	Font mfont;
+
+	//time
+	int times = 400;
+	Clock clock;
+	float time = 0, timer = 0, delay = 1.f;
 
 	//visual
 	Vector2f c1{ 32,24 }, c2{ 48,24 }, c3{ 64,24 }, c4{ 80,35 };
@@ -93,6 +106,7 @@ public:
 	bool left = 0, right = 0, up = 0, sprint = 0;
 	std::vector<Vector2f> mSize{ {17,16}, {16,32} };
 	std::vector<Texture> mr;
+	int lives = 3;
 
 	//his projectiles
 	Texture proj, xp;

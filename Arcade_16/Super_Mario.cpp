@@ -1,11 +1,24 @@
 #include "Super_Mario.h"
 
-Super_Mario::Super_Mario(Font& f)
+Super_Mario::Super_Mario(Font& f) : mfont(f)
 {
+	//scores
+	scr.setPosition(20, 10);
+	scr.setCharacterSize(24);
+	scr.setFillColor(Color::White);
+	scr.setFont(f);
+
+	//read from file
+	std::string hsc;
+	high.open("res/mario/hs.txt");
+	std::getline(high, hsc);
+	highscore = std::stoi(hsc);
+	high.close();
+
 	//setup back button
 	std::string text1;
 	text1.assign("Back");
-	back.setup(f, text1, Color::Blue, Vector2f(50, 30), Vector2f(580, 20), 14);
+	back.setup(f, text1, Color::Blue, Vector2f(50, 30), Vector2f(580, 440), 14);
 
 	//boxes
 	gr.loadFromFile("res/mario/ground.png");
@@ -47,8 +60,6 @@ Super_Mario::Super_Mario(Font& f)
 void Super_Mario::draw(RenderWindow& window)
 {
 	window.clear(Color(92, 148, 252));
-	back.draw(window);
-
 
 	for (int i = 0; i < blocks.size(); i++) blocks[i].draw(window);
 
@@ -72,10 +83,49 @@ void Super_Mario::draw(RenderWindow& window)
 
 	//broklen
 	for (int i = 0; i < broken.size(); i++) broken[i].draw(window);
+
+	//draw score and highscore and lives and whatnot
+	drawString(20, 10, "Score:", window);
+	drawString(40, 40, std::to_string(score), window);
+
+	drawString(130, 10, "Highscore:", window);
+	drawString(170, 40, std::to_string(highscore), window);
+
+	drawString(310, 10, "Lives:", window);
+	drawString(330, 40, std::to_string(lives), window);
+
+	drawString(420, 10, "Coins:", window);
+	drawString(450, 40, std::to_string(coins), window);
+
+	drawString(530, 10, "Time:", window);
+	drawString(540, 40, std::to_string(times), window);
+
+	back.draw(window);
 }
 
 void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
 {
+	//update score
+	if (score > highscore) {
+		highscore = score;
+		//write to file and close it
+		high.open("res/mario/hs.txt", std::ios::out | std::ios::trunc);
+		high << highscore;
+		high.close();
+	}
+
+	//update time
+	time = clock.getElapsedTime().asSeconds();
+	timer += time;
+	clock.restart();
+
+	if (timer > delay) {
+		timer = 0;
+		times -= 1;
+	}
+
+	//button
+
 	if (back.isClicked(mouse, window)) gameState = state::menu;
 
 	//input
@@ -131,6 +181,7 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 				alive = 0;
 				//for enemy
 				enemies[j].alive = 0;
+				score += 100;
 			}
 		}
 
@@ -170,7 +221,10 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 		for (int i = 0; i < mario.mariobox.size(); i++) {
 			if (mario.mariobox[i].getGlobalBounds().intersects(enemies[j].anim.animation.getGlobalBounds())) {
 				//if touching with bottom
-				if(enemies[j].alive == 1 && i == 1) enemies[j].alive = 0;
+				if (enemies[j].alive == 1 && i == 1) {
+					enemies[j].alive = 0;
+					score += 100;
+				}
 				//make big mario smol
 				else if (enemies[j].alive == 1 && mario.big == 1) {
 					mario.big = 0;
@@ -197,6 +251,7 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 			if (enemies[j].anim.animation.getGlobalBounds().intersects(
 				enemies[i].anim.animation.getGlobalBounds()) && enemies[i].spin != 0) {
 				enemies[j].alive = 0;
+				score += 100;
 			}
 
 		}
@@ -505,4 +560,14 @@ void Super_Mario::deleteWorld()
 		if (std::floor(enemies[i].anim.animation.getPosition().x / sx) == firstX) enemies.erase(enemies.begin() + i);
 	}
 
+}
+
+void Super_Mario::drawString(int x, int y, std::string string, RenderWindow &window)
+{
+	std::string text2;
+	text2.assign(string);
+	scr.setString(text2);
+	scr.setFont(mfont);
+	scr.setPosition(x,y);
+	window.draw(scr);
 }
