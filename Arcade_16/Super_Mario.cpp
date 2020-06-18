@@ -114,20 +114,8 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 		high.close();
 	}
 
-	//update time
-	time = clock.getElapsedTime().asSeconds();
-	timer += time;
-	clock.restart();
-
-	if (timer > delay) {
-		timer = 0;
-		times -= 1;
-	}
-
 	//button
-
 	if (back.isClicked(mouse, window)) gameState = state::menu;
-
 	//input
 	while (window.pollEvent(e)) {
 		if (e.type == Event::Closed) window.close();
@@ -150,257 +138,301 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 
 	}
 
-	//projectiles
-	//shoot
-	if (sprint && mp.size() < 4 && mario.canShoot) {
-		Vector2f pos = mario.box.animation.getPosition(), size = mario.box.animation.getSize();
-		mp.push_back(MP(Vector2f(pos.x + size.x / 2, pos.y + size.y / 2),
-			proj, mpSize, Vector2f(tSize.x / 2, tSize.y / 2)));
-		mp.back().oddX = -offX;
-		mp.back().offX = offX;
+	if (mario.alive == 1) {
+		//update time
+		time = clock.getElapsedTime().asSeconds();
+		timer += time;
+		clock.restart();
 
-		if (!mario.prevDir) mp.back().speedx = -mp.back().speedx;
-	}
-	//update & collision n shit
-	for(int i = 0; i < mp.size();i++) {
-		std::vector<int> ptype{ -1,-1,-1,-1 };
-		bool alive = 1;
-		//with boxes und stuff
-		for (int j = 0; j < mp[i].projbox.size(); j++) {
-			for (int k = 0; k < boxes.size(); k++) {
-				if (boxes[k].box.animation.getGlobalBounds().intersects(mp[i].projbox[j].getGlobalBounds())) {
-					ptype[j] = 1;
+		if (timer > delay) {
+			timer = 0;
+			times -= 1;
+		}
+		//kill if out of time
+		if (times < 0) {
+			mario.alive = 0;
+			times = 0;
+		}
+
+		//projectiles
+		//shoot
+		if (sprint && mp.size() < 4 && mario.canShoot) {
+			Vector2f pos = mario.box.animation.getPosition(), size = mario.box.animation.getSize();
+			mp.push_back(MP(Vector2f(pos.x + size.x / 2, pos.y + size.y / 2),
+				proj, mpSize, Vector2f(tSize.x / 2, tSize.y / 2)));
+			mp.back().oddX = -offX;
+			mp.back().offX = offX;
+
+			if (!mario.prevDir) mp.back().speedx = -mp.back().speedx;
+		}
+		//update & collision n shit
+		for (int i = 0; i < mp.size(); i++) {
+			std::vector<int> ptype{ -1,-1,-1,-1 };
+			bool alive = 1;
+			//with boxes und stuff
+			for (int j = 0; j < mp[i].projbox.size(); j++) {
+				for (int k = 0; k < boxes.size(); k++) {
+					if (boxes[k].box.animation.getGlobalBounds().intersects(mp[i].projbox[j].getGlobalBounds())) {
+						ptype[j] = 1;
+					}
 				}
 			}
-		}
-		//kill them enemies
-		for (int j = 0; j < enemies.size(); j++) {
-			if (enemies[j].alive && enemies[j].anim.animation.getGlobalBounds().intersects(
-				mp[i].box.animation.getGlobalBounds())) {
-				//for projectile
-				alive = 0;
-				//for enemy
-				enemies[j].alive = 0;
-				score += 100;
-			}
-		}
-
-		//update
-		if (mp[i].update(ptype) || !alive) {
-			xps.push_back(Explosion(mp[i].box.animation.getPosition(), xp, 
-				bSize, tSize));
-			xps.back().oddX = -offX;
-			xps.back().offX = offX;
-
-			mp.erase(mp.begin() + i);
-			break;
-		}
-	}
-	//erase
-	for (int i = xps.size() - 1; i >= 0; i--) {
-		if (xps[i].update()) xps.erase(xps.begin() + i);
-	}
-
-	//enemies
-	for (int j = 0; j < enemies.size(); j++) {
-		bool onsc = 0;
-		std::vector<int> etype{ -1,-1,-1,-1 };
-		//enemies with boxes
-		for (int k = 0; k < enemies[j].enemybox.size(); k++) {
-			for (int i = 0; i < boxes.size(); i++) {
-				if (enemies[j].enemybox[k].getGlobalBounds().intersects(
-					boxes[i].box.animation.getGlobalBounds())) {
-					etype[k] = 1;
-					break;
-				}
-			}
-			
-		}
-		
-		//with mario
-		for (int i = 0; i < mario.mariobox.size(); i++) {
-			if (mario.mariobox[i].getGlobalBounds().intersects(enemies[j].anim.animation.getGlobalBounds())) {
-				//if touching with bottom
-				if (enemies[j].alive == 1 && i == 1) {
+			//kill them enemies
+			for (int j = 0; j < enemies.size(); j++) {
+				if (enemies[j].alive && enemies[j].anim.animation.getGlobalBounds().intersects(
+					mp[i].box.animation.getGlobalBounds())) {
+					//for projectile
+					alive = 0;
+					//for enemy
 					enemies[j].alive = 0;
 					score += 100;
 				}
-				//make big mario smol
-				else if (enemies[j].alive == 1 && mario.big == 1) {
-					mario.big = 0;
-					mario.shiny = 0;
+			}
+
+			//update
+			if (mp[i].update(ptype) || !alive) {
+				xps.push_back(Explosion(mp[i].box.animation.getPosition(), xp,
+					bSize, tSize));
+				xps.back().oddX = -offX;
+				xps.back().offX = offX;
+
+				mp.erase(mp.begin() + i);
+				break;
+			}
+		}
+		//erase
+		for (int i = xps.size() - 1; i >= 0; i--) {
+			if (xps[i].update()) xps.erase(xps.begin() + i);
+		}
+
+		//enemies
+		for (int j = 0; j < enemies.size(); j++) {
+			bool onsc = 0;
+			std::vector<int> etype{ -1,-1,-1,-1 };
+			//enemies with boxes
+			for (int k = 0; k < enemies[j].enemybox.size(); k++) {
+				for (int i = 0; i < boxes.size(); i++) {
+					if (enemies[j].enemybox[k].getGlobalBounds().intersects(
+						boxes[i].box.animation.getGlobalBounds())) {
+						etype[k] = 1;
+						break;
+					}
 				}
 
-				//spinny guy
-				if (enemies[j].alive == 0 && enemies[j].type == 1) {
-					enemies[j].spinning = 1;
-					if (mario.mariobox[i].getPosition().x < enemies[j].anim.animation.getPosition().x)
-						enemies[j].spin = 1;
-					else enemies[j].spin = 2;
+			}
+
+			//with mario
+			for (int i = 0; i < mario.mariobox.size(); i++) {
+				if (mario.mariobox[i].getGlobalBounds().intersects(enemies[j].anim.animation.getGlobalBounds())) {
+					//if touching with bottom
+					if (enemies[j].alive == 1 && i == 1) {
+						enemies[j].alive = 0;
+						score += 100;
+					}
+					//make big mario smol
+					else if (enemies[j].alive == 1 && mario.big == 1) {
+						mario.big = 0;
+						mario.shiny = 0;
+					}
+
+					//spinny guy
+					if (enemies[j].alive == 0 && enemies[j].type == 1) {
+						enemies[j].spinning = 1;
+						if (mario.mariobox[i].getPosition().x < enemies[j].anim.animation.getPosition().x)
+							enemies[j].spin = 1;
+						else enemies[j].spin = 2;
+					}
+					break;
+				}
+			}
+
+			//with other enemies
+			for (int i = 0; i < enemies.size(); i++) {
+				//skip if its the same
+				if (i == j) continue;
+				//check collision
+				if (enemies[j].anim.animation.getGlobalBounds().intersects(
+					enemies[i].anim.animation.getGlobalBounds()) && enemies[i].spin != 0) {
+					enemies[j].alive = 0;
+					score += 100;
 				}
 
+			}
+
+			//is on screen
+			if (enemies[j].anim.animation.getPosition().x < scrWidth) onsc = 1;
+			//update
+			if (enemies[j].update(etype, onsc)) {
+				enemies.erase(enemies.begin() + j);
+				break;
+			}
+			enemies[j].boxUpdate();
+		}
+
+		//entities
+		for (int i = 0; i < entities.size(); i++) entities[i].boxUpdate();
+		for (int i = 0; i < entities.size(); i++) {
+			std::vector<int> etype{ -1,-1,-1,-1 };
+			//entities with boxes
+			for (int k = 0; k < entities[i].entitybox.size(); k++) {
+				for (int j = 0; j < boxes.size(); j++) {
+					if (entities[i].entitybox[k].getGlobalBounds().intersects(
+						boxes[j].box.animation.getGlobalBounds())) {
+						etype[k] = 1;
+						break;
+					}
+				}
+			}
+			entities[i].update(boxes[0].box.animation.getSize(), etype);
+		}
+
+		//coin and schroom and flower collection
+		for (int i = 0; i < entities.size(); i++) {
+			if (entities[i].out == 1 && entities[i].type == 1)
+			{
+				coins += 1;
+				entities.erase(entities.begin() + i);
+				break;
+			}
+			else if (entities[i].type == 2 &&
+				mario.box.animation.getGlobalBounds().intersects(entities[i].anim.animation.getGlobalBounds()) &&
+				mario.big == 1 && entities[i].out == 1) {
+				mario.shiny = 1;
+				entities.erase(entities.begin() + i);
+				break;
+			}
+			else if (entities[i].type == 2 &&
+				mario.box.animation.getGlobalBounds().intersects(entities[i].anim.animation.getGlobalBounds()) &&
+				entities[i].out == 1) {
+				mario.big = 1;
+				entities.erase(entities.begin() + i);
 				break;
 			}
 		}
 
-		//with other enemies
-		for (int i = 0; i < enemies.size(); i++) {
-			//skip if its the same
-			if (i == j) continue;
-			//check collision
-			if (enemies[j].anim.animation.getGlobalBounds().intersects(
-				enemies[i].anim.animation.getGlobalBounds()) && enemies[i].spin != 0) {
-				enemies[j].alive = 0;
-				score += 100;
-			}
-
-		}
-
-		//is on screen
-		if (enemies[j].anim.animation.getPosition().x < scrWidth) onsc = 1;
-		//update
-		if (enemies[j].update(etype, onsc)) {
-			enemies.erase(enemies.begin() + j);
-			break;
-		}
-		enemies[j].boxUpdate();
-	}
-	
-	//entities
-	for (int i = 0; i < entities.size(); i++) entities[i].boxUpdate();
-	for (int i = 0; i < entities.size(); i++) {
-		std::vector<int> etype{ -1,-1,-1,-1 };
-		//entities with boxes
-		for (int k = 0; k < entities[i].entitybox.size(); k++) {
-			for (int j = 0; j < boxes.size(); j++) {
-				if (entities[i].entitybox[k].getGlobalBounds().intersects(
-					boxes[j].box.animation.getGlobalBounds())) {
-					etype[k] = 1;
-					break;
-				}
+		//also coin blocks
+		for (int i = 0; i < coins_.size(); i++) {
+			if (mario.box.animation.getGlobalBounds().intersects(coins_[i].box.animation.getGlobalBounds()))
+			{
+				coins += 1;
+				coins_.erase(coins_.begin() + i);
+				break;
 			}
 		}
-		entities[i].update(boxes[0].box.animation.getSize(), etype);
-	}
+		//update coins and blocks[]
+		for (int i = 0; i < coins_.size(); i++) coins_[i].update();
+		for (int i = 0; i < blocks.size(); i++) blocks[i].update();
 
-	//coin and schroom and flower collection
-	for (int i = 0; i < entities.size(); i++) {
-		if (entities[i].out == 1 && entities[i].type == 1)
-		{
-			coins += 1;
-			entities.erase(entities.begin() + i);
-			break;
-		}
-		else if (entities[i].type == 2 &&
-			mario.box.animation.getGlobalBounds().intersects(entities[i].anim.animation.getGlobalBounds()) &&
-			mario.big == 1 && entities[i].out == 1) {
-			mario.shiny = 1;
-			entities.erase(entities.begin() + i);
-			break;
-		}
-		else if (entities[i].type == 2 &&
-			mario.box.animation.getGlobalBounds().intersects(entities[i].anim.animation.getGlobalBounds()) &&
-			entities[i].out == 1) {
-			mario.big = 1;
-			entities.erase(entities.begin() + i);
-			break;
-		}
-	}
+		//update box up-down movement
+		for (int i = 0; i < boxes.size(); i++) boxes[i].update();
 
-	//also coin blocks
-	for (int i = 0; i < coins_.size(); i++) {
-		if (mario.box.animation.getGlobalBounds().intersects(coins_[i].box.animation.getGlobalBounds()))
-		{
-			coins += 1;
-			coins_.erase(coins_.begin() + i);
-			break;
-		}
-	}
-	//update coins and blocks[]
-	for (int i = 0; i < coins_.size(); i++) coins_[i].update();
-	for (int i = 0; i < blocks.size(); i++) blocks[i].update();
+		//broken stuff
+		for (int i = broken.size() - 1; i >= 0; i--) if (broken[i].update()) broken.erase(broken.begin() + i);
 
-	//update box up-down movement
-	for(int i = 0; i < boxes.size(); i++) boxes[i].update();
+		//mario-boxes collision
+		bool col = 0;
+		std::vector<int> type{ -1,-1,-1,-1 };
 
-	//broken stuff
-	for (int i = broken.size() - 1; i >= 0; i--) if (broken[i].update()) broken.erase(broken.begin() + i);
-	
-	//mario-boxes collision
-	bool col = 0;
-	std::vector<int> type{ -1,-1,-1,-1 };
-	for (int i = 0; i < boxes.size(); i++) {
-		bool b = 0;
 		for (int j = 0; j < mario.mariobox.size(); j++) {
-			if (boxes[i].box.animation.getGlobalBounds().intersects(mario.mariobox[j].getGlobalBounds())) {
-				col = 1;
-				type[j] = 1;
-				//wiggle and stop jumping
-				if (j == 0) boxes[i].update(1);
+			for (int i = 0; i < boxes.size(); i++) {
+				if (boxes[i].box.animation.getGlobalBounds().intersects(mario.mariobox[j].getGlobalBounds())) {
+					col = 1;
+					type[j] = 1;
+					//wiggle and stop jumping
+					if (j == 0) boxes[i].update(1);
 
-				//if touching with head and has an entity
-				if (j == 0 && boxes[i].entity != 0) {
-					if(boxes[i].entity == 1) entities.push_back(Entity(tits, cSize,
-						3, boxes[i].box.animation.getPosition(), tSize, 1));
-					else entities.push_back(Entity(schrooms, sSize,
-						0, boxes[i].box.animation.getPosition(), tSize, 2, mario.big));
+					//if touching with head and has an entity
+					if (j == 0 && boxes[i].entity != 0) {
+						if (boxes[i].entity == 1) entities.push_back(Entity(tits, cSize,
+							3, boxes[i].box.animation.getPosition(), tSize, 1));
+						else entities.push_back(Entity(schrooms, sSize,
+							0, boxes[i].box.animation.getPosition(), tSize, 2, mario.big));
 
-					boxes[i].entity = 0;
-					//correct offsets
-					entities.back().oddX = -offX;
-					entities.back().offX = offX;
+						boxes[i].entity = 0;
+						//correct offsets
+						entities.back().oddX = -offX;
+						entities.back().offX = offX;
+					}
+
+					//destroy the object if mario big and block is brick
+					if (mario.big && j == 0 && boxes[i].type == block_type::brick) {
+						boxes.erase(boxes.begin() + i);
+
+						Vector2f mpos = mario.box.animation.getPosition(), msize = mario.box.animation.getSize();
+						//broken visuals
+						broken.push_back(Broken(gr, tSize, mpos, 1));
+						broken.push_back(Broken(gr, tSize, Vector2f(mpos.x, mpos.y + msize.y), 1));
+
+						broken.push_back(Broken(gr, tSize, Vector2f(mpos.x + msize.x, mpos.y)));
+						broken.push_back(Broken(gr, tSize, Vector2f(mpos.x + msize.x, mpos.y + msize.y)));
+						break;
+					}
+
 				}
+			}
 
-				//destroy the object if mario big and block is brick
-				if (mario.big && j == 0 && boxes[i].type == block_type::brick) {
-					boxes.erase(boxes.begin() + i);
-
-					Vector2f mpos = mario.box.animation.getPosition(), msize = mario.box.animation.getSize();
-					//broken visuals
-					broken.push_back(Broken(gr, tSize, mpos, 1));
-					broken.push_back(Broken(gr, tSize, Vector2f(mpos.x, mpos.y + msize.y) , 1));
-
-					broken.push_back(Broken(gr, tSize, Vector2f(mpos.x + msize.x, mpos.y)));
-					broken.push_back(Broken(gr, tSize, Vector2f(mpos.x + msize.x, mpos.y + msize.y)));
-
-					b = 1;
-					break;
+			for (int i = 0; i < enemies.size(); i++) {
+				for (int k = 0; k < mario.mariobox.size(); k++) {
+					if (mario.mariobox[k].getGlobalBounds().intersects(enemies[i].anim.animation.getGlobalBounds())) {
+						if ((k == 2 || k == 3) && (enemies[i].alive || enemies[i].spin != 0)) {
+							mario.alive = 0;
+							break;
+						}
+					}
 				}
-
 			}
 		}
-		if (b) break;
+
+		//offset everything if necessary
+		if (mario.update(left, right, up, col, type, sprint) == 1) {
+			if (sprint) offX -= mario.mariosp * mario.sprintsp;  else offX -= mario.mariosp;
+
+			//update world
+			if (sprint) tx += mario.mariosp * mario.sprintsp; else tx += mario.mariosp;
+			if (tx > tSize.x) {
+				//load world
+				tx = 0;
+				if (lastX < (lvl.getSize().x - 1)) {
+					lastX += 1;
+					loadWorld(lastX, 0);
+				}
+				//delete world
+				deleteWorld();
+			}
+
+			//blocks
+			for (int i = 0; i < boxes.size(); i++) 	boxes[i].off(offX);
+			for (int i = 0; i < blocks.size(); i++) blocks[i].off(offX);
+			for (int i = 0; i < coins_.size(); i++) coins_[i].off(offX);
+			//other
+			for (int i = 0; i < entities.size(); i++) entities[i].off(offX);
+			for (int i = 0; i < enemies.size(); i++) enemies[i].off(offX);
+
+			for (int i = 0; i < mp.size(); i++) mp[i].off(offX);
+			for (int i = 0; i < xps.size(); i++) xps[i].off(offX);
+
+			for (int i = 0; i < broken.size(); i++) broken[i].off(offX);
+		}
 	}
+	else {
+	if (mario.update()) {
+		//reset the world
+		boxes.clear();
+		blocks.clear();
+		coins_.clear();
+		enemies.clear();
+		entities.clear();
+		xps.clear();
+		mp.clear();
 
-	//offset everything if necessary
-	if (mario.update(left, right, up, col, type, sprint) == 1) {
-		if (sprint) offX -= mario.mariosp * mario.sprintsp;  else offX -= mario.mariosp;
-		
-		//update world
-		if (sprint) tx += mario.mariosp * mario.sprintsp; else tx += mario.mariosp;
-		if (tx > tSize.x) {
-			//load world
-			tx = 0;
-			if (lastX < (lvl.getSize().x - 1)) {
-				lastX += 1;
-				loadWorld(lastX, 0);
-			}
-			//delete world
-			deleteWorld();
+		mario.big = 0; mario.shiny = 0; mario.alive = 1;
+		score = 0;
+		offX = 0;
+
+		lastX = (scrWidth / tSize.x) + 7;
+		loadWorld(0, lastX, 0);
+		lastX -= 1;
 		}
-
-		//blocks
-		for (int i = 0; i < boxes.size(); i++) 	boxes[i].off(offX);
-		for(int i = 0; i < blocks.size();i++) blocks[i].off(offX);
-		for (int i = 0; i < coins_.size(); i++) coins_[i].off(offX);
-		//other
-		for (int i = 0; i < entities.size(); i++) entities[i].off(offX);
-		for (int i = 0; i < enemies.size(); i++) enemies[i].off(offX);
-
-		for (int i = 0; i < mp.size(); i++) mp[i].off(offX);
-		for (int i = 0; i < xps.size(); i++) xps[i].off(offX);
-
-		for (int i = 0; i < broken.size(); i++) broken[i].off(offX);
 	}
 
 }

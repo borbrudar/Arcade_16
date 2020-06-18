@@ -25,15 +25,15 @@ void Mario::boxUpdate()
 	//mario box update
 	mariobox[0].setPosition(box.animation.getPosition().x + 1, box.animation.getPosition().y);
 	mariobox[1].setPosition(box.animation.getPosition().x + 1, box.animation.getPosition().y + box.animation.getSize().y);
-	mariobox[2].setPosition(box.animation.getPosition().x, box.animation.getPosition().y + 1);
-	mariobox[3].setPosition(box.animation.getPosition().x + box.animation.getSize().x, box.animation.getPosition().y + 1);
+	mariobox[2].setPosition(box.animation.getPosition().x - 1, box.animation.getPosition().y + 1);
+	mariobox[3].setPosition(box.animation.getPosition().x + box.animation.getSize().x + 1, box.animation.getPosition().y + 1);
 
 }
 
 const void Mario::boxResize()
 {
-	mariobox[0].setSize(Vector2f(box.animation.getSize().x - 2, 1));
-	mariobox[1].setSize(Vector2f(box.animation.getSize().x - 2, 1));
+	mariobox[0].setSize(Vector2f(box.animation.getSize().x - 3, 1));
+	mariobox[1].setSize(Vector2f(box.animation.getSize().x - 20, 1));
 	mariobox[2].setSize(Vector2f(1, box.animation.getSize().y - 3));
 	mariobox[3].setSize(Vector2f(1, box.animation.getSize().y - 3));
 }
@@ -88,136 +88,163 @@ bool Mario::update(bool left, bool right, bool up, bool col, std::vector<int> ty
 	}
 
 	bool ret = 0;
+
 	//physics and stuff (temp hidden)
 	{
-		//other stuff
-		canLeft = 1, canRight = 1;
-		groundTouch = 0;
-		if (type[0] == 1) {
-			jumping = 0; pos.y = prevPos.y;
-		}
-		if (type[1] == 1) { groundTouch = 1; pos.y = prevPos.y; }
-		if (type[2] == 1) { canLeft = 0; pos.x = prevPos.x; }
-		if (type[3] == 1) { canRight = 0; pos.x = prevPos.x; }
-
-
-		//left/right movement
-		if (pos.x <= (scrWidth / 2) || left) {
-			if (left && canLeft) {
-				if (sprint)  pos.x -= mariosp * sprintsp; else pos.x -= mariosp;
+			//other stuff
+			canLeft = 1, canRight = 1;
+			groundTouch = 0;
+			if (type[0] == 1) {
+				jumping = 0; pos.y = prevPos.y;
 			}
-			else if (right && canRight) {
-				if (sprint)  pos.x += mariosp * sprintsp; else pos.x += mariosp;
+			if (type[1] == 1) { groundTouch = 1; pos.y = prevPos.y; }
+			if (type[2] == 1) { canLeft = 0; pos.x = prevPos.x; }
+			if (type[3] == 1) { canRight = 0; pos.x = prevPos.x; }
+
+
+			//left/right movement
+			if (pos.x <= (scrWidth / 2) || left) {
+				if (left && canLeft) {
+					if (sprint)  pos.x -= mariosp * sprintsp; else pos.x -= mariosp;
+				}
+				else if (right && canRight) {
+					if (sprint)  pos.x += mariosp * sprintsp; else pos.x += mariosp;
+				}
 			}
-		}
-		else if (right && canRight) ret = 1;
+			else if (right && canRight) ret = 1;
 
-		if (pos.x < 0) pos.x = 0;
+			if (pos.x < 0) pos.x = 0;
 
-		//fall
-		if (!jumping && !groundTouch) pos.y += gravity;
+			//fall
+			if (!jumping && !groundTouch) pos.y += gravity;
 
-		//add delay to repeated jumping
-		if(!jumping){
-			jdtime = jdclock.getElapsedTime().asSeconds();
-			jdtimer += jdtime;
-			jdclock.restart();
+			//kill if falls
+			if (pos.y + box.animation.getSize().y > scrHeight) alive = 0;
 
-			if (jdtimer > jddelay) {
-				noDelay = 1; jdtimer = 0; jdclock.restart();
+			//add delay to repeated jumping
+			if (!jumping) {
+				jdtime = jdclock.getElapsedTime().asSeconds();
+				jdtimer += jdtime;
+				jdclock.restart();
+
+				if (jdtimer > jddelay) {
+					noDelay = 1; jdtimer = 0; jdclock.restart();
+				}
+				else noDelay = 0;
 			}
-			else noDelay = 0;
-		}
-		else {
-			jdtimer = 0;
-			jdclock.restart();
-		}
-			
-		//hop hop
-		if (up && groundTouch && noDelay) jumping = 1;
-
-		if (jumping) {
-			if (!up && (gtimer > minDelay)) {
-				jumping = 0;
-				gtimer = 0;
+			else {
+				jdtimer = 0;
+				jdclock.restart();
 			}
-			gtime = gclock.getElapsedTime().asSeconds();
-			gtimer += gtime;
-			gclock.restart();
 
-			if (gtimer > gdelay) {
-				jumping = 0;
-				gtimer = 0;
+			//hop hop
+			if (up && groundTouch && noDelay) jumping = 1;
+
+			if (jumping) {
+				if (!up && (gtimer > minDelay)) {
+					jumping = 0;
+					gtimer = 0;
+				}
+				gtime = gclock.getElapsedTime().asSeconds();
+				gtimer += gtime;
+				gclock.restart();
+
+				if (gtimer > gdelay) {
+					jumping = 0;
+					gtimer = 0;
+				}
+				else  pos.y -= jump;
+
 			}
-			else  pos.y -= jump;
+			else gclock.restart();
 
+			prevPos = pos;
+
+			box.animation.setPosition(pos);
+			boxUpdate();
 		}
-		else gclock.restart();
-
-		prevPos = pos;
-
-		box.animation.setPosition(pos);
-		boxUpdate();
-	}
 
 	//update animation
 	{
-		if (right && (!prevR || !prevU)) {
-			box.setCycle(1);
-			box.setMaxSwap(3);
-			box.setRow(0);
-		}
-		//left
-		else if (left && (!prevL || prevU)) {
-			box.setCycle(1);
-			box.setMaxSwap(3);
-			box.setRow(1);
-		}
-		//rest according to last state
-		else if (!left && !right && !up) {
-			if (prevR || !prevU) {
-				box.setCycle(0);
+			if (right && (!prevR || !prevU)) {
+				box.setCycle(1);
+				box.setMaxSwap(3);
 				box.setRow(0);
-				box.setSwap(0);
 			}
-			else if (prevL || prevU) {
-				box.setCycle(0);
+			//left
+			else if (left && (!prevL || prevU)) {
+				box.setCycle(1);
+				box.setMaxSwap(3);
 				box.setRow(1);
-				box.setSwap(0);
 			}
-		}
+			//rest according to last state
+			else if (!left && !right && !up) {
+				if (prevR || !prevU) {
+					box.setCycle(0);
+					box.setRow(0);
+					box.setSwap(0);
+				}
+				else if (prevL || prevU) {
+					box.setCycle(0);
+					box.setRow(1);
+					box.setSwap(0);
+				}
+			}
 
-		//jump
-		if (up) {
-			box.setCycle(0);
-			box.setSwap(4);
-			if (prevR) {
-				box.setRow(0);
-				prevU = 1;
+			//jump
+			if (up) {
+				box.setCycle(0);
+				box.setSwap(4);
+				if (prevR) {
+					box.setRow(0);
+					prevU = 1;
+				}
+				else if (prevL) {
+					box.setRow(1);
+					prevU = 0;
+				}
 			}
-			else if(prevL) {
-				box.setRow(1);
+
+			//update prevAnim
+			if (right) {
+				prevR = 1;
+				prevL = 0;
 				prevU = 0;
+				prevDir = 1;
 			}
-		} 
+			else if (left) {
+				prevL = 1;
+				prevR = 0;
+				prevU = 1;
+				prevDir = 0;
+			}
+			else if (!up) {
+				prevL = 0;
+				prevR = 0;
+			}
+		}
 
-		//update prevAnim
-		if (right) {
-			prevR = 1;
-			prevL = 0;
-			prevU = 0;
-			prevDir = 1;
-		}
-		else if (left) {
-			prevL = 1;
-			prevR = 0;
-			prevU = 1;
-			prevDir = 0;
-		}
-		else if(!up){
-			prevL = 0;
-			prevR = 0;
-		}
+	return ret;
+}
+
+bool Mario::update()
+{
+	bool ret = 0;
+
+	gtime = gclock.getElapsedTime().asSeconds();
+	gtimer += gtime;
+	gclock.restart();
+
+	if (gtimer < (gdelay / 2)) pos.y -= jump;
+	else {
+		pos.y += jump;
+		if (pos.y > scrHeight + box.animation.getSize().y) ret = 1;
 	}
+	box.setCycle(0);
+	box.setRow(2);
+	box.setSwap(0);
+
+	box.animation.setPosition(pos);
+	
 	return ret;
 }

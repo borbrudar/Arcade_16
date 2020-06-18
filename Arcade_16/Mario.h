@@ -13,15 +13,16 @@ public:
 	const void boxResize();
 	void draw(RenderWindow& window);
 	bool update(bool left, bool right, bool up, bool col, std::vector<int> type, bool sprint = 0);
+	bool update();
 
 	Manimation box;
 	std::vector<RectangleShape> mariobox;
 	float mariosp = 1.f, sprintsp = 1.6f;
-	bool showHitbox = 0, big = 0, shiny = 0, canShoot = 0, prevDir = 1;
+	bool showHitbox = 0, big = 0, shiny = 0, canShoot = 0, prevDir = 1, alive = 1;
 private:
 	//physics
 	Vector2f pos, prevPos;
-	float gravity = 2.f, jump = gravity;
+	float gravity = 2.2f, jump = gravity;
 	bool groundTouch = 0, jumping = 0, canLeft = 1, canRight = 1, checkBig = 0, checkShiny = 0;
 
 	//shooting clock
@@ -30,7 +31,7 @@ private:
 
 	//jumping clock
 	Clock gclock, jdclock;
-	float gtime = 0.f, gtimer = 0.f, gdelay = 0.35f, minDelay = 0.25f;
+	float gtime = 0.f, gtimer = 0.f, gdelay = 0.4f, minDelay = 0.25f;
 	float jdtime = 0.f, jdtimer = 0.f, jddelay = 0.2f;
 	bool noDelay = 1;
 

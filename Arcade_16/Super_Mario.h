@@ -106,7 +106,7 @@ public:
 	bool left = 0, right = 0, up = 0, sprint = 0;
 	std::vector<Vector2f> mSize{ {17,16}, {16,32} };
 	std::vector<Texture> mr;
-	int lives = 3;
+	int lives = 1;
 
 	//his projectiles
 	Texture proj, xp;
