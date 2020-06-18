@@ -248,9 +248,9 @@ bool Mario::update()
 	gtimer += gtime;
 	gclock.restart();
 
-	if (gtimer < (gdelay / 2)) pos.y -= jump;
+	if (gtimer < (gdelay / 2)) pos.y -= jump / 2;
 	else {
-		pos.y += jump;
+		pos.y += jump / 2;
 		if (pos.y > scrHeight + box.animation.getSize().y) ret = 1;
 	}
 	box.setCycle(0);

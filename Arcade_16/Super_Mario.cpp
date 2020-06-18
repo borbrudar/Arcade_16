@@ -2,6 +2,17 @@
 
 Super_Mario::Super_Mario(Font& f) : mfont(f)
 {
+	//songs
+	theme.openFromFile("res/mario/audio/theme.wav");
+	theme.play(); theme.setLoop(1);
+	bl_br.loadFromFile("res/mario/audio/bl_br.wav");
+	appear.loadFromFile("res/mario/audio/appear.wav");
+	death.loadFromFile("res/mario/audio/death.wav");
+	coin.loadFromFile("res/mario/audio/coin.wav");
+	jump.loadFromFile("res/mario/audio/jump.wav");
+	fire.loadFromFile("res/mario/audio/fire.wav");
+	powerup.loadFromFile("res/mario/audio/powerup.wav");
+
 	//scores
 	scr.setPosition(20, 10);
 	scr.setCharacterSize(24);
@@ -55,6 +66,12 @@ Super_Mario::Super_Mario(Font& f) : mfont(f)
 	lastX = (scrWidth / sx) + 7;
 	loadWorld(0, lastX, 0);
 	lastX -= 1;
+}
+
+Super_Mario::~Super_Mario()
+{
+	theme.stop();
+	sound.stop();
 }
 
 void Super_Mario::draw(RenderWindow& window)
@@ -139,6 +156,13 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 	}
 
 	if (mario.alive == 1 && !gameOver) {
+		//sounds
+		if (!th) { theme.play(); th = 1; }
+		if (up && !jp) {
+			sound.setBuffer(jump); sound.play();
+			jp = 1;
+		} else if(mario.groundTouch) jp = 0;
+
 		//update time
 		time = clock.getElapsedTime().asSeconds();
 		timer += time;
@@ -152,6 +176,7 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 		if (times < 0) {
 			mario.alive = 0;
 			times = 0;
+			sound.setBuffer(death); sound.play();
 		}
 
 		//projectiles
@@ -162,6 +187,8 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 				proj, mpSize, Vector2f(tSize.x / 2, tSize.y / 2)));
 			mp.back().oddX = -offX;
 			mp.back().offX = offX;
+
+			sound.setBuffer(fire); sound.play();
 
 			if (!mario.prevDir) mp.back().speedx = -mp.back().speedx;
 		}
@@ -293,6 +320,8 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 			{
 				coins += 1;
 				entities.erase(entities.begin() + i);
+
+				sound.setBuffer(coin); sound.play();
 				break;
 			}
 			else if (entities[i].type == 2 &&
@@ -300,6 +329,10 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 				mario.big == 1 && entities[i].out == 1) {
 				mario.shiny = 1;
 				entities.erase(entities.begin() + i);
+
+				//sound efx
+				sound.setBuffer(powerup); sound.play();
+
 				break;
 			}
 			else if (entities[i].type == 2 &&
@@ -307,6 +340,8 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 				entities[i].out == 1) {
 				mario.big = 1;
 				entities.erase(entities.begin() + i);
+
+				sound.setBuffer(powerup); sound.play();
 				break;
 			}
 		}
@@ -350,6 +385,9 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 							0, boxes[i].box.animation.getPosition(), tSize, 2, mario.big));
 
 						boxes[i].entity = 0;
+
+						sound.setBuffer(appear); sound.play();
+
 						//correct offsets
 						entities.back().oddX = -offX;
 						entities.back().offX = offX;
@@ -358,6 +396,7 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 					//destroy the object if mario big and block is brick
 					if (mario.big && j == 0 && boxes[i].type == block_type::brick) {
 						boxes.erase(boxes.begin() + i);
+						sound.setBuffer(bl_br); sound.play();
 
 						Vector2f mpos = mario.box.animation.getPosition(), msize = mario.box.animation.getSize();
 						//broken visuals
@@ -378,6 +417,8 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 						if ((k == 2 || k == 3) && (enemies[i].alive || enemies[i].spin != 0) && !mario.op
 							&& !mario.big) {
 							mario.alive = 0;
+
+							sound.setBuffer(death); sound.play();
 							break;
 						}
 					}
@@ -437,6 +478,7 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 	gameOver = 0;
 	}
 	else {
+	theme.stop(); th = 0;
 	if (mario.update()) {
 		//reset the world
 		boxes.clear();

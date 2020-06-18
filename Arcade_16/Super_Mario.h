@@ -7,6 +7,7 @@
 #include "BoxEnum.h"
 #include "MP.h"
 #include <fstream>
+#include <SFML/Audio.hpp>
 
 struct Explosion {
 	Explosion(Vector2f pos, Texture& t1, Vector2f eSize, Vector2f tSize, int maxSwap = 2):
@@ -65,6 +66,7 @@ struct Broken {
 class Super_Mario : public State {
 public:
 	Super_Mario(Font& f);
+	~Super_Mario();
 	void draw(RenderWindow& window);
 	void update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e);
 	void loadWorld(int start, int end, bool plus = 1);
@@ -72,6 +74,12 @@ public:
 	void drawString(int x, int y, std::string string, RenderWindow &window);
 
 	Button back;
+	//sound
+	Music theme;
+	SoundBuffer bl_br, appear, powerup, death, coin, fire, jump;
+	Sound sound;
+	bool th = 1, jp = 0;
+
 	//level
 	Image lvl;
 	Texture gr, br, cl, h1;
