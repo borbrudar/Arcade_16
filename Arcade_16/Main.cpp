@@ -20,14 +20,15 @@ int main() {
 	Event e;
 	Mouse mouse;
 
+	//resources
 	Font arial, mario;
 	arial.loadFromFile("res/font/arial.ttf");
 	mario.loadFromFile("res/font/mario.ttf");
 	
-
+	//game state
 	state gameState = state::menu;
 	state prevState = gameState;
-	std::unique_ptr<State> state = std::make_unique<Menu>(arial); //FOR TEST YOU HAVE TO SWITCH THE TOP ONES TOO!!!
+	std::unique_ptr<State> state = std::make_unique<Menu>(arial); 
 
 
 	//game loop
