@@ -32,4 +32,10 @@ bool Button::isClicked(Mouse &mouse, RenderWindow& window)
 	else return false;
 }
 
+void Button::outline(float size, Color c)
+{
+	button.setOutlineThickness(size);
+	button.setOutlineColor(c);
+}
+
 

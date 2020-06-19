@@ -22,16 +22,17 @@ public:
 	float ballH = 30 * 0.7f, ballW = ballH;
 	float sizeX = 40, sizeY = 20;
 	int offsetX = 30, offsetY = 40, spacing = 2;
-	float speedx = 0.6f, speedy = 0.5f;
+	float speedx = 0.8f, speedy = 0.7f;
 	Vector2f pos, prevPos;
 
 	//the thing
 	RectangleShape paddle;
 	Vector2f pPos{ 250,420 };
-	float pspeed = 0;
+	float pspeed = 1.5f;
 
 	//game
 	bool gameOver = 0;
+	bool l = 0, r = 0;
 };
 
 

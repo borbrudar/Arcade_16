@@ -57,9 +57,6 @@ void Arkanoid::update(Mouse& mouse, RenderWindow& window, state& gameState, Even
 {
 
 	if (!gameOver) {
-		if (pspeed > -1 && pspeed < 1) pspeed = 0;
-		if (pspeed > 0) pspeed -= 0.1f;
-		if (pspeed < 0) pspeed += 0.1f;
 		if (pPos.x < 0) pPos.x = 0;
 		if (pPos.x > scrWidth - paddle.getSize().x) pPos.x = scrWidth - paddle.getSize().x;
 
@@ -69,8 +66,12 @@ void Arkanoid::update(Mouse& mouse, RenderWindow& window, state& gameState, Even
 		while (window.pollEvent(e)) {
 			if (e.type == Event::Closed) window.close();
 			if (e.type == Event::KeyPressed) {
-				if (e.key.code == Keyboard::Left && pspeed > -7) pspeed += -1.7;
-				if (e.key.code == Keyboard::Right && pspeed < 7) pspeed += 1.7;
+				if (e.key.code == Keyboard::Left ) l = 1;
+				if (e.key.code == Keyboard::Right) r = 1;
+			}
+			if (e.type == Event::KeyReleased) {
+				if (e.key.code == Keyboard::Left) l = 0;
+				if (e.key.code == Keyboard::Right) r = 0;
 			}
 		}
 		if (back.isClicked(mouse, window)) gameState = state::menu;
@@ -109,7 +110,9 @@ void Arkanoid::update(Mouse& mouse, RenderWindow& window, state& gameState, Even
 		ball.setPosition(pos);
 
 		//check for paddle
-		pPos.x += pspeed;
+
+		if (l == 1) pPos.x -= pspeed;
+		else if (r == 1) pPos.x += pspeed;
 		paddle.setPosition(pPos);
 		collision(paddle.getPosition(), paddle.getSize());
 	}

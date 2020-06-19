@@ -7,34 +7,42 @@ Menu::Menu(Font& f)
 	//tetris
 	text1.assign("1.Tetris");
 	tetris.setup(f, text1, Color::Green, Vector2f(200, 50), Vector2f(70, 90), 22);
+	tetris.outline(-2);
+
 	//arkanoid
 	text1.assign("2. Arkanoid");
 	arkanoid.setup(f, text1, Color::Green, Vector2f(200, 50), Vector2f(70, 170), 22);
+	arkanoid.outline(-2);
 
 	//space invaders
 	text1.assign("3. Space Invaders");
 	spaceinvaders.setup(f, text1, Color::Green, Vector2f(200, 50), Vector2f(70, 250), 22);
+	spaceinvaders.outline(-2);
 
 	//pong
 	text1.assign("4. Pong");
 	pong.setup(f, text1, Color::Green, Vector2f(200, 50), Vector2f(70, 330), 22);
+	pong.outline(-2);
 
 	//asteroids
 	text1.assign("5. Asteroids");
 	asteroids.setup(f, text1, Color::Green, Vector2f(200, 50), Vector2f(300, 90), 22);
+	asteroids.outline(-2);
 
 	//pac man
 	text1.assign("6.Pac Man");
 	pacman.setup(f, text1, Color::Green, Vector2f(200, 50), Vector2f(300, 170), 22);
+	pacman.outline(-2);
 
 	//simon
 	text1.assign("7.Simon");
 	simon.setup(f, text1, Color::Green, Vector2f(200, 50), Vector2f(300, 250), 22);
+	simon.outline(-2);
 
 	//super mario
 	text1.assign("8.Super Mario");
 	supermario.setup(f, text1, Color::Green, Vector2f(200, 50), Vector2f(300, 330), 22);
-
+	supermario.outline(-2);
 
 	//arcade 
 	arcade.setCharacterSize(50);
