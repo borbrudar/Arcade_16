@@ -1,6 +1,7 @@
 #pragma once
 #include "State.h"
 #include <random>
+#include <SFML/Audio.hpp>
 
 
 using namespace sf;
@@ -18,6 +19,9 @@ private:
 	Text points;
 	float prob = 0.2f;
 
+	//sound
+	SoundBuffer col, death;
+	Sound sound;
 	//player
 	RectangleShape player, ball, ai;
 	std::vector<RectangleShape> b;

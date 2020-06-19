@@ -7,6 +7,10 @@ Pong::Pong(Font& f)
 	text1.assign("Back");
 	back.setup(f, text1, Color::White, Vector2f(40, 30), Vector2f(scrWidth / 2 - 20, 10), 14);
 
+	//sound
+	col.loadFromFile("res/pong/col.wav");
+	death.loadFromFile("res/pong/death.wav");
+
 	//player setup
 	player.setFillColor(Color::White);
 	player.setSize(Vector2f(12, 40));
@@ -120,31 +124,39 @@ void Pong::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e
 	if (b[2].getGlobalBounds().intersects(player.getGlobalBounds()))	x = 1;
 	else if (b[3].getGlobalBounds().intersects(ai.getGlobalBounds())) x = 1;
 
-	if (y) {
-		bspedy = -bspedy;
-		ty = 15 * bspedy;
-		ball.setPosition(prevPos);
-	}
-	else if (x) {
+	//update
+	if (x) {
 		bspedx = -bspedx;
 		speedy = 0;
 		tx = 15 * bspedx;
 		ball.setPosition(prevPos);
+
+		sound.setBuffer(col); sound.play();
 	}
 
 	//ball border
-	if (ball.getPosition().y < 0) bspedy = -bspedy;
-	if (ball.getPosition().y + ball.getSize().y > scrHeight) bspedy = -bspedy;
+	if (ball.getPosition().y < 0) {
+		bspedy = -bspedy;
+		sound.setBuffer(col); sound.play();
+	}
+	if (ball.getPosition().y + ball.getSize().y > scrHeight) {
+		bspedy = -bspedy;
+		sound.setBuffer(col); sound.play();
+	}
 	//ball reset + score
 	if (ball.getPosition().x < 0) {
 		ball.setPosition(bpos[1]);
 		bspedx = orgx2; bspedy = orgy2;
 		score2++;
+		
+		sound.setBuffer(death); sound.play();
 	}
 	else if (ball.getPosition().x + ball.getSize().x > scrWidth) {
 		ball.setPosition(bpos[0]);
 		bspedx = orgx; bspedy = orgy;
 		score1++;
+
+		sound.setBuffer(death); sound.play();
 	}
 
 	prevPos = ball.getPosition();
