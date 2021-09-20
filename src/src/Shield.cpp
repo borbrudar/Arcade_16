@@ -37,7 +37,7 @@ void Shield::Shield_Section::setup(type type, float startX, float startY)
 			for (int x = 0; x < 20; x++) {
 				temp.color = Color::Green;
 				temp.position = Vector2f(startX + x, startY + y);
-				points[(_int64)y * (_int64)size + (_int64)x] = temp;
+				points[y * size + x] = temp;
 			}
 		}
 		break;
@@ -46,7 +46,7 @@ void Shield::Shield_Section::setup(type type, float startX, float startY)
 			for (int x = 0; x < 20; x++) {
 				if (x <= y) temp.color = Color::Green; else temp.color = Color::Black;
 				temp.position = Vector2f(startX + x, startY + y);
-				points[(_int64)y * (_int64)size + (_int64)x] = temp;
+				points[y * size + x] = temp;
 			}
 		}
 		break;
@@ -55,7 +55,7 @@ void Shield::Shield_Section::setup(type type, float startX, float startY)
 			for (int x = 0; x < 20; x++) {
 				if (x >= y) temp.color = Color::Green; else temp.color = Color::Black;
 				temp.position = Vector2f(startX + x, startY + y);
-				points[(_int64)y * (_int64)size + (_int64)x] = temp;
+				points[y * size + x] = temp;
 			}
 		}
 		break;
@@ -64,7 +64,7 @@ void Shield::Shield_Section::setup(type type, float startX, float startY)
 			for (int x = 0; x < 20; x++) {
 				if (x - 20 > -y) temp.color = Color::Green; else temp.color = Color::Black;
 				temp.position = Vector2f(startX + x, startY + y);
-				points[(_int64)y * (_int64)size + (_int64)x] = temp;
+				points[y * size + x] = temp;
 			}
 		}
 		break;
@@ -73,7 +73,7 @@ void Shield::Shield_Section::setup(type type, float startX, float startY)
 			for (int x = 0; x < 20; x++) {
 				if (-x > y - 20) temp.color = Color::Green; else temp.color = Color::Black;
 				temp.position = Vector2f(startX + x, startY + y);
-				points[(_int64)y * (_int64)size + (_int64)x] = temp;
+				points[y * size + x] = temp;
 			}
 		}
 		break;
@@ -130,20 +130,20 @@ bool Shield::Shield_Section::update(Vector2f pos, Vector2f size)
 			for (float y = 0; y < size.y; y++) {
 				//base
 				if ((temp.y + y) < this->size && (temp.x + x) < this->size) {
-					points[(_int64)((_int64)temp.y + (_int64)y) * (_int64)this->size + (_int64)temp.x + x].color = Color::Black;
+					points[(temp.y + y) * this->size + temp.x + x].color = Color::Black;
 
 					//around it to the left/right
 					float gl = 7;
 					for (int i = 0; i < gl; i++) {
 						//right
 						if (dist(engine) > i * (1 / gl) && temp.x + x + i < this->size)
-							points[(_int64)((_int64)temp.y + (_int64)y) * (_int64)this->size + (_int64)temp.x + x + i].color = Color::Black;
+							points[(temp.y + y) * this->size + temp.x + x + i].color = Color::Black;
 						//left
 						if (dist(engine) > i * (1 / gl) && temp.x - i < this->size && temp.x - i >= 0)
-							points[(_int64)((_int64)temp.y + (_int64)y) * (_int64)this->size + (_int64) temp.x - i].color = Color::Black;
+							points[(temp.y + y) * this->size + temp.x - i].color = Color::Black;
 						//down
 						if (dist(engine) > i * (1 / gl) && temp.y + i < this->size)
-							points[(_int64)((_int64)temp.y + (_int64)y) * (_int64)this->size + (_int64)temp.x].color = Color::Black;
+							points[(temp.y + y) * this->size + temp.x].color = Color::Black;
 					}
 				}
 			}

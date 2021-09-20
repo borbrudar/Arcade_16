@@ -1,4 +1,5 @@
 #include "Super_Mario.h"
+#include <math.h>
 
 Super_Mario::Super_Mario(Font& f) : mfont(f)
 {
