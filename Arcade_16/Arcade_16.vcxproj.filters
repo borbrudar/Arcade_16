@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="State">
+      <UniqueIdentifier>{151f76cb-58e7-4f21-ae04-8b1c37f82042}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Games">
+      <UniqueIdentifier>{d7454624-ecb5-4446-99dd-c7d2fc95acac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Games\Tetris">
+      <UniqueIdentifier>{165aa624-b2f5-470e-b624-361507800925}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Games\Arkanoid">
+      <UniqueIdentifier>{4a030796-1630-47d0-826e-2befea083b19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Games\Pong">
+      <UniqueIdentifier>{7430425f-46a3-4eb5-9230-5ced78811f25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Games\Asteroids">
+      <UniqueIdentifier>{44b78ba8-fa64-4ce9-ba97-be092a984021}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Games\Pac_Man">
+      <UniqueIdentifier>{4a0ba12b-87f9-4950-aed5-08fac92cf73b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Games\Super_Mario">
+      <UniqueIdentifier>{6bf2050a-22f0-4ddc-aab4-62b88f53262e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Games\Simon">
+      <UniqueIdentifier>{d2379a33-9287-466b-a512-0bdc1653a3ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Games\Super_Mario\Utility">
+      <UniqueIdentifier>{e977f89a-6efc-4e34-9c5f-9546af48283e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Games\Super_Mario\Stuff">
+      <UniqueIdentifier>{a33c647b-0326-446e-a9d7-510a6c957395}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Games\Space_Invaders">
+      <UniqueIdentifier>{b3d61615-3911-4da3-b749-29a7a4a0ea49}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tetris.cpp">
+      <Filter>Games\Tetris</Filter>
+    </ClCompile>
+    <ClCompile Include="Arkanoid.cpp">
+      <Filter>Games\Arkanoid</Filter>
+    </ClCompile>
+    <ClCompile Include="Space_Invaders.cpp">
+      <Filter>Games\Space_Invaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation.cpp">
+      <Filter>Games\Space_Invaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Shield.cpp">
+      <Filter>Games\Space_Invaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Pong.cpp">
+      <Filter>Games\Pong</Filter>
+    </ClCompile>
+    <ClCompile Include="Asteroids.cpp">
+      <Filter>Games\Asteroids</Filter>
+    </ClCompile>
+    <ClCompile Include="Astro.cpp">
+      <Filter>Games\Asteroids</Filter>
+    </ClCompile>
+    <ClCompile Include="Pac_Man.cpp">
+      <Filter>Games\Pac_Man</Filter>
+    </ClCompile>
+    <ClCompile Include="Ghost.cpp">
+      <Filter>Games\Pac_Man</Filter>
+    </ClCompile>
+    <ClCompile Include="Simon.cpp">
+      <Filter>Games\Simon</Filter>
+    </ClCompile>
+    <ClCompile Include="Super_Mario.cpp">
+      <Filter>Games\Super_Mario</Filter>
+    </ClCompile>
+    <ClCompile Include="Manimation.cpp">
+      <Filter>Games\Super_Mario\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Games\Super_Mario\Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Games\Super_Mario\Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="Mario.cpp">
+      <Filter>Games\Super_Mario\Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="Box.cpp">
+      <Filter>Games\Super_Mario\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="MP.cpp">
+      <Filter>Games\Super_Mario\Stuff</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stateEnum.h">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="Tetris.h">
+      <Filter>Games\Tetris</Filter>
+    </ClInclude>
+    <ClInclude Include="Arkanoid.h">
+      <Filter>Games\Arkanoid</Filter>
+    </ClInclude>
+    <ClInclude Include="Space_Invaders.h">
+      <Filter>Games\Space_Invaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>Games\Space_Invaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Shield.h">
+      <Filter>Games\Space_Invaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Pong.h">
+      <Filter>Games\Pong</Filter>
+    </ClInclude>
+    <ClInclude Include="Asteroids.h">
+      <Filter>Games\Asteroids</Filter>
+    </ClInclude>
+    <ClInclude Include="Astro.h">
+      <Filter>Games\Asteroids</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Pac_Man.h">
+      <Filter>Games\Pac_Man</Filter>
+    </ClInclude>
+    <ClInclude Include="Ghost.h">
+      <Filter>Games\Pac_Man</Filter>
+    </ClInclude>
+    <ClInclude Include="Pellet.h">
+      <Filter>Games\Pac_Man</Filter>
+    </ClInclude>
+    <ClInclude Include="Simon.h">
+      <Filter>Games\Simon</Filter>
+    </ClInclude>
+    <ClInclude Include="Super_Mario.h">
+      <Filter>Games\Super_Mario</Filter>
+    </ClInclude>
+    <ClInclude Include="Manimation.h">
+      <Filter>Games\Super_Mario\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Games\Super_Mario\Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Games\Super_Mario\Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="Mario.h">
+      <Filter>Games\Super_Mario\Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="BoxEnum.h">
+      <Filter>Games\Super_Mario\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Box.h">
+      <Filter>Games\Super_Mario\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="MP.h">
+      <Filter>Games\Super_Mario\Stuff</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
