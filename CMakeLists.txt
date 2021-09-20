@@ -106,7 +106,6 @@ system window graphics network audio REQUIRED)
 
 target_link_libraries(Spark sfml-graphics sfml-audio)
 
-
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
-include(CPack)
+include(CPack) 
