@@ -1,5 +1,4 @@
 #include "Space_Invaders.h"
-#include "Space_Invaders.h"
 
 Space_Invaders::Space_Invaders(Font& f)
 {
@@ -146,8 +145,8 @@ void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState
 			}
 
 			//cannon
-			if (left) cannonx = speedL;
-			if (right) cannonx = speedR;
+			if (left) cannonx = -speed * delta;
+			if (right) cannonx = speed * delta;
 			if (shoot && (timer > delay)) {
 				//bullet position
 				bullets.push_back(Projectile(proj,
@@ -370,9 +369,13 @@ void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState
 				}
 			}
 
+			//update bullet positions
+			for (int i = 0; i < bullets.size(); i++) bullets[i].update(delta);
+			for (int i = 0; i < alienBullets.size(); i++) alienBullets[i].update(delta);
+
 			//update positions
 			for (int x = 0; x < invdM; x++) {
-				for (int y = 0; y < invdN; y++) invaders[x][y].animation.animation.move(invaders[x][y].speedx, 0);
+				for (int y = 0; y < invdN; y++) invaders[x][y].animation.animation.move(invaders[x][y].speedx * delta, 0);
 			}
 		}
 		else {

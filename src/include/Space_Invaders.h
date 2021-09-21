@@ -24,13 +24,15 @@ public:
 		projectile.setPosition(pos);
 	}
 	void draw(RenderWindow& window) {
-		projectile.move(0, speedy);
 		pos = projectile.getPosition();
 		window.draw(projectile);
 	}
+	void update(float delta){
+		projectile.move(0, speedy * delta);
+	}
 	Sprite projectile;
 	Vector2f pos;
-	float speedy = -1.f;
+	float speedy = -700.f;
 };
 
 //invader class
@@ -47,7 +49,7 @@ public:
 		animation.draw(window);
 	}
 	Animation animation;
-	float speedx = 0.1f;
+	float speedx = 50.f;
 	bool alive = 1;
 };
 
@@ -67,7 +69,7 @@ private:
 	bool gameOver = 0, transition = 0;
 	int score = 0, highscore;
 	Text scr;
-	float cannonshoot = -5.f;
+	float cannonshoot = -700.f;
 	std::fstream high;
 	Sprite dlife;
 	//////////////////////////////////////////
@@ -81,7 +83,7 @@ private:
 	//cannon varbs
 	float cannonx = 0.f;
 	bool left = 0, right = 0, shoot = 0;
-	float speedL = -0.4f, speedR = 0.4f;
+	float speed = 300.f;
 	int lives = 3;
 
 	Animation death;
