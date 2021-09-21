@@ -16,10 +16,10 @@ Astro::Astro(int size, Texture &tex, Vector2f pos)
 
 	std::random_device rd;
 	std::default_random_engine engine(rd());
-	std::uniform_real_distribution<float> dist(0, 1);
+	std::uniform_real_distribution<float> dist(50,200);
 
-	vel = Vector2f(dist(engine) / 5, dist(engine) / 5);
-	rot = dist(engine) / 5;
+	vel = Vector2f(dist(engine), dist(engine));
+	rot = dist(engine);
 }
 
 void Astro::draw(RenderWindow& window)
@@ -27,7 +27,7 @@ void Astro::draw(RenderWindow& window)
 	window.draw(ast);
 }
 
-void Astro::update() {
+void Astro::update(float delta) {
 	Vector2f pos = ast.getPosition();
 
 	if (pos.x < 0) ast.setPosition(scrWidth, ast.getPosition().y);
@@ -35,6 +35,6 @@ void Astro::update() {
 	if (pos.y < 0) ast.setPosition(ast.getPosition().x, scrHeight);
 	if (pos.y > scrHeight) ast.setPosition(ast.getPosition().x, 0);
 
-	ast.move(vel);
-	ast.rotate(rot);
+	ast.move(vel * delta);
+	ast.rotate(rot * delta);
 }

@@ -116,16 +116,16 @@ void Asteroids::update(Mouse& mouse, RenderWindow& window, state& gameState, Eve
 		if (left) rot = -rots;
 		else if (right)	rot = rots;
 		else rot = 0;
-		ship.rotate(rot);
+		ship.rotate(rot * delta);
 
 		//ship move
 		if (move) {
-			vel.x += std::cos(ship.getRotation() * 3.14159 / 180) * 0.01; //convert degress to radians
-			vel.y += std::sin(ship.getRotation() * 3.14159 / 180) * 0.01;
+			vel.x += std::cos(ship.getRotation() * 3.14159 / 180) * speed * delta; //convert degress to radians
+			vel.y += std::sin(ship.getRotation() * 3.14159 / 180) * speed * delta;
 		}
 		else {
-			vel.x *= drag;
-			vel.y *= drag;
+			vel.x *= drag * delta;
+			vel.y *= drag * delta;
 		}
 
 		float sped = std::sqrt(vel.x * vel.x + vel.y * vel.y);
@@ -160,9 +160,9 @@ void Asteroids::update(Mouse& mouse, RenderWindow& window, state& gameState, Eve
 		}
 		
 		//update asteroids 
-		for (int i = 0; i < big.size(); i++) big[i].update();
-		for (int i = 0; i < medium.size(); i++) medium[i].update();
-		for (int i = 0; i < small.size(); i++) small[i].update();
+		for (int i = 0; i < big.size(); i++) big[i].update(delta);
+		for (int i = 0; i < medium.size(); i++) medium[i].update(delta);
+		for (int i = 0; i < small.size(); i++) small[i].update(delta);
 
 		//ship asteroid collison
 		col.setPosition(ship.getPosition());

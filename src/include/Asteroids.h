@@ -39,14 +39,15 @@ private:
 
 	//ship rotation
 	const float ship_scale = 0.2f;
-	float rot = 0, rots = 0.6f;
+	float rot = 0, rots = 300.f;
 	bool left = 0, right = 0;
 
 	//ship movement
 	Vector2f vel{ 0,0 };
-	float drag = 0.997f;
+	float drag = 0.9999f;
 	bool move = 0;
-	float maxsped = 0.5f;
+	float maxsped = 0.17f;
+	float speed = .12f;
 
 	//pew pew pew
 	bool shoot = 0;

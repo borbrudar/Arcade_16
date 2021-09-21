@@ -24,7 +24,7 @@ Pong::Pong(Font& f)
 	//ball
 	ball.setFillColor(Color::White);
 	ball.setSize(bSize);
-	ball.setPosition(scrWidth / 2, 0);
+	ballPos = Vector2f(scrWidth / 2,0);
 	
 	b.resize(4);
 	b[0].setSize(Vector2f(bSize.x - 2, 1));
@@ -89,14 +89,14 @@ void Pong::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e
 	if (back.isClicked(mouse, window)) gameState = state::menu;
 
 	//movement
-	if (up) speedy = -csped;
-	else if (down) speedy = csped;
+	if (up) speedy = -csped * delta;
+	else if (down) speedy = csped * delta;
 	else speedy = 0;
 
 	//ai movement
 	aiMove();
-	if (aiu) aiy = -aisped;
-	else if (aid) aiy = aisped;
+	if (aiu) aiy = -aisped * delta;
+	else if (aid) aiy = aisped * delta;
 	else aiy = 0;
 
 	//ball stuff
@@ -128,7 +128,7 @@ void Pong::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e
 	if (x) {
 		bspedx = -bspedx;
 		speedy = 0;
-		tx = 15 * bspedx;
+		tx = bspedx * 15;
 		ball.setPosition(prevPos);
 
 		sound.setBuffer(col); sound.play();
@@ -145,15 +145,15 @@ void Pong::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e
 	}
 	//ball reset + score
 	if (ball.getPosition().x < 0) {
-		ball.setPosition(bpos[1]);
-		bspedx = orgx2; bspedy = orgy2;
+		ballPos = bpos[1];
+		bspedx = startSpeed; bspedy = -startSpeed;
 		score2++;
 		
 		sound.setBuffer(death); sound.play();
 	}
 	else if (ball.getPosition().x + ball.getSize().x > scrWidth) {
-		ball.setPosition(bpos[0]);
-		bspedx = orgx; bspedy = orgy;
+		ballPos = bpos[0];
+		bspedx = -startSpeed; bspedy = startSpeed;
 		score1++;
 
 		sound.setBuffer(death); sound.play();
@@ -161,7 +161,10 @@ void Pong::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e
 
 	prevPos = ball.getPosition();
 
-	ball.move(bspedx + tx, bspedy + ty);
+	ballPos.x += bspedx * delta;
+	ballPos.y += bspedy * delta;
+	ball.setPosition(ballPos);
+
 	//border stuff
 	if (player.getPosition().y < 0) player.setPosition(player.getPosition().x, 0);
 	if (player.getPosition().y + player.getSize().y > scrHeight)

@@ -11,7 +11,7 @@ public:
 	Astro() = default;
 	Astro(int type, Texture &tex, Vector2f pos);
 	void draw(RenderWindow& window);
-	void update();
+	void update(float delta);
 
 	CircleShape ast;
 	float rot = 0, r = 0;

@@ -29,14 +29,16 @@ private:
 	Vector2f prevPos;
 	Vector2f bpos[2] = { Vector2f(0, scrWidth / 2), Vector2f(scrWidth / 2, scrHeight - bSize.y) };
 	bool up = 0, down = 0;
-	float speedy = 0, csped = 1.0f;
+	float speedy = 0, csped = 800.0f;
 	
 	//ball
-	float orgx = -0.8f, orgy = 0.8f;
-	float orgy2 = -0.8f, orgx2 = 0.8f;
+	float orgx = -20.f, orgy = 20.f;
+	float orgy2 = -20.f, orgx2 = 20.f;
+	float startSpeed = 600.f;
 	float tx = 0, ty = 0;
-	float bspedx = -.8f, bspedy = .8f;
+	float bspedx = -startSpeed, bspedy = startSpeed;
+	Vector2f ballPos;
 
-	float aiy = 0, aisped = 1.f;
+	float aiy = 0, aisped = 800.f;
 	bool aiu = 0, aid = 0;
 };
