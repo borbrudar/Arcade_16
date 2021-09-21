@@ -56,7 +56,7 @@ public:
 	//functions
 	Space_Invaders(Font& f);
 	void draw(RenderWindow& window);
-	void update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e);
+	void update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e, float delta);
 
 private:
 	//utility shit

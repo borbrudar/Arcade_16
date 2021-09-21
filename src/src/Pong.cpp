@@ -71,7 +71,7 @@ void Pong::draw(RenderWindow& window)
 
 }
 
-void Pong::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
+void Pong::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e, float delta)
 {
 
 	//clicky boi

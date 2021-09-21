@@ -12,7 +12,7 @@ public:
 	void boxUpdate();
 	const void boxResize();
 	void draw(RenderWindow& window);
-	bool update(bool left, bool right, bool up, bool col, std::vector<int> type, bool sprint = 0);
+	bool update(bool left, bool right, bool up, bool col, std::vector<int> type, float delta, bool sprint = 0);
 	bool update();
 
 	Manimation box;

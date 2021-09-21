@@ -23,7 +23,7 @@ class Asteroids : public State {
 public:
 	Asteroids(Font& f);
 	void draw(RenderWindow& window);
-	void update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e);
+	void update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e, float delta);
 
 private:
 	Vector2f pos();

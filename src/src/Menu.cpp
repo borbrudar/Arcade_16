@@ -69,7 +69,7 @@ void Menu::draw(RenderWindow &window)
 	supermario.draw(window);
 }
 
-void Menu::update(Mouse &mouse, RenderWindow& window, state &gameState, Event &e)
+void Menu::update(Mouse &mouse, RenderWindow& window, state &gameState, Event &e, float delta)
 {
 	//event check
 	while (window.pollEvent(e)) {

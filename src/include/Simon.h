@@ -21,7 +21,7 @@ class Simon : public State {
 public:
 	Simon(Font& f);
 	void draw(RenderWindow& window);
-	void update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e);
+	void update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e, float delta);
 	void inst(bool reset = 0);
 	void music(int type);
 	void stop();

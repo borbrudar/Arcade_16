@@ -65,7 +65,7 @@ void Simon::draw(RenderWindow& window)
 	window.draw(scr);
 }
 
-void Simon::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
+void Simon::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e, float delta)
 {
 	if (score > highscore) {
 		highscore = score;

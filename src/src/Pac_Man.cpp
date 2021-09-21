@@ -147,7 +147,7 @@ void Pac_Man::draw(RenderWindow& window)
 	window.draw(scr);
 }
 
-void Pac_Man::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
+void Pac_Man::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e, float delta)
 {
 	//highscore update
 	if (score > highscore) {

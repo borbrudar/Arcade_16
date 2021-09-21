@@ -9,7 +9,7 @@ using namespace sf;
 class State {
 public:
 	virtual void draw(RenderWindow &window) = 0;
-	virtual void update(Mouse &mouse, RenderWindow& window, state &gameState, Event &e) = 0;
+	virtual void update(Mouse &mouse, RenderWindow& window, state &gameState, Event &e, float delta) = 0;
 	virtual ~State() {};
 };
 

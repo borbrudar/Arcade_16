@@ -108,7 +108,7 @@ void Space_Invaders::draw(RenderWindow& window)
 	}
 }
 
-void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
+void Space_Invaders::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e, float delta)
 {
 	//update score
 	if (score > highscore) {

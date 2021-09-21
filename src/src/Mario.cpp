@@ -45,7 +45,7 @@ void Mario::draw(RenderWindow& window)
 	if(showHitbox) for (int i = 0; i < mariobox.size(); i++) window.draw(mariobox[i]);
 }
 
-bool Mario::update(bool left, bool right, bool up, bool col, std::vector<int> type, bool sprint)
+bool Mario::update(bool left, bool right, bool up, bool col, std::vector<int> type, float delta, bool sprint)
 {
 	//check if shiny
 	if (big && shiny && !checkShiny) {

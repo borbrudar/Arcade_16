@@ -53,7 +53,7 @@ void Arkanoid::draw(RenderWindow& window)
 	window.draw(paddle);
 }
 
-void Arkanoid::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
+void Arkanoid::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e, float delta)
 {
 
 	if (!gameOver) {
@@ -83,8 +83,8 @@ void Arkanoid::update(Mouse& mouse, RenderWindow& window, state& gameState, Even
 		if (pos.x >= scrWidth - ballW) { pos.x = scrWidth - ballW; speedx = -speedx; }
 
 		//update ball position
-		pos.x += speedx;
-		pos.y += speedy;
+		pos.x += speedx * delta;
+		pos.y += speedy * delta;
 
 		//update collision boxes position
 		top.setPosition(pos.x + 1, pos.y);
@@ -111,8 +111,8 @@ void Arkanoid::update(Mouse& mouse, RenderWindow& window, state& gameState, Even
 
 		//check for paddle
 
-		if (l == 1) pPos.x -= pspeed;
-		else if (r == 1) pPos.x += pspeed;
+		if (l == 1) pPos.x -= pspeed * delta;
+		else if (r == 1) pPos.x += pspeed * delta; 
 		paddle.setPosition(pPos);
 		collision(paddle.getPosition(), paddle.getSize());
 	}

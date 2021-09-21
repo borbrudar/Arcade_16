@@ -121,7 +121,7 @@ void Super_Mario::draw(RenderWindow& window)
 	back.draw(window);
 }
 
-void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
+void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e, float delta)
 {
 	//update score
 	if (score > highscore) {

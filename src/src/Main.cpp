@@ -30,11 +30,15 @@ int main() {
 	state prevState = gameState;
 	std::unique_ptr<State> state = std::make_unique<Menu>(arial); 
 
+	//timestep
+	sf::Clock clock;
+	double dt = 1 / 60.f, currentTime = clock.getElapsedTime().asSeconds();
 
 	//game loop
 	while (window.isOpen()) {
 		//switch state
 		if (prevState != gameState) {
+
 			prevState = gameState;
 
 			switch (gameState) {
@@ -67,8 +71,19 @@ int main() {
 				break;
 			}
 		}
+	
+		//timestep
+		double newTime = clock.getElapsedTime().asSeconds();
+		double frameTime = newTime - currentTime;
+		currentTime = newTime;
+
+		while (frameTime > 0.0)
+		{
+		float deltaTime = std::min(frameTime, dt);
 		//update (event check etc)
-		state->update(mouse, window, gameState, e);
+		state->update(mouse, window, gameState, e, deltaTime);
+		frameTime -= deltaTime;
+		}
 		////////////////////////////////////////
 		window.clear(Color(50,50,50));
 

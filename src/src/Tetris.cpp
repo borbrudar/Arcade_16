@@ -92,7 +92,7 @@ void Tetris::draw(RenderWindow& window)
 	if (gameOver) window.draw(game);
 }
 
-void Tetris::update(Mouse& mouse, RenderWindow& window, state& gameState, Event &e)
+void Tetris::update(Mouse& mouse, RenderWindow& window, state& gameState, Event &e, float delta)
 {
 	if (!gameOver) {
 		//clock setup

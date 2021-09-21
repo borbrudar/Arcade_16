@@ -81,7 +81,7 @@ void Asteroids::draw(RenderWindow& window)
 	window.draw(scr);
 }
 
-void Asteroids::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e)
+void Asteroids::update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e, float delta)
 {
 	//update highscore
 	if (score > highscore){

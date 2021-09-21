@@ -68,7 +68,7 @@ public:
 	Super_Mario(Font& f);
 	~Super_Mario();
 	void draw(RenderWindow& window);
-	void update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e);
+	void update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e, float delta);
 	void loadWorld(int start, int end, bool plus = 1);
 	void deleteWorld();
 	void drawString(int x, int y, std::string string, RenderWindow &window);

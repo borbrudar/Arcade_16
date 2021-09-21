@@ -9,7 +9,7 @@ class Pong : public State {
 public:
 	Pong(Font& f);
 	void draw(RenderWindow& window);
-	void update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e);
+	void update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e, float delta);
 	void aiMove();
 
 private:	

@@ -8,7 +8,7 @@ class Arkanoid : public State {
 public:
 	Arkanoid(Font &f);
 	void draw(RenderWindow& window);
-	void update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e);
+	void update(Mouse& mouse, RenderWindow& window, state& gameState, Event& e, float delta);
 	bool collision(Vector2f pos, Vector2f size);
 
 	Texture b;
@@ -22,13 +22,13 @@ public:
 	float ballH = 30 * 0.7f, ballW = ballH;
 	float sizeX = 40, sizeY = 20;
 	int offsetX = 30, offsetY = 40, spacing = 2;
-	float speedx = 0.8f, speedy = 0.7f;
+	float speedx = 800.f, speedy = 600.f;
 	Vector2f pos, prevPos;
 
 	//the thing
 	RectangleShape paddle;
 	Vector2f pPos{ 250,420 };
-	float pspeed = 1.5f;
+	float pspeed = 750.f;
 
 	//game
 	bool gameOver = 0;
