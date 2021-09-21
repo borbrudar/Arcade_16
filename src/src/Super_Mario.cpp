@@ -291,7 +291,7 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 			//is on screen
 			if (enemies[j].anim.animation.getPosition().x < scrWidth) onsc = 1;
 			//update
-			if (enemies[j].update(etype, onsc)) {
+			if (enemies[j].update(etype, onsc, delta)) {
 				enemies.erase(enemies.begin() + j);
 				break;
 			}
@@ -432,8 +432,8 @@ void Super_Mario::update(Mouse& mouse, RenderWindow& window, state& gameState, E
 		}
 
 		//offset everything if necessary
-		if (mario.update(left, right, up, col, type, sprint) == 1) {
-			if (sprint) offX -= mario.mariosp * mario.sprintsp;  else offX -= mario.mariosp;
+		if (mario.update(left, right, up, col, type, delta, sprint) == 1) {
+			offX -= mario.mariosp * delta;
 
 			//update world
 			if (sprint) tx += mario.mariosp * mario.sprintsp; else tx += mario.mariosp;

@@ -118,10 +118,10 @@ bool Mario::update(bool left, bool right, bool up, bool col, std::vector<int> ty
 			//left/right movement
 			if (pos.x <= (scrWidth / 2) || left) {
 				if (left && canLeft) {
-					if (sprint)  pos.x -= mariosp * sprintsp; else pos.x -= mariosp;
+					pos.x -= mariosp * delta;
 				}
 				else if (right && canRight) {
-					if (sprint)  pos.x += mariosp * sprintsp; else pos.x += mariosp;
+					pos.x += mariosp * delta;
 				}
 			}
 			else if (right && canRight) ret = 1;
@@ -129,7 +129,7 @@ bool Mario::update(bool left, bool right, bool up, bool col, std::vector<int> ty
 			if (pos.x < 0) pos.x = 0;
 
 			//fall
-			if (!jumping && !groundTouch) pos.y += gravity;
+			if (!jumping && !groundTouch) pos.y += gravity * delta;
 
 			//kill if falls
 			if (pos.y + box.animation.getSize().y > scrHeight) alive = 0;
@@ -166,7 +166,7 @@ bool Mario::update(bool left, bool right, bool up, bool col, std::vector<int> ty
 					jumping = 0;
 					gtimer = 0;
 				}
-				else  pos.y -= jump;
+				else  pos.y -= jump * delta;
 
 			}
 			else gclock.restart();

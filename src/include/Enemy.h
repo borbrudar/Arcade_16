@@ -10,7 +10,7 @@ public:
 	Enemy(Vector2f pos, Vector2f size,Vector2f tSize, Texture &t1, int type = 0);
 	void setup(Vector2f pos, Vector2f size, Vector2f tSize, Texture &t1, int type = 0);
 	void draw(RenderWindow& window);
-	bool update(std::vector<int> etype, bool onScr = 0);
+	bool update(std::vector<int> etype, bool onScr, float delta);
 	void off(float offX);
 	void boxUpdate();
 
@@ -27,7 +27,7 @@ private:
 	float dtime = 0, dtimer = 0, ddelay = 0.7f;
 	RectangleShape death;
 
-	float speed = 0.4f, gravity = 1.5f;
+	float speed = 100.f, gravity = 450.f;
 	bool groundTouch = 0, deathSet = 0;
 	float offX = 0.f;
 };

@@ -17,7 +17,7 @@ public:
 
 	Manimation box;
 	std::vector<RectangleShape> mariobox;
-	float mariosp = 1.f, sprintsp = 1.6f;
+	float mariosp = 200.f, sprintsp = 1.6f;
 	bool showHitbox = 0, big = 0, shiny = 0, canShoot = 0, prevDir = 1, alive = 1, op = 0, groundTouch = 0;
 private:
 	//op clock
@@ -25,7 +25,7 @@ private:
 	float opt = 0.f, optr = 0.f, opd = 3.5f;
 	//physics
 	Vector2f pos, prevPos;
-	float gravity = 2.2f, jump = gravity;
+	float gravity = 400.f, jump = gravity;
 	bool jumping = 0, canLeft = 1, canRight = 1, checkBig = 0, checkShiny = 0;
 
 	//shooting clock
@@ -34,7 +34,7 @@ private:
 
 	//jumping clock
 	Clock gclock, jdclock;
-	float gtime = 0.f, gtimer = 0.f, gdelay = 0.4f, minDelay = 0.25f;
+	float gtime = 0.f, gtimer = 0.f, gdelay = 0.3f, minDelay = 0.12f;
 	float jdtime = 0.f, jdtimer = 0.f, jddelay = 0.2f;
 	bool noDelay = 1;
 

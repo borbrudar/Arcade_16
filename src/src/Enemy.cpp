@@ -39,7 +39,7 @@ void Enemy::draw(RenderWindow& window)
 	if(showHitbox) for (int i = 0; i < enemybox.size(); i++) window.draw(enemybox[i]);
 }
 
-bool Enemy::update(std::vector<int> etype, bool onScr)
+bool Enemy::update(std::vector<int> etype, bool onScr, float delta)
 {
 	onScreen = onScr;
 
@@ -49,11 +49,11 @@ bool Enemy::update(std::vector<int> etype, bool onScr)
 	if (etype[2] == 1) { speed = -speed; pos.x = prevPos.x; }
 	else if (etype[3] == 1) { speed = -speed; pos.x = prevPos.x; };
 	//fall
-	if (!groundTouch) pos.y += gravity;
+	if (!groundTouch) pos.y += gravity * delta;
 
 	//hybrid
 	if (alive) {
-		if (onScreen) pos.x -= speed;
+		if (onScreen) pos.x -= speed * delta;
 		dclock.restart();
 	}
 	else if (type == 0) {
