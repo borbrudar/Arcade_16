@@ -30,15 +30,15 @@ void Ghost::draw(RenderWindow& window)
 }
 
 //blinky and clyde
-void Ghost::update(Vector2f player, bool fright)
+void Ghost::update(Vector2f player, bool fright, float delta)
 {
 	//normalize coords to integers
 	Vector2i tar = Vector2i((std::round((player.x - start.x) / tSize.x)), (std::round((player.y - start.y) / tSize.y)));
 	Vector2i pos = Vector2i(std::round((this->pos.x - start.x) / tSize.x), std::round((this->pos.y - start.y)/ tSize.y));
 
-	if (alive == 0) die();
+	if (alive == 0) die(delta);
 	else if (fright) {
-		if (move(fright)) random(pos);
+		if (move(delta,fright)) random(pos);
 	}
 	else {
 		if (beg && type == 0) {
@@ -47,22 +47,22 @@ void Ghost::update(Vector2f player, bool fright)
 		else if (beg && type == 3) {
 			if (st != -1) instruction = beggining[st]; else { 
 				beg = 0;}
-			if (move()) st--;
+			if (move(delta)) st--;
 		}
 
 		//normal movement
-		if(!beg) {
+		 if(!beg) {
 			st = 1;
 			//blinky
 			if (type == 0) {
 				//if move done find next target
-				if (move()) { findPath(tar, pos); }
+				if (move(delta)) { findPath(tar, pos); }
 			}//idiot clyde
 			else if (type == 3) {
 				float dist = std::sqrt(std::pow(pos.x - tar.x, 2) + std::pow(pos.y - tar.y, 2));
 
 				if (dist > 4) {
-					if (move(fright)) findPath(tar, pos);
+					if (move(delta,fright)) findPath(tar, pos);
 				}
 				else {
 					//else run to the nearest corner
@@ -81,7 +81,7 @@ void Ghost::update(Vector2f player, bool fright)
 						}
 					}
 
-					if (move(fright)) findPath(tar, pos);
+					if (move(delta,fright)) findPath(tar, pos);
 				}
 			}
 		}
@@ -90,21 +90,21 @@ void Ghost::update(Vector2f player, bool fright)
 }
 
 //pinky
-void Ghost::update(Vector2f player, float rot, bool fright)
+void Ghost::update(Vector2f player, float rot, bool fright, float delta)
 {
 	//normalize coords to integers
 	Vector2i tar;
 	Vector2i pos = Vector2i(std::round((this->pos.x - start.x) / tSize.x), std::round((this->pos.y - start.y) / tSize.y));
 
-	if (alive == 0) die();
+	if (alive == 0) die(delta);
 	else if (fright) {
-		if(move(fright)) random(pos);
+		if(move(delta,fright)) random(pos);
 	}
 	else if(beg) {
 		if (st != -1) instruction = beggining[st]; else {
 			beg = 0;
 		}
-		if (move()) st--;
+		if (move(delta)) st--;
 	}
 	else {
 		st = 1;
@@ -127,27 +127,27 @@ void Ghost::update(Vector2f player, float rot, bool fright)
 			findPath(tar, pos); beg = 0;
 		}
 		//if move done find next target
-		if (move(fright)) { findPath(tar, pos); }
+		if (move(delta,fright)) { findPath(tar, pos); }
 	}
 }
 
 //inky
-void Ghost::update(Vector2f player, float rot, Vector2f blinky, bool fright)
+void Ghost::update(Vector2f player, float rot, Vector2f blinky, bool fright, float delta)
 {
 	//normalize coords to integers
 	Vector2i tar, origin;
 	Vector2i pos = Vector2i(std::round((this->pos.x - start.x) / tSize.x), std::round((this->pos.y - start.y) / tSize.y));
 	Vector2i bli = Vector2i(std::round((blinky.x - start.x) / tSize.x), std::round((blinky.y - start.y) / tSize.y));
 
-	if (alive == 0) die();
+	if (alive == 0) die(delta);
 	else if (fright) {
-		if (move(fright)) random(pos);
+		if (move(delta, fright)) random(pos);
 	}
 	else if (beg) {
 		if (st != -1) instruction = beggining[st]; else {
 			beg = 0;
 		}
-		if (move()) st--;
+		if (move(delta)) st--;
 	}
 	else {
 		st = 2;
@@ -176,7 +176,7 @@ void Ghost::update(Vector2f player, float rot, Vector2f blinky, bool fright)
 			findPath(tar, pos); beg = 0;
 		}
 		//if move done find next target
-		if (move(fright)) findPath(tar, pos);
+		if (move(delta,fright)) findPath(tar, pos);
 	}
 }
 
@@ -243,17 +243,17 @@ void Ghost::random(Vector2i curPos)
 	else if (type == 3) findPath(c[3], curPos);
 }
 
-bool Ghost::move(bool fright)
+bool Ghost::move(float delta, bool fright)
 {
 	if (distTraveled > tSize.x) {
-		if(instruction == 0) pos.x -= speed;
-		if (instruction == 1) pos.x += speed;
-		if (instruction == 2) pos.y -= speed;
-		if (instruction == 3) pos.y += speed;
+		if (instruction == 0) pos.x -= speed * delta;
+		if (instruction == 1) pos.x += speed * delta;
+		if (instruction == 2) pos.y -= speed * delta;
+		if (instruction == 3) pos.y += speed * delta;
 		distTraveled = 0.f;
 		return 1;
 	}
-	distTraveled += speed;
+	distTraveled += speed * delta;
 
 	switch (instruction) {
 	case 0:
@@ -261,28 +261,28 @@ bool Ghost::move(bool fright)
 		if (fright) animation.setup("res/pacman/gh.png", size, Vector2f(0, size.y * 4));
 		else if (!alive) animation.setup("res/pacman/gh.png", dSize, Vector2f(dSize.x * 6, size.y * 5));
 		else animation.setup("res/pacman/gh.png", size, Vector2f(size.x * 6, type * size.y));
-		pos.x += speed;
+		pos.x += speed * delta;
 		break;
 	case 1:
 		//left
 		if (fright) animation.setup("res/pacman/gh.png", size, Vector2f(0, size.y * 4));
 		else if (!alive) animation.setup("res/pacman/gh.png", dSize, Vector2f(dSize.x * 4, size.y * 5));
 		else animation.setup("res/pacman/gh.png", size, Vector2f(size.x * 4, type * size.y));
-		pos.x -= speed;
+		pos.x -= speed * delta;
 		break;
 	case 2:
 		//down
 		if (fright) animation.setup("res/pacman/gh.png", size, Vector2f(0, size.y * 4));
 		else if (!alive) animation.setup("res/pacman/gh.png", dSize, Vector2f(dSize.x * 2, size.y * 5));
 		else animation.setup("res/pacman/gh.png", size, Vector2f(size.x * 2, type * size.y));
-		pos.y += speed;
+		pos.y += speed * delta;
 		break;
 	case 3:
 		//up
 		if (fright) animation.setup("res/pacman/gh.png", size, Vector2f(0, size.y * 4));
 		else if (!alive) animation.setup("res/pacman/gh.png", dSize, Vector2f(0, size.y * 5));
 		else animation.setup("res/pacman/gh.png", size, Vector2f(0, type * size.y));
-		pos.y -= speed;
+		pos.y -= speed * delta;
 		break;
 	default:
 		animation.setup("res/pacman/gh.png", size, Vector2f(0, type * size.y));
@@ -292,12 +292,12 @@ bool Ghost::move(bool fright)
 	return 0;
 }
 
-void Ghost::die()
+void Ghost::die(float delta)
 {
 	Vector2i pos = Vector2i(std::round((this->pos.x - start.x) / tSize.x), std::round((this->pos.y - start.y) / tSize.y));
 	Vector2i tar = Vector2i{ 9,8 };
 	
-	if (move()) findPath(tar, pos);
+	if (move(delta)) findPath(tar, pos);
 	
 	if (tar == pos) alive = 1; else alive = 0;
 	

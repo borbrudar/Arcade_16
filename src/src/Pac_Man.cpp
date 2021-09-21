@@ -161,11 +161,11 @@ void Pac_Man::update(Mouse& mouse, RenderWindow& window, state& gameState, Event
 
 	if (!gameOver) {
 		//update the ghosts
-		blinky.update(pacman.animation.getPosition(), frightened);
+		blinky.update(pacman.animation.getPosition(), frightened, delta);
 		pinky.update(pacman.animation.getPosition(), pacman.animation.getRotation(),
-			blinky.animation.animation.getPosition(), frightened);
-		inky.update(pacman.animation.getPosition(), pacman.animation.getRotation(), blinky.pos, frightened);
-		clyde.update(pacman.animation.getPosition(), frightened);
+			blinky.animation.animation.getPosition(), frightened, delta);
+		inky.update(pacman.animation.getPosition(), pacman.animation.getRotation(), blinky.pos, frightened, delta);
+		clyde.update(pacman.animation.getPosition(), frightened, delta);
 
 		//frightened mode update
 		if (frightened) {
@@ -196,25 +196,22 @@ void Pac_Man::update(Mouse& mouse, RenderWindow& window, state& gameState, Event
 			}
 		}
 
-
-
-
 		//movement
 		prevPos = pacman.animation.getPosition();
 		if (up) {
-			pacman.animation.move(0, -speed);
+			pacman.animation.move(0, -speed * delta);
 			pacman.animation.setRotation(270);
 		}
 		else if (down) {
-			pacman.animation.move(0, speed);
+			pacman.animation.move(0, speed * delta);
 			pacman.animation.setRotation(90);
 		}
 		else if (left) {
-			pacman.animation.move(-speed, 0);
+			pacman.animation.move(-speed * delta, 0);
 			pacman.animation.setRotation(180);
 		}
 		else if (right) {
-			pacman.animation.move(speed, 0);
+			pacman.animation.move(speed * delta, 0);
 			pacman.animation.setRotation(0);
 		}
 

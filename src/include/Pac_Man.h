@@ -41,7 +41,7 @@ private:
 	//pacman
 	Animation pacman;
 	bool up = 0, down = 0, left = 0, right = 0;
-	float speed = 1.5f, pscale = 0.2f; 
+	float speed = 150.f, pscale = 0.2f; 
 	Vector2f pSize{ 80,80 }, prevPos;
 	Vector2i tSize;
 
