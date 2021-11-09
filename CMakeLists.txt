@@ -3,7 +3,7 @@ if(WIN32)
     #default install path, so no spaces
     set(CMAKE_INSTALL_PREFIX C:/ CACHE PATH "default path" FORCE)
 endif()
-project(Arcade VERSION 0.1.0)
+project(Arcade VERSION 0.1.1)
 set (CMAKE_CXX_STANDARD 17)
 include(GNUInstallDirs)
 
