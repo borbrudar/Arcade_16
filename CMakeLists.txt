@@ -5,6 +5,12 @@ if(WIN32)
 endif()
 project(Arcade VERSION 0.1.1)
 set (CMAKE_CXX_STANDARD 17)
+#on GCC link stl statically  
+if(CMAKE_COMPILER_IS_GNUCXX)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
+endif()
+
+
 include(GNUInstallDirs)
 
 include(CTest)
@@ -58,37 +64,6 @@ set(SOURCE_FILE_NAMES
 list(TRANSFORM SOURCE_FILE_NAMES APPEND ".cpp")
 list(TRANSFORM SOURCE_FILE_NAMES PREPEND "src/src/")
 
-
-set(HEADER_FILE_NAMES
- Animation
- Arkanoid
- Asteroids
- Astro 
- Box 
- Button 
- Enemy 
- Entity 
- Ghost 
- Manimation
- Mario
- Menu
- MP
- Pac_Man
- Pong 
- Shield 
- Simon 
- Space_Invaders 
- Super_Mario
- Tetris
- BoxEnum
- Pellet 
- State 
- stateEnum 
-)
-
-list(TRANSFORM HEADER_FILE_NAMES APPEND ".h")
-list(TRANSFORM HEADER_FILE_NAMES PREPEND "src/include/")
-
 if(UNIX)
 set(CMAKE_INSTALL_RPATH $ORIGIN/../lib)
 endif()
@@ -114,10 +89,9 @@ if(WIN32)
         "${CMAKE_CURRENT_BINARY_DIR}/external/SFML/lib/sfml-graphics-2.dll"
         "${CMAKE_CURRENT_BINARY_DIR}/external/SFML/lib/sfml-system-2.dll"
         "${CMAKE_CURRENT_BINARY_DIR}/external/SFML/lib/sfml-window-2.dll"
+        "${CMAKE_CURRENT_SOURCE_DIR}/win10/OpenAL32.dll"
+        "${CMAKE_CURRENT_SOURCE_DIR}/win10/OpenAL64.dll"
          ${CMAKE_CURRENT_BINARY_DIR})
-
-    configure_file("${CMAKE_CURRENT_SOURCE_DIR}/win10/OpenAL32.dll"
-    DESTINATION ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
 endif()
 
 #-----------COPY RES DIR-------------------------
@@ -137,18 +111,14 @@ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/res DESTINATION ${CMAKE_INSTALL_BI
 
 if(WIN32)
     #sfml
-    add_custom_command(TARGET Arcade POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy
-        "${CMAKE_CURRENT_BINARY_DIR}/external/SFML/lib/sfml-audio-2.dll"
-        "${CMAKE_CURRENT_BINARY_DIR}/external/SFML/lib/sfml-graphics-2.dll"
-        "${CMAKE_CURRENT_BINARY_DIR}/external/SFML/lib/sfml-system-2.dll"
-        "${CMAKE_CURRENT_BINARY_DIR}/external/SFML/lib/sfml-window-2.dll"
-         ${CMAKE_CURRENT_BINARY_DIR})
-    #openal ig
-    add_custom_command(TARGET Arcade POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy
-                "${CMAKE_CURRENT_SOURCE_DIR}/win10/OpenAL32.dll"
-                ${CMAKE_INSTALL_BINDIR})
+    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/external/SFML/lib/sfml-audio-2.dll"
+    "${CMAKE_CURRENT_BINARY_DIR}/external/SFML/lib/sfml-graphics-2.dll"
+    "${CMAKE_CURRENT_BINARY_DIR}/external/SFML/lib/sfml-system-2.dll"
+    "${CMAKE_CURRENT_BINARY_DIR}/external/SFML/lib/sfml-window-2.dll"
+    #openal
+    "${CMAKE_CURRENT_SOURCE_DIR}/win10/OpenAL32.dll"
+    "${CMAKE_CURRENT_SOURCE_DIR}/win10/openal64.dll"
+    DESTINATION ${CMAKE_INSTALL_BINDIR})
 elseif(UNIX)
     install(TARGETS Arcade 
        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
